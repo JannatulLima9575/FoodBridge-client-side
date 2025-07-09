@@ -1,14 +1,17 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import hero1 from '../assets/hero1.jpg';
+import hero2 from '../assets/hero2.jpg';
+import hero3 from '../assets/hero3.jpg';
 
 const Banner = () => {
   return (
     <div className="w-full">
       <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false} showStatus={false}>
         {/* Slide 1 */}
-        <div className="relative">
-          <img src="assets/1.jpeg" className="h-[60vh] md:h-[80vh] w-full object-cover" alt="Banner 1" />
+        <div className="relative h-[60vh] md:h-[80vh]">
+          <img src={hero1} className="w-full h-full object-cover" alt="Banner 1" />
           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
             <div className="text-center px-4 md:px-12 text-white">
               <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
@@ -22,8 +25,8 @@ const Banner = () => {
         </div>
 
         {/* Slide 2 */}
-        <div className="relative">
-          <img src="assets/2.jpeg" className="h-[60vh] md:h-[80vh] w-full object-cover" alt="Banner 2" />
+        <div className="relative h-[60vh] md:h-[80vh]">
+          <img src={hero2} className="w-full h-full object-cover" alt="Banner 2" />
           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
             <div className="text-center px-4 md:px-12 text-white">
               <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
@@ -37,8 +40,8 @@ const Banner = () => {
         </div>
 
         {/* Slide 3 */}
-        <div className="relative">
-          <img src="assets/3.jpeg" className="h-[60vh] md:h-[80vh] w-full object-cover" alt="Banner 3" />
+        <div className="relative h-[60vh] md:h-[80vh]">
+          <img src={hero3} className="w-full h-full object-cover" alt="Banner 3" />
           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
             <div className="text-center px-4 md:px-12 text-white">
               <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
