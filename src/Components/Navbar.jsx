@@ -23,7 +23,7 @@ const Navbar = () => {
     <div className="navbar px-4 md:px-8 py-2 shadow bg-base-100 sticky top-0 z-50">
       {/* Left: Logo */}
       <div className="flex-1">
-        <a className="flex items-center gap-2 text-xl font-bold">
+        <a className="flex items-center gap-2 text-xl font-bold poppins-thin">
           <span className="text-[#F9A825]">Food</span>
           <span className="text-[#81C784]">Bridge</span>
           <span className="text-2xl">🍽️</span>
@@ -32,7 +32,7 @@ const Navbar = () => {
 
       {/* Right: Nav Items */}
       <div className="flex items-center gap-4">
-        <ul className="hidden md:flex gap-4 font-medium">
+        <ul className="hidden md:flex gap-4 font-medium fonts-inter">
           <li><a className="hover:text-primary">Home</a></li>
           <li><a className="hover:text-primary">All Donations</a></li>
           <li><a className="hover:text-primary">Dashboard</a></li>
