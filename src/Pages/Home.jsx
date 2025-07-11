@@ -4,11 +4,13 @@ import FeaturedDonations from "../Components/FeaturedDonations";
 import LatestCharityRequests from "../Components/LatestCharityRequests";
 import ImpactStats from "../Components/ImpactStats";
 import CommunityStories from "../Components/CommunityStories";
+import HowItWorks from "../Components/HowItWorks";
 
 const Home = () => {
   return (
     <div>
       <Banner></Banner>
+      <HowItWorks></HowItWorks>
       <FeaturedDonations></FeaturedDonations>
       <LatestCharityRequests></LatestCharityRequests>
       <ImpactStats />

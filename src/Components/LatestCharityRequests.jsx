@@ -27,6 +27,7 @@ const charityRequests = [
 const LatestCharityRequests = () => {
   return (
     <section className="py-12 px-4 md:px-8 bg-base-200">
+        <div className="max-w-7xl mx-auto">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">
         🤝 Latest Charity Requests
       </h2>
@@ -49,6 +50,7 @@ const LatestCharityRequests = () => {
             </p>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );

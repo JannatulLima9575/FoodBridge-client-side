@@ -39,6 +39,7 @@ const featuredDonations = [
 const FeaturedDonations = () => {
   return (
     <section className="py-12 px-4 md:px-8 bg-base-100">
+        <div className="max-w-7xl mx-auto">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">
         🍽️ Featured Donations
       </h2>
@@ -74,6 +75,7 @@ const FeaturedDonations = () => {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );

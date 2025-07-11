@@ -8,6 +8,7 @@ import hero3 from '../assets/hero3.jpg';
 const Banner = () => {
   return (
     <div className="w-full">
+    <div className="">
       <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false} showStatus={false}>
         {/* Slide 1 */}
         <div className="relative h-[60vh] md:h-[80vh]">
@@ -54,6 +55,7 @@ const Banner = () => {
           </div>
         </div>
       </Carousel>
+      </div>
     </div>
   );
 };

@@ -18,6 +18,7 @@ const stories = [
 const CommunityStories = () => {
   return (
     <section className="py-12 px-4 md:px-8 bg-base-200 dark:bg-neutral">
+        <div className="max-w-7xl mx-auto">
       <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-10">
         💚 Community Stories
       </h2>
@@ -38,6 +39,7 @@ const CommunityStories = () => {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );

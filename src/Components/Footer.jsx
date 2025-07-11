@@ -3,6 +3,7 @@ import React from 'react';
 const Footer = () => {
     return (
          <footer className="bg-base-200 text-base-content px-6 md:px-12 py-10 mt-20">
+            <div className='max-w-7xl mx-auto flex'>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* About */}
         <div>
@@ -40,6 +41,7 @@ const Footer = () => {
       {/* Copyright */}
       <div className="text-center text-sm">
         © {new Date().getFullYear()} <span className="font-semibold text-[#F9A825]">FoodBridge</span>. All rights reserved.
+      </div>
       </div>
     </footer>
     );
