@@ -1,33 +1,52 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../Layouts/RootLayout";
-import Home from "../Pages/Home";
 import AuthLayout from "../Layouts/AuthLayout";
+import Home from "../Pages/Home";
 import Login from "../Pages/Authentication/Login";
 import Register from "../Pages/Authentication/Register";
+import AllDonations from "../Pages/AllDonations";
+import Dashboard from "../Pages/Dashboard";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: RootLayout,
+    element: <RootLayout />,
     children: [
-        {
-            index: true,
-            Component: Home,
-        }
-    ]
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "donations",
+        element: (
+          <PrivateRoute>
+            <AllDonations />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "dashboard",
+        element: (
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        ),
+      },
+    ],
   },
   {
-    path: '/',
-    Component: AuthLayout,
+    path: "/",
+    element: <AuthLayout />,
     children: [
       {
-        path: 'login',
-        Component: Login,
+        path: "login",
+        element: <Login />,
       },
       {
-        path: 'register',
-        Component: Register,
+        path: "register",
+        element: <Register />,
       },
-    ]
-  }
+    ],
+  },
 ]);
