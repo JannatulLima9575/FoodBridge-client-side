@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router";
 import { router } from "./Router/Router.jsx";
 import AuthProvider from "./Provider/AuthProvider.jsx";
 import { Toaster } from "react-hot-toast";
+import "leaflet/dist/leaflet.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

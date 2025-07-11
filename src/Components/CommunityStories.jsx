@@ -5,13 +5,13 @@ const stories = [
     id: 1,
     name: 'Mama’s Kitchen',
     story: 'Thanks to FoodBridge, we’ve donated surplus food regularly and built strong ties with our community.',
-    image: '/assets/story1.jpg',
+    image: 'https://i.ibb.co/MyN755Kc/image.png',
   },
   {
     id: 2,
     name: 'SaveSmile Foundation',
     story: 'With help from FoodBridge, we’re now able to serve 300+ people every week. Truly a blessing!',
-    image: '/assets/story2.jpg',
+    image: 'https://i.ibb.co/HfHrTyJz/image.png',
   },
 ];
 
@@ -19,7 +19,7 @@ const CommunityStories = () => {
   return (
     <section className="py-12 px-4 md:px-8 bg-base-200 dark:bg-neutral">
         <div className="max-w-7xl mx-auto">
-      <h2 className="text-3xl md:text-4xl font-bold text-primary text-center mb-10">
+      <h2 className="text-3xl md:text-4xl font-bold text-[#257429] text-center mb-10">
         💚 Community Stories
       </h2>
 
