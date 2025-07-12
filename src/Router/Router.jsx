@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router"; 
 import RootLayout from "../Layouts/RootLayout";
 import AuthLayout from "../Layouts/AuthLayout";
 import Home from "../Pages/Home";
@@ -9,6 +9,8 @@ import Dashboard from "../Pages/Dashboard/Dashboard";
 import PrivateRoute from "./PrivateRoute";
 import Payment from "../Pages/Dashboard/Payments/Payment";
 import DonationDetails from "../Pages/SubPage/DonationDetails";
+import MyDonations from "../Pages/SubPage/MyDonations";
+import EditDonation from "../Pages/SubPage/EditDonation";
 
 export const router = createBrowserRouter([
   {
@@ -20,7 +22,7 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/donations",
+        path: "donations",
         element: (
           <PrivateRoute>
             <AllDonations />
@@ -28,11 +30,11 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/donations/:id",
+        path: "donations/:id",
         element: <DonationDetails />,
       },
       {
-        path: "/dashboard",
+        path: "dashboard",
         element: (
           <PrivateRoute>
             <Dashboard />
@@ -40,8 +42,16 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
+            path: "my-donations",
+            element: <MyDonations />,
+          },
+          {
+            path: "edit-donation/:id",
+            element: <EditDonation />,
+          },
+          {
             path: "payment/:id",
-            Component: Payment,
+            element: <Payment />,
           },
         ],
       },

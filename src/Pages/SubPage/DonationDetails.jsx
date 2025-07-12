@@ -8,8 +8,9 @@ import { AuthContext } from "../../Provider/AuthProvider";
 
 const DonationDetails = () => {
   const { id } = useParams();
-  const { user } = useContext(AuthContext); // get logged-in user
+  const { user } = useContext(AuthContext); // Get logged-in user
 
+  // 🔄 Fetch single donation details
   const { data: donation, isLoading } = useQuery({
     queryKey: ["donation", id],
     queryFn: async () => {
@@ -21,6 +22,7 @@ const DonationDetails = () => {
   if (isLoading) return <p className="text-center py-10">Loading...</p>;
   if (!donation) return <p className="text-center text-red-500 py-10">Donation not found</p>;
 
+  // ✅ Handle Request Button for Charity User
   const handleRequest = async () => {
     const requestData = {
       donationId: donation._id,
@@ -76,14 +78,14 @@ const DonationDetails = () => {
           </span>
         </p>
 
-        {/* ✅ Request Button for Charity Role */}
+        {/* ✅ Show Request Button if Charity */}
         {user?.role === "charity" && (
-          <button onClick={handleRequest} className="btn btn-success mb-6">
+          <button onClick={handleRequest} className="btn btn-primary mt-6">
             Request This Donation
           </button>
         )}
 
-        {/* 🗺️ Map */}
+        {/* 🗺️ Map if lat/lng present */}
         {donation.latitude && donation.longitude && (
           <div className="mt-8">
             <h3 className="text-lg font-semibold mb-2 text-primary">📍 Map Location</h3>
