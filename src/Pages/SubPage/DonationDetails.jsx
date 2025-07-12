@@ -14,7 +14,7 @@ const DonationDetails = () => {
   const { data: donation, isLoading } = useQuery({
     queryKey: ["donation", id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/api/donations/${id}`);
+      const res = await axios.get(`http://localhost:5000/donations/${id}`);
       return res.data;
     },
   });

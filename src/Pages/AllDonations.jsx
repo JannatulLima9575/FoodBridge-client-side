@@ -11,12 +11,12 @@ const AllDonations = () => {
   const { data: donations = [], isLoading } = useQuery({
     queryKey: ["all-donations"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/api/donations");
+      const res = await axios.get("http://localhost:5000/donations");
       return res.data;
     },
   });
 
-  // if (isLoading) return <p className="text-center py-20">Loading...</p>;
+  if (isLoading) return <p className="text-center py-20">Loading...</p>;
 
   // ✅ Filter and Search
   let filteredDonations = donations

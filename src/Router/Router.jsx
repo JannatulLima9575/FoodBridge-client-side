@@ -34,6 +34,7 @@ export const router = createBrowserRouter([
       {
         path: "donations/:id",
         element: <DonationDetails />,
+        loader: ({params}) => fetch(`http://localhost:5000/donations/${params.id}`)
       },
     ],
   },

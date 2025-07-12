@@ -1,7 +1,8 @@
-import React from "react";
+import React, { use, useContext } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+
 
 const FeaturedDonations = () => {
   // Fetch featured donations
