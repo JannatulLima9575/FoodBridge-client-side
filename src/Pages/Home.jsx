@@ -6,6 +6,7 @@ import ImpactStats from "../Components/ImpactStats";
 import CommunityStories from "../Components/CommunityStories";
 import HowItWorks from "../Components/HowItWorks";
 import Coverage from "../Components/Coverage";
+import FoodSliderSection from "../Components/FoodSliderSection";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <LatestCharityRequests></LatestCharityRequests>
       <HowItWorks></HowItWorks>
       <ImpactStats />
+      <FoodSliderSection/>
       <CommunityStories />
       <Coverage/>
     </div>
