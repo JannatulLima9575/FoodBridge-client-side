@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/vite": "^4.1.11",
+    "@tanstack/react-query": "^5.83.0",
+    "axios": "^1.10.0",
     "firebase": "^11.10.0",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.13.0",

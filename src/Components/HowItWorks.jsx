@@ -27,7 +27,7 @@ const HowItWorks = () => {
   return (
     <section className="bg-[#fdfcf9] dark:bg-[#1f1f1f] py-20 px-4 md:px-12 transition-all duration-300">
       <div className="max-w-7xl mx-auto font-body">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1e1e1e] dark:text-white font-heading mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#257429] dark:text-white font-heading mb-16">
           HOW IT WORKS
         </h2>
 

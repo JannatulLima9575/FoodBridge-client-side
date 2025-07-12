@@ -1,42 +1,22 @@
 import React from "react";
 import { Link } from "react-router";
-
-const featuredDonations = [
-  {
-    id: 1,
-    image: "https://i.ibb.co/4ZRsdMMP/image.png",
-    foodType: "Bakery",
-    restaurant: "Fresh Bites",
-    location: "Dhaka, Bangladesh",
-    status: "Available",
-  },
-  {
-    id: 2,
-    image: "https://i.ibb.co/hFJq6fj3/image.png",
-    foodType: "Produce",
-    restaurant: "Green Valley",
-    location: "Sylhet, Bangladesh",
-    status: "Picked Up",
-  },
-  {
-    id: 3,
-    image: "https://i.ibb.co/QvTRrL11/image.png",
-    foodType: "Prepared Meals",
-    restaurant: "Daily Dine",
-    location: "Chittagong, Bangladesh",
-    status: "Available",
-  },
-  {
-    id: 4,
-    image: "https://i.ibb.co/PvMQ3xGQ/image.png",
-    foodType: "Dairy",
-    restaurant: "Milk & More",
-    location: "Rajshahi, Bangladesh",
-    status: "Available",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const FeaturedDonations = () => {
+  // Fetch featured donations
+  const { data: featuredDonations = []} = useQuery({
+    queryKey: ["featuredDonations"],
+    queryFn: async () => {
+      const res = await axios.get(
+        "http://localhost:5000/api/featured-donations"
+      );
+      return res.data;
+    },
+  });
+
+  // if (isLoading) return <p className="text-center py-10">Loading...</p>;
+
   return (
     <section className="py-14 px-4 md:px-8 bg-[#fffceb] dark:bg-[#1e1e1e]">
       <div className="max-w-7xl mx-auto">
@@ -51,7 +31,7 @@ const FeaturedDonations = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredDonations.map((donation) => (
             <div
-              key={donation.id}
+              key={donation._id}
               className="bg-white dark:bg-[#2b2b2b] shadow-md rounded-xl overflow-hidden transition hover:shadow-xl"
             >
               <img
@@ -65,7 +45,7 @@ const FeaturedDonations = () => {
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <span className="font-medium">Restaurant:</span>{" "}
-                  {donation.restaurant}
+                  {donation.restaurantName}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   <span className="font-medium">Location:</span>{" "}
@@ -86,7 +66,7 @@ const FeaturedDonations = () => {
                   </span>
                 </p>
                 <Link
-                  to={`/donation-details/${donation.id}`}
+                  to={`/donation-details/${donation._id}`}
                   className="inline-block mt-3 px-4 py-2 bg-[#F9A825] text-white rounded-lg hover:bg-[#f57f17] transition-all duration-300"
                 >
                   View Details
