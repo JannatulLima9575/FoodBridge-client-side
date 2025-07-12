@@ -38,34 +38,35 @@ const FoodSliderSection = () => {
     },
     {
       id: 7,
-      image: "https://i.ibb.co/hFJq6fj3/image.png",
-      name: "Fruits",
+      image: "https://i.ibb.co/gLpF98zV/image.png",
+      name: "Cakes",
     },
     {
       id: 8,
-      image: "https://i.ibb.co/QvTRrL11/image.png",
-      name: "Nuts",
+      image: "https://i.ibb.co/tp0rWBKV/image.png",
+      name: "Fruits",
     },
   ];
 
   return (
-    <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-orange-300 to-yellow-400">
-      <div className="max-w-7xl mx-auto text-center mb-10">
-        <p className="uppercase text-sm font-semibold tracking-wider">
-          Taking Advantage of New Technology
-        </p>
-        <h2 className="text-2xl md:text-3xl font-bold mt-2">
-          We cater to Bakers, Sandwich makers, Wholesalers,
-          <br /> Production Kitchens, Contract Caterers and more
-        </h2>
-      </div>
+    <section className="py-16 px-4 md:px-8 bg-[#FFFBE6]">
+<div className="max-w-7xl mx-auto text-center mb-10">
+  <p className="uppercase text-sm font-semibold text-[#81C784] tracking-wider">
+    Fighting Food Waste, One Donation at a Time
+  </p>
+  <h2 className="text-2xl md:text-3xl font-bold mt-2 text-[#1e1e1e] leading-relaxed">
+    Explore the Types of Food Being Rescued <br /> 
+    and Delivered to Those Who Need It Most
+  </h2>
+</div>
+
 
       <Swiper
         modules={[Autoplay, FreeMode]}
         spaceBetween={30}
         freeMode={true}
         loop={true}
-        speed={20000} // Adjust speed for smoother motion
+        speed={20000}
         autoplay={{
           delay: 0,
           disableOnInteraction: false,
@@ -79,12 +80,13 @@ const FoodSliderSection = () => {
       >
         {foods.map((food) => (
           <SwiperSlide key={food.id}>
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center gap-2">
               <img
                 src={food.image}
                 alt={food.name}
-                className="h-40 w-40 object-cover rounded-full shadow-lg hover:scale-105 transition transform duration-300"
+                className="h-40 w-40 object-cover rounded-full shadow-lg hover:scale-105 transition duration-300"
               />
+              <p className="text-[#257429] font-medium">{food.name}</p>
             </div>
           </SwiperSlide>
         ))}
