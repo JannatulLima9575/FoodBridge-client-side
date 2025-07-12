@@ -35,43 +35,35 @@ export const router = createBrowserRouter([
         path: "donations/:id",
         element: <DonationDetails />,
       },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
+    children: [
       {
-        path: "dashboard",
-        element: (
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        ),
-        children: [
-          {
-            path: "/dashboard/analytics",
-            element: (
-              <PrivateRoute>
-                <DashboardAnalytics />
-              </PrivateRoute>
-            ),
-          },
-          {
-            path: "my-donations",
-            element: <MyDonations />,
-          },
-          {
-            path: "edit-donation/:id",
-            element: <EditDonation />,
-          },
-          {
-            path: "payment/:id",
-            element: <Payment />,
-          },
-          {
-            path: "/dashboard/view-requests",
-            element: (
-              <PrivateRoute>
-                <ViewRequests />
-              </PrivateRoute>
-            ),
-          },
-        ],
+        path: "analytics",
+        element: <DashboardAnalytics />,
+      },
+      {
+        path: "my-donations",
+        element: <MyDonations />,
+      },
+      {
+        path: "edit-donation/:id",
+        element: <EditDonation />,
+      },
+      {
+        path: "payment/:id",
+        element: <Payment />,
+      },
+      {
+        path: "view-requests",
+        element: <ViewRequests />,
       },
     ],
   },
