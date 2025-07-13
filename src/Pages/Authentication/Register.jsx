@@ -64,7 +64,7 @@ const Register = () => {
           <button type="submit" className="btn w-full bg-[#F9A825] text-white hover:bg-[#f57f17]">Register</button>
         </form>
 
-        <button onClick={handleGoogleLogin} className="btn w-full mt-4 bg-red-500 text-white hover:bg-red-600">
+        <button onClick={handleGoogleLogin} className="btn w-full mt-4 bg-[#257429] text-white hover:bg-red-600">
           Continue with Google
         </button>
 

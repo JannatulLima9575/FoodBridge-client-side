@@ -6,7 +6,7 @@ import { Link } from "react-router";
 const AllDonations = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
-  const [sortBy, setSortBy] = useState("latest"); // 👈 sort state
+  const [sortBy, setSortBy] = useState("latest");
 
   const { data: donations = [], isLoading } = useQuery({
     queryKey: ["all-donations"],
@@ -18,9 +18,8 @@ const AllDonations = () => {
 
   if (isLoading) return <p className="text-center py-20">Loading...</p>;
 
-  // ✅ Filter and Search
+  // ✅ Filter and Search (updated)
   let filteredDonations = donations
-    .filter((donation) => donation.status === "Verified")
     .filter((donation) =>
       donation.foodType.toLowerCase().includes(searchTerm.toLowerCase())
     )

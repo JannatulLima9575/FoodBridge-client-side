@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -8,9 +8,10 @@ import { AuthContext } from "../../Provider/AuthProvider";
 
 const DonationDetails = () => {
   const { id } = useParams();
-  const { user } = useContext(AuthContext); // Get logged-in user
+  const { user } = useContext(AuthContext);
+  const [requested, setRequested] = useState(false); // ✅ new state
 
-  // 🔄 Fetch single donation details
+  // Fetch single donation
   const { data: donation, isLoading } = useQuery({
     queryKey: ["donation", id],
     queryFn: async () => {
@@ -22,7 +23,7 @@ const DonationDetails = () => {
   if (isLoading) return <p className="text-center py-10">Loading...</p>;
   if (!donation) return <p className="text-center text-red-500 py-10">Donation not found</p>;
 
-  // ✅ Handle Request Button for Charity User
+  // Handle request button
   const handleRequest = async () => {
     const requestData = {
       donationId: donation._id,
@@ -34,6 +35,7 @@ const DonationDetails = () => {
     try {
       await axios.post("http://localhost:5000/api/charity-requests", requestData);
       toast.success("✅ Request submitted successfully!");
+      setRequested(true); // ✅ disable after success
     } catch (error) {
       toast.error("❌ Failed to submit request.");
       console.error(error);
@@ -78,14 +80,18 @@ const DonationDetails = () => {
           </span>
         </p>
 
-        {/* ✅ Show Request Button if Charity */}
+        {/* ✅ Request Button for charity */}
         {user?.role === "charity" && (
-          <button onClick={handleRequest} className="btn btn-primary mt-6">
-            Request This Donation
+          <button
+            onClick={handleRequest}
+            disabled={requested}
+            className={`btn mt-6 ${requested ? "btn-disabled bg-gray-400 text-white" : "btn-primary"}`}
+          >
+            {requested ? "✅ Request Sent" : "Request This Donation"}
           </button>
         )}
 
-        {/* 🗺️ Map if lat/lng present */}
+        {/* 🗺️ Map */}
         {donation.latitude && donation.longitude && (
           <div className="mt-8">
             <h3 className="text-lg font-semibold mb-2 text-primary">📍 Map Location</h3>
