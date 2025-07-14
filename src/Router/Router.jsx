@@ -13,6 +13,11 @@ import MyDonations from "../Pages/SubPage/MyDonations";
 import EditDonation from "../Pages/SubPage/EditDonation";
 import DashboardAnalytics from "../Pages/Dashboard/DashboardAnalytics";
 import ViewRequests from "../Pages/SubPage/ViewRequests";
+import MyPayments from "../Pages/Dashboard/Payments/MyPayments";
+import PaymentSuccess from "../Pages/Dashboard/Payments/PaymentSuccess";
+import Favorites from "../Pages/SubPage/Favorites";
+import AddDonation from "../Pages/Dashboard/AddDonation";
+import RestaurantRoute from './RestaurantRoute';
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +39,8 @@ export const router = createBrowserRouter([
       {
         path: "donations/:id",
         element: <DonationDetails />,
-        loader: ({params}) => fetch(`http://localhost:5000/donations/${params.id}`)
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/donations/${params.id}`),
       },
     ],
   },
@@ -59,12 +65,31 @@ export const router = createBrowserRouter([
         element: <EditDonation />,
       },
       {
-        path: "payment/:id",
+        path: "payment/:id", // Dynamic donation payment page
         element: <Payment />,
+      },
+      {
+        path: "my-payments",
+        element: <MyPayments />,
       },
       {
         path: "view-requests",
         element: <ViewRequests />,
+      },
+      {
+        path: "payment-success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "/dashboard/favorites",
+        element: <Favorites />,
+      },
+      {
+        path: "add-donation",
+
+        element: <RestaurantRoute>
+          <AddDonation />
+        </RestaurantRoute>,
       },
     ],
   },

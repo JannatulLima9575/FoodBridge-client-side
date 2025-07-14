@@ -11,7 +11,7 @@ const ViewRequests = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/charity-requests?email=${user.email}`
+        `http://localhost:5000/charityRequests?email=${user.email}`
       );
       return res.data;
     },
@@ -45,7 +45,11 @@ const ViewRequests = () => {
                   <td>{req.donationId}</td>
                   <td>{req.requestDescription}</td>
                   <td>
-                    <img src={req.charityImage} alt="charity" className="w-14 h-14 rounded-full" />
+                    <img
+                      src={req.charityImage}
+                      alt="charity"
+                      className="w-14 h-14 rounded-full"
+                    />
                   </td>
                 </tr>
               ))}

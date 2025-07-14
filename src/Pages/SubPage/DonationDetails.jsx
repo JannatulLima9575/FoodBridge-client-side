@@ -1,18 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import DonationDetailsMap from "./DonationDetailsMap";
 import toast from "react-hot-toast";
+import DonationDetailsMap from "./DonationDetailsMap";
 import { AuthContext } from "../../Provider/AuthProvider";
+import ReviewSection from "./ReviewSection";
 
 const DonationDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
-  const [requested, setRequested] = useState(false); // ✅ new state
+  const [requested, setRequested] = useState(false);
+  const [requestAccepted, setRequestAccepted] = useState(false);
 
-  // Fetch single donation
-  const { data: donation, isLoading } = useQuery({
+  // ✅ Fetch donation details
+  const {
+    data: donation,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["donation", id],
     queryFn: async () => {
       const res = await axios.get(`http://localhost:5000/donations/${id}`);
@@ -20,25 +26,90 @@ const DonationDetails = () => {
     },
   });
 
-  if (isLoading) return <p className="text-center py-10">Loading...</p>;
-  if (!donation) return <p className="text-center text-red-500 py-10">Donation not found</p>;
+  // ✅ Check if request was accepted
+  useEffect(() => {
+    const fetchRequest = async () => {
+      if (user?.role === "charity") {
+        const res = await axios.get(`http://localhost:5000/charityRequests`);
+        const matched = res.data.find(
+          (r) =>
+            r.donationId === id &&
+            r.charityEmail === user?.email &&
+            r.status === "Accepted"
+        );
+        if (matched) {
+          setRequestAccepted(true);
+        }
+      }
+    };
+    fetchRequest();
+  }, [id, user]);
 
-  // Handle request button
-  const handleRequest = async () => {
-    const requestData = {
+  if (isLoading)
+    return <p className="text-center py-10">Loading donation details...</p>;
+  if (!donation)
+    return (
+      <p className="text-center text-red-500 py-10">
+        Donation not found or deleted.
+      </p>
+    );
+
+  // ✅ Save to Favorites
+  const handleSaveFavorite = async () => {
+    const favorite = {
+      userEmail: user?.email,
       donationId: donation._id,
-      charityName: user?.displayName || "Charity User",
-      charityImage: user?.photoURL || "",
-      requestDescription: `We would like to collect the donation titled "${donation.title}".`,
+      donationTitle: donation.title,
+      restaurantName: donation.restaurantName,
+      image: donation.image,
     };
 
     try {
-      await axios.post("http://localhost:5000/api/charity-requests", requestData);
+      await axios.post("http://localhost:5000/favorites", favorite);
+      toast.success("💖 Saved to Favorites!");
+    } catch (error) {
+      if (error.response?.status === 409) {
+        toast("Already in favorites!");
+      } else {
+        toast.error("Failed to save favorite.");
+      }
+    }
+  };
+
+  // ✅ Charity Request Button
+  const handleRequest = async () => {
+    const requestData = {
+      donationId: donation._id,
+      donationTitle: donation.title,
+      restaurantName: donation.restaurantName,
+      restaurantEmail: donation.restaurantEmail,
+      charityName: user?.displayName,
+      charityEmail: user?.email,
+      charityImage: user?.photoURL || "https://i.ibb.co/6RWxfX2v/image.png",
+      requestDescription: `We would like to collect the donation titled "${donation.title}".`,
+      pickupTime: "10:00 AM - 12:00 PM",
+    };
+
+    try {
+      await axios.post("http://localhost:5000/charityRequests", requestData);
       toast.success("✅ Request submitted successfully!");
-      setRequested(true); // ✅ disable after success
+      setRequested(true);
     } catch (error) {
       toast.error("❌ Failed to submit request.");
       console.error(error);
+    }
+  };
+
+  // ✅ Confirm Pickup (For Accepted Requests)
+  const handleConfirmPickup = async () => {
+    try {
+      await axios.patch(
+        `http://localhost:5000/donations/confirm/${donation._id}`
+      );
+      toast.success("📦 Marked as Picked Up");
+      refetch(); // refresh donation data
+    } catch (error) {
+      toast.error("❌ Failed to confirm pickup.");
     }
   };
 
@@ -80,21 +151,42 @@ const DonationDetails = () => {
           </span>
         </p>
 
-        {/* ✅ Request Button for charity */}
+        {(user?.role === "user" || user?.role === "charity") && (
+          <button onClick={handleSaveFavorite} className="btn btn-outline">
+            💖 Save to Favorites
+          </button>
+        )}
+
         {user?.role === "charity" && (
           <button
             onClick={handleRequest}
             disabled={requested}
-            className={`btn mt-6 ${requested ? "btn-disabled bg-gray-400 text-white" : "btn-primary"}`}
+            className={`btn mt-4 ${
+              requested ? "btn-disabled bg-gray-400 text-white" : "btn-primary"
+            }`}
           >
             {requested ? "✅ Request Sent" : "Request This Donation"}
           </button>
         )}
 
-        {/* 🗺️ Map */}
+        {user?.role === "charity" &&
+          requestAccepted &&
+          donation.status !== "Picked Up" && (
+            <button
+              onClick={handleConfirmPickup}
+              className="btn mt-4 bg-green-600 text-white"
+            >
+              📦 Confirm Pickup
+            </button>
+          )}
+
+        <ReviewSection donationId={donation._id} />
+
         {donation.latitude && donation.longitude && (
           <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-2 text-primary">📍 Map Location</h3>
+            <h3 className="text-lg font-semibold mb-2 text-primary">
+              📍 Map Location
+            </h3>
             <DonationDetailsMap
               latitude={donation.latitude}
               longitude={donation.longitude}

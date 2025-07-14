@@ -1,32 +1,37 @@
-import React, { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import React from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
-// 🔐 Set your token here
-mapboxgl.accessToken = "YOUR_MAPBOX_ACCESS_TOKEN";
+// ⚠️ Fix for missing marker icon
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
 
 const DonationDetailsMap = ({ latitude, longitude }) => {
-  const mapContainer = useRef(null);
-
-  useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [longitude, latitude], // [lng, lat]
-      zoom: 12,
-    });
-
-    // Marker
-    new mapboxgl.Marker().setLngLat([longitude, latitude]).addTo(map);
-
-    return () => map.remove(); // Clean up map
-  }, [latitude, longitude]);
-
   return (
-    <div
-      ref={mapContainer}
-      className="w-full h-[400px] rounded-xl shadow-md border"
-    />
+    <div className="w-full h-[400px] rounded-xl shadow-md border overflow-hidden">
+      <MapContainer
+        center={[latitude, longitude]}
+        zoom={13}
+        scrollWheelZoom={false}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={[latitude, longitude]}>
+          <Popup>📍 Donation Location</Popup>
+        </Marker>
+      </MapContainer>
+    </div>
   );
 };
 

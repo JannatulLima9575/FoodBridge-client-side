@@ -8,7 +8,7 @@ const Summary = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/donations/summary?email=${email}`)
+      .get(`http://localhost:5000/donations/summary?email=${email}`)
       .then((res) => setStats(res.data));
   }, [email]);
 

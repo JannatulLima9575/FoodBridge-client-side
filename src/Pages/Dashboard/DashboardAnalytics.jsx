@@ -12,7 +12,7 @@ const DashboardAnalytics = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/donations/summary?email=${user.email}`
+        `http://localhost:5000/donations/?email=${user.email}`
       );
       return res.data;
     },
