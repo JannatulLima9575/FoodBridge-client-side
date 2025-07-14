@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "react-router";
+// import useAuth from "../../Provider/useAuth";
+import toast from "react-hot-toast";
 
 const AllDonations = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,6 +38,28 @@ const AllDonations = () => {
   } else if (sortBy === "quantity") {
     filteredDonations.sort((a, b) => b.quantity - a.quantity);
   }
+
+  const handleAddToFavorite = async (donation) => {
+  const favoriteData = {
+    userEmail: user?.email, // useAuth থেকে
+    donationId: donation._id,
+    title: donation.title,
+    image: donation.image,
+    restaurantName: donation.restaurantName,
+  };
+
+  try {
+    const res = await axios.post("http://localhost:5000/favorites", favoriteData);
+    toast.success("Added to favorites!");
+  } catch (err) {
+    if (err.response?.status === 409) {
+      toast.error("Already in favorites!");
+    } else {
+      toast.error("Failed to add to favorites");
+    }
+  }
+};
+
 
   return (
     <section className="min-h-screen bg-white dark:bg-neutral-900 px-4 py-16">
@@ -122,6 +146,13 @@ const AllDonations = () => {
                 >
                   View Details
                 </Link>
+                {/* ❤️ Favorite Button */}
+                <button
+                  onClick={() => handleAddToFavorite(donation)}
+                  className="btn btn-outline btn-sm mt-2"
+                >
+                  ❤️ Favorite
+                </button>
               </div>
             ))}
           </div>

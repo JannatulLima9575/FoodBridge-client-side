@@ -6,17 +6,16 @@ import axios from "axios";
 
 const FeaturedDonations = () => {
   // Fetch featured donations
-  const { data: featuredDonations = []} = useQuery({
-    queryKey: ["featuredDonations"],
-    queryFn: async () => {
-      const res = await axios.get(
-        "http://localhost:5000/donations"
-      );
-      return res.data;
-    },
-  });
+const { data: featuredDonations = [], isLoading } = useQuery({
+  queryKey: ["featuredDonations"],
+  queryFn: async () => {
+    const res = await axios.get("http://localhost:5000/donations");
+    return res.data;
+  },
+});
 
-  // if (isLoading) return <p className="text-center py-10">Loading...</p>;
+
+  if (isLoading) return <p className="text-center py-10">Loading...</p>;
 
   return (
     <section className="py-14 px-4 md:px-8 bg-[#fffceb] dark:bg-[#1e1e1e]">

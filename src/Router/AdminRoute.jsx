@@ -2,12 +2,12 @@ import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { Navigate } from "react-router";
 
-const RestaurantRoute = ({ children }) => {
+const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) return <p className="text-center py-20">Loading...</p>;
 
-  return user?.role === "restaurant" ? children : <Navigate to="/unauthorized" replace />;
+  return user?.role === "admin" ? children : <Navigate to="/unauthorized" replace />;
 };
 
-export default RestaurantRoute;
+export default AdminRoute;

@@ -13,7 +13,6 @@ const DonationDetails = () => {
   const [requested, setRequested] = useState(false);
   const [requestAccepted, setRequestAccepted] = useState(false);
 
-  // ✅ Fetch donation details
   const {
     data: donation,
     isLoading,
@@ -26,7 +25,6 @@ const DonationDetails = () => {
     },
   });
 
-  // ✅ Check if request was accepted
   useEffect(() => {
     const fetchRequest = async () => {
       if (user?.role === "charity") {
@@ -54,7 +52,6 @@ const DonationDetails = () => {
       </p>
     );
 
-  // ✅ Save to Favorites
   const handleSaveFavorite = async () => {
     const favorite = {
       userEmail: user?.email,
@@ -76,7 +73,6 @@ const DonationDetails = () => {
     }
   };
 
-  // ✅ Charity Request Button
   const handleRequest = async () => {
     const requestData = {
       donationId: donation._id,
@@ -86,7 +82,7 @@ const DonationDetails = () => {
       charityName: user?.displayName,
       charityEmail: user?.email,
       charityImage: user?.photoURL || "https://i.ibb.co/6RWxfX2v/image.png",
-      requestDescription: `We would like to collect the donation titled "${donation.title}".`,
+      requestDescription: `We would like to collect the donation titled \"${donation.title}\".`,
       pickupTime: "10:00 AM - 12:00 PM",
     };
 
@@ -100,14 +96,13 @@ const DonationDetails = () => {
     }
   };
 
-  // ✅ Confirm Pickup (For Accepted Requests)
   const handleConfirmPickup = async () => {
     try {
       await axios.patch(
         `http://localhost:5000/donations/confirm/${donation._id}`
       );
       toast.success("📦 Marked as Picked Up");
-      refetch(); // refresh donation data
+      refetch();
     } catch (error) {
       toast.error("❌ Failed to confirm pickup.");
     }

@@ -17,7 +17,18 @@ import MyPayments from "../Pages/Dashboard/Payments/MyPayments";
 import PaymentSuccess from "../Pages/Dashboard/Payments/PaymentSuccess";
 import Favorites from "../Pages/SubPage/Favorites";
 import AddDonation from "../Pages/Dashboard/AddDonation";
-import RestaurantRoute from './RestaurantRoute';
+
+import RestaurantRoute from "./RestaurantRoute";
+import AdminRoute from "./AdminRoute";
+import CharityRoute from "./CharityRoute";
+import Unauthorized from "../Pages/Dashboard/Unauthorized";
+
+import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers";
+import ManageDonations from "../Pages/Dashboard/Admin/ManageDonations";
+import RoleRequests from "../Pages/Dashboard/Admin/RoleRequests";
+import PaymentHistory from "../Pages/Dashboard/Admin/PaymentHistory";
+import RequestRole from "../Pages/Dashboard/Admin/RequestRole";
+import NotFound from "../Pages/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -54,44 +65,123 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "analytics",
-        element: <DashboardAnalytics />,
-      },
-      {
-        path: "my-donations",
-        element: <MyDonations />,
-      },
-      {
-        path: "edit-donation/:id",
-        element: <EditDonation />,
-      },
-      {
-        path: "payment/:id", // Dynamic donation payment page
-        element: <Payment />,
-      },
-      {
-        path: "my-payments",
-        element: <MyPayments />,
-      },
-      {
-        path: "view-requests",
-        element: <ViewRequests />,
-      },
-      {
-        path: "payment-success",
-        element: <PaymentSuccess />,
-      },
-      {
-        path: "/dashboard/favorites",
-        element: <Favorites />,
+        element: (
+          <RestaurantRoute>
+            <DashboardAnalytics />
+          </RestaurantRoute>
+        ),
       },
       {
         path: "add-donation",
+        element: (
+          <RestaurantRoute>
+            <AddDonation />
+          </RestaurantRoute>
+        ),
+      },
+      {
+        path: "my-donations",
+        element: (
+          <RestaurantRoute>
+            <MyDonations />
+          </RestaurantRoute>
+        ),
+      },
+      {
+        path: "edit-donation/:id",
+        element: (
+          <RestaurantRoute>
+            <EditDonation />
+          </RestaurantRoute>
+        ),
+      },
+      {
+        path: "view-requests",
+        element: (
+          <RestaurantRoute>
+            <ViewRequests />
+          </RestaurantRoute>
+        ),
+      },
+      {
+        path: "payment/:id",
+        element: (
+          <CharityRoute>
+            <Payment />
+          </CharityRoute>
+        ),
+      },
+      {
+        path: "my-payments",
+        element: (
+          <CharityRoute>
+            <MyPayments />
+          </CharityRoute>
+        ),
+      },
+      {
+        path: "favorites",
+        element: (
+          <PrivateRoute>
+            <Favorites />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment-success", // ✅ Fixed
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "request-role", // ✅ Fixed
+        element: (
+          <PrivateRoute>
+            <RequestRole />
+          </PrivateRoute>
+        ),
+      },
 
-        element: <RestaurantRoute>
-          <AddDonation />
-        </RestaurantRoute>,
+      // 🛡 Admin Routes
+      {
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-donations",
+        element: (
+          <AdminRoute>
+            <ManageDonations />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "role-requests",
+        element: (
+          <AdminRoute>
+            <RoleRequests />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "payment-history",
+        element: (
+          <AdminRoute>
+            <PaymentHistory />
+          </AdminRoute>
+        ),
       },
     ],
+  },
+  {
+    path: "/unauthorized", // 🔒 Unauthorized route
+    element: <Unauthorized />,
   },
   {
     path: "/",
@@ -106,5 +196,9 @@ export const router = createBrowserRouter([
         element: <Register />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);

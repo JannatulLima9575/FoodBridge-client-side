@@ -6,60 +6,102 @@ import {
   FaEdit,
   FaClipboardList,
   FaHome,
+  FaUsers,
+  FaUtensils,
+  FaDonate,
 } from "react-icons/fa";
 import useAuth from "../../Provider/useAuth";
 import useRestaurant from "../../hooks/useRestaurant";
+import useCharity from "../../hooks/useCharity";
+import useAdmin from "../../hooks/useAdmin";
+
 
 const Dashboard = () => {
   const { user } = useAuth();
   const isRestaurant = useRestaurant();
+  const isCharity = useCharity();
+  const isAdmin = useAdmin();
 
   return (
     <div className="flex min-h-screen">
+      {/* Sidebar */}
       <aside className="w-64 bg-green-100 p-5 shadow-md">
         <h2 className="text-xl font-bold mb-4">Dashboard</h2>
         <ul className="space-y-3">
-          {user?.role === "restaurant" && (
+
+          {/* 🍽 Restaurant Menu */}
+          {isRestaurant && (
             <>
               <li>
-                <Link
-                  to="/dashboard/analytics"
-                  className="flex items-center gap-2"
-                >
+                <Link to="/dashboard/analytics" className="flex items-center gap-2">
                   <FaChartPie /> Analytics
                 </Link>
               </li>
-              {isRestaurant && (
-                <li>
-                  <Link to="/dashboard/add-donation">Add Donation</Link>
-                </li>
-              )}
               <li>
-                <Link
-                  to="/dashboard/my-donations"
-                  className="flex items-center gap-2"
-                >
+                <Link to="/dashboard/add-donation" className="flex items-center gap-2">
+                  <FaEdit /> Add Donation
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard/my-donations" className="flex items-center gap-2">
                   <FaList /> My Donations
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/dashboard/view-requests"
-                  className="flex items-center gap-2"
-                >
+                <Link to="/dashboard/view-requests" className="flex items-center gap-2">
                   <FaClipboardList /> View Requests
-                </Link>
-              </li>
-              <li>
-                <Link to="/" className="flex items-center gap-2">
-                  <FaHome /> Back to Home
                 </Link>
               </li>
             </>
           )}
+
+          {/* ❤️ Charity Menu */}
+          {isCharity && (
+            <>
+              <li>
+                <Link to="/dashboard/my-requests" className="flex items-center gap-2">
+                  <FaClipboardList /> My Requests
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard/my-payments" className="flex items-center gap-2">
+                  <FaDonate /> My Payments
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard/favorites" className="flex items-center gap-2">
+                  ❤️ Favorites
+                </Link>
+              </li>
+            </>
+          )}
+
+          {/* 🔐 Admin Menu */}
+          {isAdmin && (
+            <>
+              <li>
+                <Link to="/dashboard/manage-users" className="flex items-center gap-2">
+                  <FaUsers /> Manage Users
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard/manage-donations" className="flex items-center gap-2">
+                  <FaUtensils /> Manage Donations
+                </Link>
+              </li>
+            </>
+          )}
+
+          {/* Common */}
+          <li>
+            <Link to="/" className="flex items-center gap-2">
+              <FaHome /> Back to Home
+            </Link>
+          </li>
         </ul>
       </aside>
 
+      {/* Main Content */}
       <main className="flex-1 p-8 bg-gray-50">
         <Outlet />
       </main>
