@@ -6,6 +6,7 @@ import Login from "../Pages/Authentication/Login";
 import Register from "../Pages/Authentication/Register";
 import AllDonations from "../Pages/AllDonations";
 import Dashboard from "../Pages/Dashboard/Dashboard";
+import DashboardHome from "../Pages/Dashboard/DashboardHome"; // ✅ Import added
 import PrivateRoute from "./PrivateRoute";
 import Payment from "../Pages/Dashboard/Payments/Payment";
 import DonationDetails from "../Pages/SubPage/DonationDetails";
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      {
+        index: true, // ✅ Default dashboard route
+        element: <DashboardHome />,
+      },
       {
         path: "analytics",
         element: (
@@ -128,7 +133,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "payment-success", // ✅ Fixed
+        path: "payment-success",
         element: (
           <PrivateRoute>
             <PaymentSuccess />
@@ -136,7 +141,24 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "request-role", // ✅ Fixed
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-donations",
+        element: (
+          <AdminRoute>
+            <ManageDonations />
+          </AdminRoute>
+        ),
+      },
+
+      {
+        path: "request-role",
         element: (
           <PrivateRoute>
             <RequestRole />
@@ -180,7 +202,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/unauthorized", // 🔒 Unauthorized route
+    path: "/unauthorized",
     element: <Unauthorized />,
   },
   {

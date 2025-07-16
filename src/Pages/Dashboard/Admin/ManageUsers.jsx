@@ -1,54 +1,113 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { FaTrash, FaUserShield } from "react-icons/fa";
 
 const ManageUsers = () => {
   const { data: users = [], refetch } = useQuery({
-    queryKey: ["allUsers"],
+    queryKey: ["all-users"],
     queryFn: async () => {
       const res = await axios.get("http://localhost:5000/users");
       return res.data;
     },
   });
 
-  const handleRoleChange = async (id, role) => {
-    const res = await axios.patch(`http://localhost:5000/users/${id}`, { role });
-    if (res.data.modifiedCount > 0) {
-      toast.success(`Role changed to ${role}`);
-      refetch();
+  const updateRole = async (email, role) => {
+    try {
+      const res = await axios.put(`http://localhost:5000/users/role/${email}`, { role });
+      if (res.data.modifiedCount > 0) {
+        toast.success(`Role updated to ${role}`);
+        refetch();
+      }
+    } catch (err) {
+      toast.error("Failed to update role");
+    }
+  };
+
+  const deleteUser = async (email) => {
+    const confirm = window.confirm("Are you sure you want to delete this user?");
+    if (!confirm) return;
+    try {
+      const res = await axios.delete(`http://localhost:5000/users/${email}`);
+      if (res.data.deletedCount > 0) {
+        toast.success("User deleted");
+        refetch();
+      }
+    } catch (err) {
+      toast.error("Failed to delete user");
     }
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">👥 Manage Users</h2>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6">🔐 Manage Users</h2>
       <div className="overflow-x-auto">
-        <table className="table w-full bg-white">
-          <thead>
+        <table className="table w-full table-zebra">
+          <thead className="bg-green-100">
             <tr>
               <th>#</th>
               <th>Name</th>
               <th>Email</th>
               <th>Current Role</th>
-              <th>Actions</th>
+              <th>Make Admin</th>
+              <th>Make Restaurant</th>
+              <th>Make Charity</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((u, i) => (
-              <tr key={u._id}>
-                <td>{i + 1}</td>
-                <td>{u.name}</td>
-                <td>{u.email}</td>
-                <td>{u.role}</td>
-                <td className="space-x-2">
-                  <button onClick={() => handleRoleChange(u._id, "admin")} className="btn btn-xs btn-accent">Make Admin</button>
-                  <button onClick={() => handleRoleChange(u._id, "restaurant")} className="btn btn-xs btn-success">Make Restaurant</button>
-                  <button onClick={() => handleRoleChange(u._id, "charity")} className="btn btn-xs btn-info">Make Charity</button>
+            {users.map((user, idx) => (
+              <tr key={user._id}>
+                <td>{idx + 1}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td className="capitalize">{user.role}</td>
+                <td>
+                  {user.role !== "admin" && (
+                    <button
+                      className="btn btn-sm btn-success"
+                      onClick={() => updateRole(user.email, "admin")}
+                    >
+                      Admin
+                    </button>
+                  )}
+                </td>
+                <td>
+                  {user.role !== "restaurant" && (
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={() => updateRole(user.email, "restaurant")}
+                    >
+                      Restaurant
+                    </button>
+                  )}
+                </td>
+                <td>
+                  {user.role !== "charity" && (
+                    <button
+                      className="btn btn-sm btn-warning"
+                      onClick={() => updateRole(user.email, "charity")}
+                    >
+                      Charity
+                    </button>
+                  )}
+                </td>
+                <td>
+                  <button
+                    className="btn btn-sm btn-error"
+                    onClick={() => deleteUser(user.email)}
+                  >
+                    <FaTrash />
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        {users.length === 0 && (
+          <p className="text-center mt-4 text-gray-500">No users found.</p>
+        )}
       </div>
     </div>
   );

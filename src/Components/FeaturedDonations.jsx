@@ -1,19 +1,17 @@
-import React, { use, useContext } from "react";
+import React from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-
 const FeaturedDonations = () => {
-  // Fetch featured donations
-const { data: featuredDonations = [], isLoading } = useQuery({
-  queryKey: ["featuredDonations"],
-  queryFn: async () => {
-    const res = await axios.get("http://localhost:5000/donations");
-    return res.data;
-  },
-});
-
+  // ✅ Fetch ONLY featured + approved + available donations
+  const { data: featuredDonations = [], isLoading } = useQuery({
+    queryKey: ["featuredDonations"],
+    queryFn: async () => {
+      const res = await axios.get("http://localhost:5000/featured-donations");
+      return res.data;
+    },
+  });
 
   if (isLoading) return <p className="text-center py-10">Loading...</p>;
 
@@ -66,7 +64,7 @@ const { data: featuredDonations = [], isLoading } = useQuery({
                   </span>
                 </p>
                 <Link
-                  to={`donations/${donation._id}`}
+                  to={`/donations/${donation._id}`}
                   className="inline-block mt-3 px-4 py-2 bg-[#F9A825] text-white rounded-lg hover:bg-[#f57f17] transition-all duration-300"
                 >
                   View Details

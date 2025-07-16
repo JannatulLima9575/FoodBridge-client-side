@@ -11,16 +11,21 @@ import {
   FaDonate,
 } from "react-icons/fa";
 import useAuth from "../../Provider/useAuth";
-import useRestaurant from "../../hooks/useRestaurant";
-import useCharity from "../../hooks/useCharity";
-import useAdmin from "../../hooks/useAdmin";
-
+import useRestaurant from "./../../hooks/useRestaurant";
+import useCharity from "./../../hooks/useCharity";
+import useAdmin from "./../../hooks/useAdmin";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const isRestaurant = useRestaurant();
-  const isCharity = useCharity();
-  const isAdmin = useAdmin();
+
+  const { isRestaurant, isRestaurantLoading } = useRestaurant();
+  const { isCharity, isCharityLoading } = useCharity();
+  const { isAdmin, isAdminLoading } = useAdmin();
+
+  // 🕐 Loading state handle
+  if (isRestaurantLoading || isCharityLoading || isAdminLoading) {
+    return <div className="p-10">Loading dashboard...</div>;
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -28,27 +33,38 @@ const Dashboard = () => {
       <aside className="w-64 bg-green-100 p-5 shadow-md">
         <h2 className="text-xl font-bold mb-4">Dashboard</h2>
         <ul className="space-y-3">
-
           {/* 🍽 Restaurant Menu */}
           {isRestaurant && (
             <>
               <li>
-                <Link to="/dashboard/analytics" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/analytics"
+                  className="flex items-center gap-2"
+                >
                   <FaChartPie /> Analytics
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/add-donation" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/add-donation"
+                  className="flex items-center gap-2"
+                >
                   <FaEdit /> Add Donation
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/my-donations" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/my-donations"
+                  className="flex items-center gap-2"
+                >
                   <FaList /> My Donations
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/view-requests" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/view-requests"
+                  className="flex items-center gap-2"
+                >
                   <FaClipboardList /> View Requests
                 </Link>
               </li>
@@ -59,17 +75,18 @@ const Dashboard = () => {
           {isCharity && (
             <>
               <li>
-                <Link to="/dashboard/my-requests" className="flex items-center gap-2">
-                  <FaClipboardList /> My Requests
-                </Link>
-              </li>
-              <li>
-                <Link to="/dashboard/my-payments" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/my-payments"
+                  className="flex items-center gap-2"
+                >
                   <FaDonate /> My Payments
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/favorites" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/favorites"
+                  className="flex items-center gap-2"
+                >
                   ❤️ Favorites
                 </Link>
               </li>
@@ -80,12 +97,18 @@ const Dashboard = () => {
           {isAdmin && (
             <>
               <li>
-                <Link to="/dashboard/manage-users" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/manage-users"
+                  className="flex items-center gap-2"
+                >
                   <FaUsers /> Manage Users
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/manage-donations" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/manage-donations"
+                  className="flex items-center gap-2"
+                >
                   <FaUtensils /> Manage Donations
                 </Link>
               </li>

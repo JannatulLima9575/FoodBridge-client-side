@@ -9,20 +9,17 @@ import Coverage from "../Components/Coverage";
 import FoodSliderSection from "../Components/FoodSliderSection";
 
 const Home = () => {
-
-  const donationsPromise = fetch('http://localhost:5000/donations').then(res => res.json());
+  // const donationsPromise = fetch('http://localhost:5000/donations').then(res => res.json());
   return (
     <div>
       <Banner></Banner>
-      <Suspense fallback={'Loading featured donations...'}>
-        <FeaturedDonations donationsPromise={donationsPromise}></FeaturedDonations>
-      </Suspense>
+      <FeaturedDonations></FeaturedDonations>
       <LatestCharityRequests></LatestCharityRequests>
       <HowItWorks></HowItWorks>
       <ImpactStats />
-      <FoodSliderSection/>
+      <FoodSliderSection />
       <CommunityStories />
-      <Coverage/>
+      <Coverage />
     </div>
   );
 };

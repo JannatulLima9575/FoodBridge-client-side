@@ -49,20 +49,17 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  // ✅ Track auth state & fetch user role from backend
+  // ✅ Track auth state & fetch user role
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          // 🚀 Fetch user role from backend
           const res = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
           const role = res.data?.role || "user";
-
-          // 🔥 Set user with role
           setUser({ ...currentUser, role });
         } catch (error) {
           console.error("Failed to fetch user role:", error);
-          setUser(currentUser); // fallback
+          setUser(currentUser);
         }
       } else {
         setUser(null);
@@ -73,7 +70,6 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // ✅ Auth info for global access
   const authInfo = {
     user,
     loading,
