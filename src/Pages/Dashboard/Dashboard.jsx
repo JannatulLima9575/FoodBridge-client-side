@@ -14,10 +14,10 @@ import useAuth from "../../Provider/useAuth";
 import useRestaurant from "./../../hooks/useRestaurant";
 import useCharity from "./../../hooks/useCharity";
 import useAdmin from "./../../hooks/useAdmin";
+import axios from "axios";
 
 const Dashboard = () => {
   const { user } = useAuth();
-
   const { isRestaurant, isRestaurantLoading } = useRestaurant();
   const { isCharity, isCharityLoading } = useCharity();
   const { isAdmin, isAdminLoading } = useAdmin();
@@ -26,6 +26,19 @@ const Dashboard = () => {
   if (isRestaurantLoading || isCharityLoading || isAdminLoading) {
     return <div className="p-10">Loading dashboard...</div>;
   }
+
+  const token = localStorage.getItem("token");
+axios.get("/users", {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
+
+console.log("This is Restaurant", isRestaurant);
+console.log("This is useCharity", isCharity);
+console.log("This is useAdmin", isAdmin);
+console.log("This is user", user);
 
   return (
     <div className="flex min-h-screen">

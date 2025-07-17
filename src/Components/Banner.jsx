@@ -48,7 +48,7 @@ const Banner = () => {
                 <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 fonts-inter">
                   {slide.desc}
                 </p>
-                <button className="btn mt-4 bg-[#F9A825] text-white hover:bg-[#f57f17] fonts-inter">
+                <button to="/add-donation" className="btn mt-4 bg-[#F9A825] text-white hover:bg-[#f57f17] fonts-inter">
                   Donate Now
                 </button>
               </div>

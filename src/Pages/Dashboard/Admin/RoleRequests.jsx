@@ -11,11 +11,19 @@ const RoleRequests = () => {
     },
   });
 
-  const handleApprove = async (id, role) => {
-    const res = await axios.patch(`http://localhost:5000/users/${id}`, { role });
-    if (res.data.modifiedCount > 0) {
-      toast.success("Request approved!");
-      refetch();
+  const handleApprove = async (id, role, email) => {
+    try {
+      const res = await axios.patch(`http://localhost:5000/users/${id}`, {
+        role,
+        email,
+      });
+      if (res.data.modifiedCount > 0) {
+        toast.success("Request approved!");
+        refetch();
+      }
+    } catch (error) {
+      toast.error("Approval failed!");
+      console.error(error);
     }
   };
 
@@ -41,7 +49,12 @@ const RoleRequests = () => {
                 <td>{r.email}</td>
                 <td>{r.requestedRole}</td>
                 <td>
-                  <button onClick={() => handleApprove(r._id, r.requestedRole)} className="btn btn-xs btn-success">Approve</button>
+                  <button
+                    onClick={() => handleApprove(r._id, r.requestedRole, r.email)}
+                    className="btn btn-xs btn-success"
+                  >
+                    Approve
+                  </button>
                 </td>
               </tr>
             ))}

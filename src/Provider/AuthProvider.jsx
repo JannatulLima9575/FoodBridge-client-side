@@ -12,7 +12,6 @@ import auth from '../firebase/firebase.config';
 import axios from "axios";
 
 export const AuthContext = createContext();
-
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
@@ -25,7 +24,7 @@ const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // ✅ Update user profile (name)
+  // ✅ Update user profile
   const updateUserProfile = (name) => {
     setLoading(true);
     return updateProfile(auth.currentUser, { displayName: name });
@@ -46,23 +45,41 @@ const AuthProvider = ({ children }) => {
   // ✅ Logout
   const logout = () => {
     setLoading(true);
+    // Clear JWT from localStorage
+    localStorage.removeItem('access-token');
     return signOut(auth);
   };
 
-  // ✅ Track auth state & fetch user role
+  // ✅ Track Auth State
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
+          // ✅ Get JWT token from server
+          const { data } = await axios.post("http://localhost:5000/jwt", {
+            email: currentUser.email,
+          });
+
+          // ✅ Save token to localStorage
+          localStorage.setItem("access-token", data.token);
+
+          // ✅ Set token as default header
+          axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+
+          // ✅ Fetch role from database
           const res = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
           const role = res.data?.role || "user";
+
           setUser({ ...currentUser, role });
         } catch (error) {
-          console.error("Failed to fetch user role:", error);
-          setUser(currentUser);
+          console.error("Failed to fetch user role or token:", error);
+          setUser(currentUser); // fallback without role
         }
       } else {
+        // No user
         setUser(null);
+        localStorage.removeItem("access-token");
+        delete axios.defaults.headers.common["Authorization"];
       }
       setLoading(false);
     });

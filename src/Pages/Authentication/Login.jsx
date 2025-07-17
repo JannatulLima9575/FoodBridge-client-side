@@ -3,6 +3,7 @@ import loginImage from '../../assets/animation/verification.svg';
 import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../../Provider/AuthProvider';
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useContext(AuthContext);
@@ -14,28 +15,44 @@ const Login = () => {
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-
     signIn(email, password)
-      .then(() => {
+  .then((res) => {
+    const loggedUser = res.user;
+    // 🔐 Get JWT from server
+    axios
+      .post("http://localhost:5000/jwt", { email: loggedUser.email })
+      .then(res => {
+        localStorage.setItem("token", res.data.token);
         toast.success("Login successful");
         navigate("/");
-      })
-      .catch(err => {
-        toast.error("Invalid email or password");
-        setError(err.message);
       });
+  })
+  .catch(err => {
+    toast.error("Invalid email or password");
+    setError(err.message);
+  });
   };
 
-  const handleGoogleLogin = () => {
-    signInWithGoogle()
-      .then(() => {
-        toast.success("Logged in with Google");
-        navigate("/");
-      })
-      .catch(() => {
-        toast.error("Google login failed");
-      });
-  };
+
+const handleGoogleLogin = () => {
+  signInWithGoogle()
+    .then(async (result) => {
+      const user = result.user;
+      const userInfo = {
+        name: user.displayName,
+        email: user.email,
+        image: user.photoURL,
+      };
+
+      await axiosInstance.post("/users", userInfo);
+      toast.success("Signed in with Google");
+      navigate("/");
+    })
+    .catch(() => {
+      toast.error("Google login failed");
+    });
+};
+
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-center gap-8 min-h-screen">

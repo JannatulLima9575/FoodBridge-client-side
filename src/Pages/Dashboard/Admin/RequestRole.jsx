@@ -1,62 +1,55 @@
-import { useContext } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { AuthContext } from "../../../Provider/AuthProvider";
+import useAuth from "../../../Provider/useAuth";
+import axios from "axios";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
 const RequestRole = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
+  const [role, setRole] = useState("");
 
-  const handleRequest = async (requestedRole) => {
-    const stripe = await stripePromise;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!role) return toast.error("Please select a role");
 
-    // 1. Create payment intent
-    const { data: clientSecret } = await axios.post("http://localhost:5000/create-payment-intent", {
-      email: user.email,
-      amount: 1000, // 💳 $10
-    });
+    try {
+      const response = await axios.post("http://localhost:5000/role-requests", {
+        email: user.email,
+        name: user.displayName,
+        image: user.photoURL,
+        requestedRole: role,
+      });
 
-    // 2. Create temporary role request
-    await axios.post("http://localhost:5000/role-requests", {
-      email: user.email,
-      name: user.displayName,
-      requestedRole,
-    });
-
-    // 3. Redirect to Stripe
-    const { error } = await stripe.redirectToCheckout({
-      lineItems: [
-        { price: import.meta.env.VITE_STRIPE_PRICE_ID, quantity: 1 },
-      ],
-      mode: "payment",
-      customerEmail: user.email,
-      successUrl: `${window.location.origin}/payment-success`,
-      cancelUrl: `${window.location.origin}/request-role`,
-    });
-
-    if (error) toast.error("Stripe Error: " + error.message);
+      if (response.data.insertedId) {
+        toast.success("Role request sent successfully");
+        setRole("");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send request");
+    }
   };
 
   return (
-    <div className="max-w-lg mx-auto text-center py-10">
-      <h2 className="text-3xl font-bold mb-4">Request a Role</h2>
-      <p className="mb-8 text-gray-600">Pay one-time fee to request a role upgrade</p>
-
-      <button
-        onClick={() => handleRequest("charity")}
-        className="btn btn-primary mb-4 w-full"
-      >
-        Request Charity Role ($10)
-      </button>
-
-      <button
-        onClick={() => handleRequest("restaurant")}
-        className="btn btn-success w-full"
-      >
-        Request Restaurant Role ($10)
-      </button>
+    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
+      <h2 className="text-2xl font-bold mb-4">Request Role Access</h2>
+      <form onSubmit={handleSubmit}>
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="w-full border p-2 rounded mb-4"
+        >
+          <option value="">Select a Role</option>
+          <option value="restaurant">Restaurant</option>
+          <option value="charity">Charity</option>
+        </select>
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Submit Request
+        </button>
+      </form>
     </div>
   );
 };
