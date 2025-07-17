@@ -10,14 +10,21 @@ const ManageDonations = () => {
       return res.data;
     },
   });
+  
 
-  const handleApprove = async (id) => {
-    const res = await axios.patch(`http://localhost:5000/donations/approve/${id}`);
-    if (res.data.modifiedCount > 0) {
-      toast.success("Donation Approved");
-      refetch();
-    }
-  };
+const handleApprove = (id) => {
+  axios.patch(`http://localhost:5000/donations/approve/${id}`)
+    .then(res => {
+      if (res.data.modifiedCount > 0) {
+        toast.success("Donation Approved!");
+        refetch();
+      }
+    })
+    .catch(err => {
+      toast.error("Failed to approve donation");
+      console.error(err);
+    });
+};
 
   const handleDelete = async (id) => {
     const res = await axios.delete(`http://localhost:5000/donations/${id}`);
