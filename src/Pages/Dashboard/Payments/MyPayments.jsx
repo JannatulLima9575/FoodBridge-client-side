@@ -10,7 +10,7 @@ const MyPayments = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:5000/payments?email=${user.email}`)
+        .get(`https://food-bridge-server-side.vercel.app/payments?email=${user.email}`)
         .then((res) => setPayments(res.data));
     }
   }, [user]);

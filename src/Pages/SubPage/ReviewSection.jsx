@@ -5,7 +5,7 @@ const ReviewSection = ({ donationId }) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/reviews/${donationId}`).then((res) => {
+    axios.get(`https://food-bridge-server-side.vercel.app/reviews/${donationId}`).then((res) => {
       setReviews(res.data);
     });
   }, [donationId]);

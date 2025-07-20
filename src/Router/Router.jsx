@@ -30,6 +30,19 @@ import RoleRequests from "../Pages/Dashboard/Admin/RoleRequests";
 import PaymentHistory from "../Pages/Dashboard/Admin/PaymentHistory";
 import RequestRole from "../Pages/Dashboard/Admin/RequestRole";
 import NotFound from "../Pages/NotFound";
+import DonationStatistics from "../Pages/Dashboard/DonationStatistics";
+import { Component } from "react";
+import Profile from "../Pages/Dashboard/Profile";
+import ReportedDonations from "../Pages/Dashboard/ReportedDonations";
+import RequestCharityRole from "../Pages/Dashboard/Charity/RequestCharityRole";
+import Transactions from "../Pages/Dashboard/Charity/Transactions";
+import MyReviews from "../Pages/Dashboard/Charity/MyReviews";
+import UserFavorites from "../Pages/Dashboard/Charity/UserFavorites";
+import TransactionHistory from "../Pages/Dashboard/Charity/TransactionHistory";
+import ReceivedDonations from "../Pages/Dashboard/Charity/ReceivedDonations";
+import MyPickups from "../Pages/Dashboard/Charity/MyPickups";
+import MyRequests from "../Pages/Dashboard/Charity/MyRequests";
+import CharityProfile from "../Pages/Dashboard/Charity/CharityProfile";
 
 export const router = createBrowserRouter([
   {
@@ -52,7 +65,7 @@ export const router = createBrowserRouter([
         path: "donations/:id",
         element: <DonationDetails />,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/donations/${params.id}`),
+          fetch(`https://food-bridge-server-side.vercel.app/donations/${params.id}`),
       },
     ],
   },
@@ -67,6 +80,35 @@ export const router = createBrowserRouter([
       {
         index: true, // ✅ Default dashboard route
         element: <DashboardHome />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      /* 👤 User Role Routes */
+        {  
+        path:"request-charity",
+        element: <RequestCharityRole/>
+          },
+          {
+            path:"user-favorites",
+            element: <UserFavorites/>
+          },
+          {
+            path:"my-reviews",
+            element: <MyReviews />
+          },
+          {
+            path:"transactions",
+            element: <Transactions />
+          },
+      {
+        path: "reported-donations",
+        element: (
+          <AdminRoute>
+            <ReportedDonations />
+          </AdminRoute>
+        ),
       },
       {
         path: "analytics",
@@ -122,6 +164,54 @@ export const router = createBrowserRouter([
           <CharityRoute>
             <MyPayments />
           </CharityRoute>
+        ),
+      },
+      {
+        path: "charity-profile",
+        element: (
+          <CharityRoute>
+            <CharityProfile />
+          </CharityRoute>
+        ),
+      },
+      {
+        path: "my-requests",
+        element: (
+          <CharityRoute>
+            <MyRequests />
+          </CharityRoute>
+        ),
+      },
+      {
+        path: "my-pickups",
+        element: (
+          <CharityRoute>
+            <MyPickups />
+          </CharityRoute>
+        ),
+      },
+      {
+        path: "received-donations",
+        element: (
+          <CharityRoute>
+            <ReceivedDonations />
+          </CharityRoute>
+        ),
+      },
+      {
+        path: "transaction-history",
+        element: (
+          <CharityRoute>
+            <TransactionHistory />
+          </CharityRoute>
+        ),
+      },
+      {
+        path: "statistics",
+        element: (
+          <RestaurantRoute>
+            <DonationStatistics />
+          </RestaurantRoute>
         ),
       },
       {

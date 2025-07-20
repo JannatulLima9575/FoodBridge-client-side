@@ -8,7 +8,7 @@ const FeaturedDonations = () => {
   const { data: featuredDonations = [], isLoading } = useQuery({
     queryKey: ["featuredDonations"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/featured-donations");
+      const res = await axios.get("https://food-bridge-server-side.vercel.app/featured-donations");
       return res.data;
     },
   });

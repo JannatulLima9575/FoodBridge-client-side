@@ -1,17 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
-import DonationDetailsMap from "./DonationDetailsMap";
 import { AuthContext } from "../../Provider/AuthProvider";
 import ReviewSection from "./ReviewSection";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import ReportDonationModal from "../Dashboard/ReportDonationModal";
+import MapView from "./MapView";
 
 const DonationDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const [requested, setRequested] = useState(false);
   const [requestAccepted, setRequestAccepted] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const axiosSecure = useAxiosSecure();
 
   const {
     data: donation,
@@ -20,7 +23,7 @@ const DonationDetails = () => {
   } = useQuery({
     queryKey: ["donation", id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/donations/${id}`);
+      const res = await axiosSecure.get(`/donations/${id}`);
       return res.data;
     },
   });
@@ -28,7 +31,7 @@ const DonationDetails = () => {
   useEffect(() => {
     const fetchRequest = async () => {
       if (user?.role === "charity") {
-        const res = await axios.get(`http://localhost:5000/charityRequests`);
+        const res = await axiosSecure.get("/charityRequests");
         const matched = res.data.find(
           (r) =>
             r.donationId === id &&
@@ -41,7 +44,7 @@ const DonationDetails = () => {
       }
     };
     fetchRequest();
-  }, [id, user]);
+  }, [id, user, axiosSecure]);
 
   if (isLoading)
     return <p className="text-center py-10">Loading donation details...</p>;
@@ -62,7 +65,7 @@ const DonationDetails = () => {
     };
 
     try {
-      await axios.post("http://localhost:5000/favorites", favorite);
+      await axiosSecure.post("/favorites", favorite);
       toast.success("💖 Saved to Favorites!");
     } catch (error) {
       if (error.response?.status === 409) {
@@ -87,20 +90,17 @@ const DonationDetails = () => {
     };
 
     try {
-      await axios.post("http://localhost:5000/charityRequests", requestData);
+      await axiosSecure.post("/charityRequests", requestData);
       toast.success("✅ Request submitted successfully!");
       setRequested(true);
     } catch (error) {
       toast.error("❌ Failed to submit request.");
-      console.error(error);
     }
   };
 
   const handleConfirmPickup = async () => {
     try {
-      await axios.patch(
-        `http://localhost:5000/donations/confirm/${donation._id}`
-      );
+      await axiosSecure.patch(`/donations/confirm/${donation._id}`);
       toast.success("📦 Marked as Picked Up");
       refetch();
     } catch (error) {
@@ -146,23 +146,34 @@ const DonationDetails = () => {
           </span>
         </p>
 
-        {(user?.role === "user" || user?.role === "charity") && (
-          <button onClick={handleSaveFavorite} className="btn btn-outline">
-            💖 Save to Favorites
-          </button>
-        )}
+        <div className="flex flex-wrap gap-2">
+          {(user?.role === "user" || user?.role === "charity") && (
+            <button onClick={handleSaveFavorite} className="btn btn-outline">
+              💖 Save to Favorites
+            </button>
+          )}
 
-        {user?.role === "charity" && (
-          <button
-            onClick={handleRequest}
-            disabled={requested}
-            className={`btn mt-4 ${
-              requested ? "btn-disabled bg-gray-400 text-white" : "btn-primary"
-            }`}
-          >
-            {requested ? "✅ Request Sent" : "Request This Donation"}
-          </button>
-        )}
+          {user?.role === "charity" && (
+            <button
+              onClick={handleRequest}
+              disabled={requested}
+              className={`btn ${
+                requested ? "btn-disabled bg-gray-400 text-white" : "btn-primary"
+              }`}
+            >
+              {requested ? "✅ Request Sent" : "Request This Donation"}
+            </button>
+          )}
+
+          {(user?.role === "user" || user?.role === "charity") && (
+            <button
+              onClick={() => setIsReportOpen(true)}
+              className="btn btn-outline btn-error"
+            >
+              🚨 Report Donation
+            </button>
+          )}
+        </div>
 
         {user?.role === "charity" &&
           requestAccepted &&
@@ -177,18 +188,23 @@ const DonationDetails = () => {
 
         <ReviewSection donationId={donation._id} />
 
+        {/* ✅ MapBox Integration */}
         {donation.latitude && donation.longitude && (
           <div className="mt-8">
             <h3 className="text-lg font-semibold mb-2 text-primary">
               📍 Map Location
             </h3>
-            <DonationDetailsMap
-              latitude={donation.latitude}
-              longitude={donation.longitude}
-            />
+            <MapView lat={donation.latitude} lng={donation.longitude} />
           </div>
         )}
       </div>
+
+      {/* ✅ Report Modal */}
+      <ReportDonationModal
+        isOpen={isReportOpen}
+        closeModal={() => setIsReportOpen(false)}
+        donationId={donation._id}
+      />
     </section>
   );
 };

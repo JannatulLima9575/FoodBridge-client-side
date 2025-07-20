@@ -11,7 +11,7 @@ const ViewRequests = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5000/charityRequests?email=${user.email}`
+        `https://food-bridge-server-side.vercel.app/charityRequests?email=${user.email}`
       );
       return res.data;
     },

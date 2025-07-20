@@ -6,14 +6,14 @@ const RoleRequests = () => {
   const { data: requests = [], refetch } = useQuery({
     queryKey: ["roleRequests"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/role-requests");
+      const res = await axios.get("https://food-bridge-server-side.vercel.app/role-requests");
       return res.data;
     },
   });
 
   const handleApprove = async (id, role, email) => {
     try {
-      const res = await axios.patch(`http://localhost:5000/users/${id}`, {
+      const res = await axios.patch(`https://food-bridge-server-side.vercel.app/users/${id}`, {
         role,
         email,
       });

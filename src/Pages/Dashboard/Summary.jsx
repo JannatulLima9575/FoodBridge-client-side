@@ -8,7 +8,7 @@ const Summary = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/donations/summary?email=${email}`)
+      .get(`https://food-bridge-server-side.vercel.app/donations/summary?email=${email}`)
       .then((res) => setStats(res.data));
   }, [email]);
 

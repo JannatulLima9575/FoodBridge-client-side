@@ -5,7 +5,7 @@ const PaymentHistory = () => {
   const { data: payments = [] } = useQuery({
     queryKey: ["payments"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/payments");
+      const res = await axios.get("https://food-bridge-server-side.vercel.app/payments");
       return res.data;
     },
   });

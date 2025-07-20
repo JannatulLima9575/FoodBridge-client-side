@@ -20,7 +20,7 @@ const Login = () => {
     const loggedUser = res.user;
     // 🔐 Get JWT from server
     axios
-      .post("http://localhost:5000/jwt", { email: loggedUser.email })
+      .post("https://food-bridge-server-side.vercel.app/jwt", { email: loggedUser.email })
       .then(res => {
         localStorage.setItem("token", res.data.token);
         toast.success("Login successful");

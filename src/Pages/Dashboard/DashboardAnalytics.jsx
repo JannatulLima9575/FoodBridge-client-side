@@ -12,7 +12,7 @@ const DashboardAnalytics = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5000/donations/?email=${user.email}`
+        `https://food-bridge-server-side.vercel.app/donations/?email=${user.email}`
       );
       return res.data;
     },

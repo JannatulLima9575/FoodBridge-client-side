@@ -20,7 +20,7 @@ const EditDonation = () => {
   useEffect(() => {
     const fetchDonation = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/donations/${id}`);
+        const res = await axios.get(`https://food-bridge-server-side.vercel.app/donations/${id}`);
         reset(res.data); // 🔁 Pre-fill form
         setLoading(false);
       } catch (error) {
@@ -35,7 +35,7 @@ const EditDonation = () => {
   // ✅ Submit updated data
   const onSubmit = async (data) => {
     try {
-      const res = await axios.put(`http://localhost:5000/donations/${id}`, data);
+      const res = await axios.put(`https://food-bridge-server-side.vercel.app/donations/${id}`, data);
       if (res.status === 200) {
         toast.success("✅ Donation updated successfully!");
         navigate("/dashboard/my-donations");

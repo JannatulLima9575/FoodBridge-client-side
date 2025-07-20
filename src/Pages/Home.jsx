@@ -9,7 +9,7 @@ import Coverage from "../Components/Coverage";
 import FoodSliderSection from "../Components/FoodSliderSection";
 
 const Home = () => {
-  // const donationsPromise = fetch('http://localhost:5000/donations').then(res => res.json());
+  // const donationsPromise = fetch('https://food-bridge-server-side.vercel.app/donations').then(res => res.json());
   return (
     <div>
       <Banner></Banner>

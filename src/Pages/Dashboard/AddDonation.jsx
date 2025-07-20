@@ -32,7 +32,7 @@ const AddDonation = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/donations", donationData);
+      const res = await axios.post("https://food-bridge-server-side.vercel.app/donations", donationData);
       if (res.data.insertedId || res.status === 201) {
         toast.success("Donation added successfully!");
         reset();

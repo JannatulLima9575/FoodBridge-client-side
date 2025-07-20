@@ -56,7 +56,7 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         try {
           // ✅ Get JWT token from server
-          const { data } = await axios.post("http://localhost:5000/jwt", {
+          const { data } = await axios.post("https://food-bridge-server-side.vercel.app/jwt", {
             email: currentUser.email,
           });
 
@@ -67,7 +67,7 @@ const AuthProvider = ({ children }) => {
           axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
           // ✅ Fetch role from database
-          const res = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
+          const res = await axios.get(`https://food-bridge-server-side.vercel.app/users/${currentUser.email}`);
           const role = res.data?.role || "user";
 
           setUser({ ...currentUser, role });

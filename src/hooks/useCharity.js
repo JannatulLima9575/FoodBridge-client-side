@@ -8,7 +8,7 @@ const useCharity = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:5000/users/charity/${user.email}`)
+      fetch(`https://food-bridge-server-side.vercel.app/users/charity/${user.email}`)
         .then((res) => res.json())
         .then((data) => {
           console.log("admin data", data); // 👈 Add this

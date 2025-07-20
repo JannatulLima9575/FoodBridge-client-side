@@ -7,14 +7,14 @@ const ManageUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ["all-users"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/users");
+      const res = await axios.get("https://food-bridge-server-side.vercel.app/users");
       return res.data;
     },
   });
 
   const updateRole = async (email, role) => {
     try {
-      const res = await axios.put(`http://localhost:5000/users/role/${email}`, { role });
+      const res = await axios.put(`https://food-bridge-server-side.vercel.app/users/role/${email}`, { role });
       if (res.data.modifiedCount > 0) {
         toast.success(`Role updated to ${role}`);
         refetch();
@@ -28,7 +28,7 @@ const ManageUsers = () => {
     const confirm = window.confirm("Are you sure you want to delete this user?");
     if (!confirm) return;
     try {
-      const res = await axios.delete(`http://localhost:5000/users/${email}`);
+      const res = await axios.delete(`https://food-bridge-server-side.vercel.app/users/${email}`);
       if (res.data.deletedCount > 0) {
         toast.success("User deleted");
         refetch();

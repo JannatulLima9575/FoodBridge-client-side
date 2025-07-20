@@ -9,7 +9,7 @@ const Favorites = () => {
   const { data: favorites = [], isLoading } = useQuery({
     queryKey: ["favorites", user?.email],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/favorites?email=${user?.email}`);
+      const res = await axios.get(`https://food-bridge-server-side.vercel.app/favorites?email=${user?.email}`);
       return res.data;
     },
   });

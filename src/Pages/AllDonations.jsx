@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import useAxiosSecure from "../../src/hooks/useAxiosSecure";
 
 const AllDonations = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
+    const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+
 
   const { data: donations = [], refetch } = useQuery({
     queryKey: ["allDonations"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/donations");
+      const res = await axiosSecure.get("/donations");
       return res.data;
     },
   });
 
   const handleApprove = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/donations/${id}/approve`);
+      await axiosSecure.patch(`/donations/${id}/approve`);
       toast.success("Approved!");
       refetch();
     } catch {
@@ -29,7 +31,7 @@ const AllDonations = () => {
 
   const handleFeature = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/donations/${id}/feature`);
+      await axiosSecure.patch(`/donations/${id}/feature`);
       toast.success("Featured!");
       refetch();
     } catch {
@@ -89,14 +91,30 @@ const AllDonations = () => {
             )}
 
             <h3 className="text-xl font-semibold">{donation.foodType}</h3>
-            <p><strong>Location:</strong> {donation.location}</p>
-            <p><strong>Pickup Time:</strong> {donation.pickupTime}</p>
-            <p><strong>Quantity:</strong> {donation.quantity}</p>
-            <p><strong>Status:</strong> {donation.status}</p>
-            <p><strong>Restaurant:</strong> {donation.restaurantName || "N/A"}</p>
-            <p><strong>Charity:</strong> {donation.charityName || "Not Assigned"}</p>
-            <p><strong>Approved:</strong> {donation.isApproved ? "✅" : "❌"}</p>
-            <p><strong>Featured:</strong> {donation.isFeatured ? "⭐" : "❌"}</p>
+            <p>
+              <strong>Location:</strong> {donation.location}
+            </p>
+            <p>
+              <strong>Pickup Time:</strong> {donation.pickupTime}
+            </p>
+            <p>
+              <strong>Quantity:</strong> {donation.quantity}
+            </p>
+            <p>
+              <strong>Status:</strong> {donation.status}
+            </p>
+            <p>
+              <strong>Restaurant:</strong> {donation.restaurantName || "N/A"}
+            </p>
+            <p>
+              <strong>Charity:</strong> {donation.charityName || "Not Assigned"}
+            </p>
+            <p>
+              <strong>Approved:</strong> {donation.isApproved ? "✅" : "❌"}
+            </p>
+            <p>
+              <strong>Featured:</strong> {donation.isFeatured ? "⭐" : "❌"}
+            </p>
 
             <div className="flex flex-wrap gap-2 mt-2">
               {!donation.isApproved && (

@@ -11,7 +11,7 @@ const AdminRoute = ({ children }) => {
     queryKey: ["isAdmin", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/users/admin/${user?.email}`);
+      const res = await axios.get(`https://food-bridge-server-side.vercel.app/users/admin/${user?.email}`);
       return res.data?.admin;
     },
   });

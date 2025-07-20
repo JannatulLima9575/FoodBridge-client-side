@@ -20,7 +20,7 @@ const CheckoutForm = ({ price, donationId }) => {
   useEffect(() => {
     if (price > 0) {
       axios
-        .post("http://localhost:5000/create-payment-intent", { amount: price * 100 })
+        .post("https://food-bridge-server-side.vercel.app/create-payment-intent", { amount: price * 100 })
         .then((res) => {
           setClientSecret(res.data.clientSecret);
         });
@@ -74,7 +74,7 @@ const CheckoutForm = ({ price, donationId }) => {
         donationItemId: donationId,
       };
 
-      axios.post("http://localhost:5000/payments", paymentData)
+      axios.post("https://food-bridge-server-side.vercel.app/payments", paymentData)
         .then((res) => {
           if (res.data.insertedId) {
             toast.success("Payment saved in database!");

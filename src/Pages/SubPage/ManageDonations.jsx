@@ -7,7 +7,7 @@ const ManageDonations = () => {
   const { data: donations = [], refetch } = useQuery({
     queryKey: ["admin-donations"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/donations");
+      const res = await axios.get("https://food-bridge-server-side.vercel.app/donations");
       return res.data;
     },
   });
@@ -15,7 +15,7 @@ const ManageDonations = () => {
   // ✅ Approve Donation
   const handleApprove = async (id) => {
     try {
-      const res = await axios.put(`http://localhost:5000/donations/${id}`, {
+      const res = await axios.put(`https://food-bridge-server-side.vercel.app/donations/${id}`, {
         isApproved: true,
         status: "Available",
       });
@@ -31,7 +31,7 @@ const ManageDonations = () => {
   // ⭐ Feature Donation
   const handleFeature = async (id) => {
     try {
-      const res = await axios.put(`http://localhost:5000/donations/${id}`, {
+      const res = await axios.put(`https://food-bridge-server-side.vercel.app/donations/${id}`, {
         isFeatured: true,
       });
       if (res.data.modifiedCount > 0) {
@@ -49,7 +49,7 @@ const ManageDonations = () => {
     if (!confirm) return;
 
     try {
-      const res = await axios.delete(`http://localhost:5000/donations/${id}`);
+      const res = await axios.delete(`https://food-bridge-server-side.vercel.app/donations/${id}`);
       if (res.data.deletedCount > 0) {
         toast.success("Deleted successfully");
         refetch();

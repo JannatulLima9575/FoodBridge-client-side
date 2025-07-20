@@ -6,7 +6,7 @@ const LatestCharityRequests = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/charityRequests")
+      .get("https://food-bridge-server-side.vercel.app/charityRequests")
       .then((res) => {
         // show latest 3 only
         const latest = res.data.slice(-3).reverse();

@@ -6,14 +6,14 @@ const ManageDonations = () => {
   const { data: donations = [], refetch } = useQuery({
     queryKey: ["allDonations"],
     queryFn: async () => {
-      const res = await axios.get("http://localhost:5000/donations");
+      const res = await axios.get("https://food-bridge-server-side.vercel.app/donations");
       return res.data;
     },
   });
   
 
 const handleApprove = (id) => {
-  axios.patch(`http://localhost:5000/donations/approve/${id}`)
+  axios.patch(`https://food-bridge-server-side.vercel.app/donations/approve/${id}`)
     .then(res => {
       if (res.data.modifiedCount > 0) {
         toast.success("Donation Approved!");
@@ -27,7 +27,7 @@ const handleApprove = (id) => {
 };
 
   const handleDelete = async (id) => {
-    const res = await axios.delete(`http://localhost:5000/donations/${id}`);
+    const res = await axios.delete(`https://food-bridge-server-side.vercel.app/donations/${id}`);
     if (res.data.deletedCount > 0) {
       toast.success("Donation Deleted");
       refetch();

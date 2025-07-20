@@ -17,7 +17,7 @@ const ReviewModal = ({ donationId, close }) => {
       description,
       rating,
     };
-    await axios.post("http://localhost:5000/reviews", review);
+    await axios.post("https://food-bridge-server-side.vercel.app/reviews", review);
     toast.success("Review Submitted!");
     close();
   };
