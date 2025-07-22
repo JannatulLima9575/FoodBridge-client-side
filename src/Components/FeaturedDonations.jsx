@@ -1,9 +1,15 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import AuthContext from "../Provider/AuthContext";
+import { toast } from "react-hot-toast";
+
 
 const FeaturedDonations = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   // ✅ Fetch ONLY featured + approved + available donations
   const { data: featuredDonations = [], isLoading } = useQuery({
     queryKey: ["featuredDonations"],
@@ -15,6 +21,16 @@ const FeaturedDonations = () => {
 
   if (isLoading) return <p className="text-center py-10">Loading...</p>;
 
+  // ✅ Click handler to check user login before navigate
+  const handleViewDetails = (id) => {
+    if (!user) {
+      toast.error("Please login to view details");
+      navigate("/login");
+      return;
+    }
+    navigate(`/donations/${id}`);
+  };
+
   return (
     <section className="py-14 px-4 md:px-8 bg-[#fffceb] dark:bg-[#1e1e1e]">
       <div className="max-w-7xl mx-auto">
@@ -22,8 +38,7 @@ const FeaturedDonations = () => {
           🍽️ Featured Donations
         </h2>
         <p className="text-center text-gray-600 dark:text-gray-300 mb-8 md:mb-12 fonts-inter">
-          Browse through our highlighted food donations, ready to be shared with
-          those in need.
+          Browse through our highlighted food donations, ready to be shared with those in need.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -63,12 +78,12 @@ const FeaturedDonations = () => {
                     {donation.status}
                   </span>
                 </p>
-                <Link
-                  to={`/donations/${donation._id}`}
+                <button
+                  onClick={() => handleViewDetails(donation._id)}
                   className="inline-block mt-3 px-4 py-2 bg-[#F9A825] text-white rounded-lg hover:bg-[#f57f17] transition-all duration-300"
                 >
                   View Details
-                </Link>
+                </button>
               </div>
             </div>
           ))}
