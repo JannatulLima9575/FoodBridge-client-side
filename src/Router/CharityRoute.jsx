@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
+import AuthContext from "../Provider/AuthContext";
 import { Navigate } from "react-router";
 
 const CharityRoute = ({ children }) => {

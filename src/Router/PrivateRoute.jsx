@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Navigate, useLocation } from "react-router";
-import { AuthContext } from "../Provider/AuthProvider";
+import AuthContext from "../Provider/AuthContext";
+// import AuthContext from "../Provider/AuthContext";";
 // import { Spinner } from "@chakra-ui/react"; // Optional: use your own loader/spinner
 
 const PrivateRoute = ({ children }) => {

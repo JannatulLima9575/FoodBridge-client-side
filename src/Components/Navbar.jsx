@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { FaMoon, FaSun, FaSignOutAlt } from "react-icons/fa";
-import { AuthContext } from "../Provider/AuthProvider";
+import  AuthContext  from "../Provider/AuthContext";
+
 import { toast } from "react-hot-toast";
 import Logo from "../../src/assets/Food.png";
 

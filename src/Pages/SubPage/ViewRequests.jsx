@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { AuthContext } from "../../Provider/AuthProvider";
+import AuthContext from "../../Provider/AuthContext";
+// import AuthContext from "../Provider/AuthContext";
 
 const ViewRequests = () => {
   const { user } = useContext(AuthContext);

@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import loginImage from '../../assets/animation/verification.svg';
 import { Link, useNavigate } from 'react-router';
-import { AuthContext } from '../../Provider/AuthProvider';
+import AuthContext from '../../Provider/AuthContext';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useContext(AuthContext);
@@ -36,22 +37,20 @@ const Login = () => {
 
 const handleGoogleLogin = () => {
   signInWithGoogle()
-    .then(async (result) => {
-      const user = result.user;
-      const userInfo = {
-        name: user.displayName,
-        email: user.email,
-        image: user.photoURL,
-      };
-
-      await axiosInstance.post("/users", userInfo);
-      toast.success("Signed in with Google");
+    .then(result => {
+      console.log(result.user);
       navigate("/");
+      // success toast
+      toast.success("Login Successful");
     })
-    .catch(() => {
-      toast.error("Google login failed");
+    .catch(error => {
+      console.log("Google login error", error);
+      if (error.code !== "auth/popup-closed-by-user") {
+        toast.error("Login Failed");
+      }
     });
 };
+
 
 
   return (

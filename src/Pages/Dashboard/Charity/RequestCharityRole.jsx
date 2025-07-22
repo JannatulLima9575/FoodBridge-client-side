@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../../Provider/AuthProvider";
+// import { AuthContext } from "../../../Provider/AuthContext";
+import  AuthContext  from "../../../Provider/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import toast from "react-hot-toast";
+
 
 // Stripe public key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);

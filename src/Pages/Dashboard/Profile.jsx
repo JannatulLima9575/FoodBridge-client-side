@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../Provider/AuthProvider";
+import AuthContext from "../../Provider/AuthContext";
 import { useForm } from "react-hook-form";
 import { Dialog } from "@headlessui/react";
 import toast from "react-hot-toast";
+
 
 const Profile = () => {
   const { user, updateUserProfile } = useContext(AuthContext);

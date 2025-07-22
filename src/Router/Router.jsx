@@ -6,7 +6,7 @@ import Login from "../Pages/Authentication/Login";
 import Register from "../Pages/Authentication/Register";
 import AllDonations from "../Pages/AllDonations";
 import Dashboard from "../Pages/Dashboard/Dashboard";
-import DashboardHome from "../Pages/Dashboard/DashboardHome"; // ✅ Import added
+import DashboardHome from "../Pages/Dashboard/DashboardHome";
 import PrivateRoute from "./PrivateRoute";
 import Payment from "../Pages/Dashboard/Payments/Payment";
 import DonationDetails from "../Pages/SubPage/DonationDetails";

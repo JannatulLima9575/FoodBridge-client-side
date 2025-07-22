@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import registerImage from "../../assets/animation/verification.svg";
 import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../../Provider/AuthProvider";
+import  AuthContext  from "../../Provider/AuthProvider";
 import { toast } from "react-hot-toast";
 import useAxios from "../../hooks/useAxios";
 

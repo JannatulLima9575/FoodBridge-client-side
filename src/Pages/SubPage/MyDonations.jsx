@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { AuthContext } from "../../Provider/AuthProvider";
+// import AuthContext from "../Provider/AuthContext";
 import { Link } from "react-router";
 import toast from "react-hot-toast";
+import AuthContext from "../../Provider/AuthContext";
 
 const MyDonations = () => {
   const { user } = useContext(AuthContext);

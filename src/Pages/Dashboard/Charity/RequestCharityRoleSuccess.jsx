@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSearchParams } from "react-router";
 import toast from "react-hot-toast";
 import { useContext } from "react";
-import { AuthContext } from "../../../Provider/AuthProvider";
+import { AuthContext } from "../../../Provider/AuthContext";
 
 const RequestCharityRoleSuccess = () => {
   const [params] = useSearchParams();

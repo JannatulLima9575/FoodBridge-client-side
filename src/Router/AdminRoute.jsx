@@ -1,8 +1,10 @@
 import { useContext } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
+// import AuthContext from "../Provider/AuthContext";";
+import AuthContext from "../Provider/AuthContext";
 import { Navigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);

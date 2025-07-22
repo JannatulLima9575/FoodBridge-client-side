@@ -2,11 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { AuthContext } from "../../Provider/AuthProvider";
+// import AuthContext from "../Provider/AuthContext";
 import ReviewSection from "./ReviewSection";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import ReportDonationModal from "../Dashboard/ReportDonationModal";
 import MapView from "./MapView";
+import AuthContext from "../../Provider/AuthContext";
 
 const DonationDetails = () => {
   const { id } = useParams();

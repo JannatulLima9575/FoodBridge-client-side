@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../Provider/AuthProvider";
+import AuthContext from "../../Provider/AuthContext";
+
 
 const Favorites = () => {
   const { user } = useContext(AuthContext);

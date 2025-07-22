@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import { AuthContext } from "../Provider/AuthProvider";
+// import AuthContext from "../Provider/AuthContext";";
 import { Navigate } from "react-router";
+import AuthContext from "../Provider/AuthContext";
 
 const RestaurantRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
