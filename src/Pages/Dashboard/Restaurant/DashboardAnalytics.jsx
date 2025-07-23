@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 // import AuthContext from "../Provider/AuthContext";
 import { FaClipboardList, FaCheckCircle, FaBoxOpen } from "react-icons/fa";
-import AuthContext from "../../Provider/AuthContext";
+import AuthContext from "../../../Provider/AuthContext";
 
 const DashboardAnalytics = () => {
   const { user } = useContext(AuthContext);

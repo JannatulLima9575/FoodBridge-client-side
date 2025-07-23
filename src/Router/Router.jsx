@@ -12,7 +12,7 @@ import Payment from "../Pages/Dashboard/Payments/Payment";
 import DonationDetails from "../Pages/SubPage/DonationDetails";
 import MyDonations from "../Pages/SubPage/MyDonations";
 import EditDonation from "../Pages/SubPage/EditDonation";
-import DashboardAnalytics from "../Pages/Dashboard/DashboardAnalytics";
+import DashboardAnalytics from "../Pages/Dashboard/Restaurant/DashboardAnalytics";
 import ViewRequests from "../Pages/SubPage/ViewRequests";
 import MyPayments from "../Pages/Dashboard/Payments/MyPayments";
 import PaymentSuccess from "../Pages/Dashboard/Payments/PaymentSuccess";
@@ -28,9 +28,9 @@ import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers";
 import ManageDonations from "../Pages/Dashboard/Admin/ManageDonations";
 import RoleRequests from "../Pages/Dashboard/Admin/RoleRequests";
 import PaymentHistory from "../Pages/Dashboard/Admin/PaymentHistory";
-import RequestRole from "../Pages/Dashboard/Admin/RequestRole";
+import RequestRole from "../Pages/Dashboard/User/RequestRole";
 import NotFound from "../Pages/NotFound";
-import DonationStatistics from "../Pages/Dashboard/DonationStatistics";
+import DonationStatistics from "../Pages/Dashboard/Restaurant/DonationStatistics";
 import { Component } from "react";
 import Profile from "../Pages/Dashboard/Profile";
 import ReportedDonations from "../Pages/Dashboard/ReportedDonations";
@@ -43,6 +43,10 @@ import ReceivedDonations from "../Pages/Dashboard/Charity/ReceivedDonations";
 import MyPickups from "../Pages/Dashboard/Charity/MyPickups";
 import MyRequests from "../Pages/Dashboard/Charity/MyRequests";
 import CharityProfile from "../Pages/Dashboard/Charity/CharityProfile";
+import AdminProfile from "../Pages/Dashboard/Admin/AdminProfile";
+import FeatureDonations from "../Pages/Dashboard/Admin/FeatureDonations";
+import ManageRequests from "../Pages/Dashboard/Admin/ManageRequests";
+import RestaurantProfile from "./../Pages/Dashboard/Restaurant/RestaurantProfile";
 
 export const router = createBrowserRouter([
   {
@@ -65,7 +69,9 @@ export const router = createBrowserRouter([
         path: "donations/:id",
         element: <DonationDetails />,
         loader: ({ params }) =>
-          fetch(`https://food-bridge-server-side.vercel.app/donations/${params.id}`),
+          fetch(
+            `https://food-bridge-server-side.vercel.app/donations/${params.id}`
+          ),
       },
     ],
   },
@@ -86,28 +92,38 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       /* 👤 User Role Routes */
-        {  
-        path:"request-charity",
-        element: <RequestCharityRole/>
-          },
-          {
-            path:"user-favorites",
-            element: <UserFavorites/>
-          },
-          {
-            path:"my-reviews",
-            element: <MyReviews />
-          },
-          {
-            path:"transactions",
-            element: <Transactions />
-          },
       {
-        path: "reported-donations",
+        path: "request-charity",
+        element: <RequestCharityRole />,
+      },
+      {
+        path: "user-favorites",
+        element: <UserFavorites />,
+      },
+      {
+        path: "my-reviews",
+        element: <MyReviews />,
+      },
+      {
+        path: "transactions",
+        element: <Transactions />,
+      },
+      {
+        path: "restaurant-profile",
         element: (
-          <AdminRoute>
-            <ReportedDonations />
-          </AdminRoute>
+          <RestaurantRoute>
+            <RestaurantProfile />
+          </RestaurantRoute>
+        ),
+      },
+      {
+        path: "donation-statistics",
+        element: (
+          <PrivateRoute>
+            <RestaurantRoute>
+              <DonationStatistics />
+            </RestaurantRoute>
+          </PrivateRoute>
         ),
       },
       {
@@ -230,22 +246,6 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "manage-users",
-        element: (
-          <AdminRoute>
-            <ManageUsers />
-          </AdminRoute>
-        ),
-      },
-      {
-        path: "manage-donations",
-        element: (
-          <AdminRoute>
-            <ManageDonations />
-          </AdminRoute>
-        ),
-      },
 
       {
         path: "request-role",
@@ -257,6 +257,7 @@ export const router = createBrowserRouter([
       },
 
       // 🛡 Admin Routes
+
       {
         path: "manage-users",
         element: (
@@ -270,6 +271,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageDonations />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-requests",
+        element: (
+          <AdminRoute>
+            <ManageRequests />
           </AdminRoute>
         ),
       },
@@ -288,6 +297,22 @@ export const router = createBrowserRouter([
             <PaymentHistory />
           </AdminRoute>
         ),
+      },
+      {
+        path: "reported-donations",
+        element: (
+          <AdminRoute>
+            <ReportedDonations />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin-profile",
+        element: <AdminProfile />,
+      },
+      {
+        path: "feature-donations",
+        element: <FeatureDonations />,
       },
     ],
   },

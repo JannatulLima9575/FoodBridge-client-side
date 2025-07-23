@@ -47,37 +47,60 @@ const Dashboard = () => {
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside
-        className={`w-64 bg-green-100 p-5 shadow-md  md:translate-x-0 
-        fixed z-50 top-0 left-0 h-full transform transition-transform duration-300 ease-in-out
-        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:block`}
+        className={`w-64 bg-green-100 p-5 shadow-md flex flex-col h-full md:translate-x-0 
+  fixed z-50 top-0 left-0 transform transition-transform duration-300 ease-in-out
+  ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:block`}
       >
         <h2 className="text-xl font-bold mb-4">Dashboard</h2>
-        <ul className="space-y-3">
+        <ul className="space-y-3 flex-1">
           {/* 🍽 Restaurant Menu */}
           {isRestaurant && (
             <>
               <li>
-                <Link to="/dashboard/analytics" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/analytics"
+                  className="flex items-center gap-2"
+                >
                   <FaChartPie /> Analytics
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/add-donation" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/restaurant-profile"
+                  className="flex items-center gap-2"
+                >
+                  <FaChartPie /> Restaurant Profile
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/add-donation"
+                  className="flex items-center gap-2"
+                >
                   <FaEdit /> Add Donation
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/my-donations" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/my-donations"
+                  className="flex items-center gap-2"
+                >
                   <FaList /> My Donations
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/view-requests" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/view-requests"
+                  className="flex items-center gap-2"
+                >
                   <FaClipboardList /> View Requests
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/statistics" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/statistics"
+                  className="flex items-center gap-2"
+                >
                   📊 Donation Stats
                 </Link>
               </li>
@@ -88,27 +111,42 @@ const Dashboard = () => {
           {isCharity && (
             <>
               <li>
-                <Link to="/dashboard/charity-profile" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/charity-profile"
+                  className="flex items-center gap-2"
+                >
                   <CgProfile /> Charity Profile
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/my-requests" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/my-requests"
+                  className="flex items-center gap-2"
+                >
                   <FaClipboardList /> My Requests
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/my-pickups" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/my-pickups"
+                  className="flex items-center gap-2"
+                >
                   <FaBoxOpen /> My Pickups
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/received-donations" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/received-donations"
+                  className="flex items-center gap-2"
+                >
                   <FaHandHoldingHeart /> Received Donations
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/transaction-history" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/transaction-history"
+                  className="flex items-center gap-2"
+                >
                   <FaHistory /> Transaction History
                 </Link>
               </li>
@@ -119,18 +157,51 @@ const Dashboard = () => {
           {isAdmin && (
             <>
               <li>
-                <Link to="/dashboard/manage-users" className="flex items-center gap-2">
-                  <FaUsers /> Manage Users
+                <Link
+                  to="/dashboard/admin-profile"
+                  className="flex items-center gap-2"
+                >
+                  <CgProfile /> Admin Profile
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/manage-donations" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/manage-donations"
+                  className="flex items-center gap-2"
+                >
                   <FaUtensils /> Manage Donations
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/reported-donations" className="flex items-center gap-2">
-                  <MdReportProblem /> Reported Donations
+                <Link
+                  to="/dashboard/manage-users"
+                  className="flex items-center gap-2"
+                >
+                  <FaUsers /> Manage Users
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/role-requests"
+                  className="flex items-center gap-2"
+                >
+                  <FaClipboardList /> Manage Role Requests
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/manage-requests"
+                  className="flex items-center gap-2"
+                >
+                  <FaClipboardList /> Manage Requests
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/feature-donations"
+                  className="flex items-center gap-2"
+                >
+                  <FaStar /> Feature Donations
                 </Link>
               </li>
             </>
@@ -140,49 +211,61 @@ const Dashboard = () => {
           {isUser && (
             <>
               <li>
-                <Link to="/dashboard/profile" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/profile"
+                  className="flex items-center gap-2"
+                >
                   <FaUserAlt /> My Profile
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/request-charity" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/request-charity"
+                  className="flex items-center gap-2"
+                >
                   <FaHandHoldingHeart /> Request Charity Role
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/user-favorites" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/user-favorites"
+                  className="flex items-center gap-2"
+                >
                   <FaStar /> Favorites
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/my-reviews" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/my-reviews"
+                  className="flex items-center gap-2"
+                >
                   <FaEdit /> My Reviews
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/transactions" className="flex items-center gap-2">
+                <Link
+                  to="/dashboard/transactions"
+                  className="flex items-center gap-2"
+                >
                   <FaHistory /> Transaction History
                 </Link>
               </li>
             </>
           )}
-
-          {/* Common */}
-          <li>
-            <Link to="/" className="flex items-center gap-2">
-              <FaHome /> Back to Home
-            </Link>
-          </li>
+        </ul>
+        {/* Common */}
+        <div className="md:pt-80 md:pb-0 items-end">
+          <Link to="/" className="flex items-center gap-2 mb-3">
+            <FaHome /> Back to Home
+          </Link>
 
           {/* Profile Link for non-users */}
           {!isUser && (
-            <li>
-              <Link to="/dashboard/profile" className="flex items-center gap-2">
-                <CgProfile /> Edit Profile
-              </Link>
-            </li>
+            <Link to="/dashboard/profile" className="flex items-center gap-2">
+              <CgProfile /> Edit Profile
+            </Link>
           )}
-        </ul>
+        </div>
       </aside>
 
       {/* Main Content */}
