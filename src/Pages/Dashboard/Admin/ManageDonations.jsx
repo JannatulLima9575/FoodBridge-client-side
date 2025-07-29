@@ -1,19 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ManageDonations = () => {
+  const axios = useAxiosSecure();
   const { data: donations = [], refetch } = useQuery({
     queryKey: ["allDonations"],
     queryFn: async () => {
-      const res = await axios.get("https://food-bridge-server-side.vercel.app/donations");
+      const res = await axios.get("/donations");
       return res.data;
     },
   });
   
 
 const handleApprove = (id) => {
-  axios.patch(`https://food-bridge-server-side.vercel.app/donations/approve/${id}`)
+  axios.patch(`/donations/approve/${id}`)
     .then(res => {
       if (res.data.modifiedCount > 0) {
         toast.success("Donation Approved!");
@@ -27,7 +28,7 @@ const handleApprove = (id) => {
 };
 
   const handleDelete = async (id) => {
-    const res = await axios.delete(`https://food-bridge-server-side.vercel.app/donations/${id}`);
+    const res = await axios.delete(`/donations/${id}`);
     if (res.data.deletedCount > 0) {
       toast.success("Donation Deleted");
       refetch();

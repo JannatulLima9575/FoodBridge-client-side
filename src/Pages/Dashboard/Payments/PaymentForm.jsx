@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import useAuth from '../../../Provider/useAuth';
+import React, { useState } from "react";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../Provider/useAuth";
+import { Text } from "recharts";
 
 const PaymentForm = () => {
   const stripe = useStripe();
@@ -10,13 +11,13 @@ const PaymentForm = () => {
   const { user } = useAuth();
 
   const [formData, setFormData] = useState({
-    amount: '',
-    name: user?.displayName || '',
-    email: user?.email || '',
+    amount: 25,
+    name: user?.displayName || "",
+    email: user?.email || "",
   });
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -30,13 +31,14 @@ const PaymentForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
+    console.log("Submitting payment with data:", formData);
 
     const amountInCents = parseFloat(formData.amount) * 100;
     setLoading(true);
 
     try {
       // ✅ Create payment intent from backend
-      const res = await axiosSecure.post('/create-payment-intent', {
+      const res = await axiosSecure.post("/create-payment-intent", {
         amountInCents,
       });
 
@@ -55,30 +57,32 @@ const PaymentForm = () => {
 
       if (result.error) {
         setError(result.error.message);
-        setSuccess('');
+        setSuccess("");
       } else {
-        if (result.paymentIntent.status === 'succeeded') {
-          setSuccess('Payment successful!');
-          setError('');
+        if (result.paymentIntent.status === "succeeded") {
+          setSuccess("Payment successful!");
+          setError("");
 
           // ✅ Save payment info to backend
-          await axiosSecure.post('/payments', {
+          await axiosSecure.post("/payments", {
             amount: formData.amount,
             email: formData.email,
+            organization: formData.organization,
+            mission: formData.mission,
             transactionId: result.paymentIntent.id,
           });
 
           // Optionally reset form
           setFormData({
-            amount: '',
-            name: user?.displayName || '',
-            email: user?.email || '',
+            amount: 25,
+            name: user?.displayName || "",
+            email: user?.email || "",
           });
         }
       }
     } catch (err) {
       setError(err.message);
-      setSuccess('');
+      setSuccess("");
     } finally {
       setLoading(false);
     }
@@ -94,25 +98,50 @@ const PaymentForm = () => {
           <input
             type="text"
             name="name"
-            required
             value={formData.name}
-            onChange={handleChange}
+            readOnly
             className="w-full border px-3 py-2 rounded outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="Your full name"
           />
         </div>
 
+        {/* User Email */}
         <div>
           <label className="block font-medium mb-1">Email</label>
           <input
             type="email"
             name="email"
-            required
             value={formData.email}
-            onChange={handleChange}
+            readOnly
             className="w-full border px-3 py-2 rounded outline-none focus:ring-2 focus:ring-indigo-500"
-            placeholder="example@email.com"
           />
+        </div>
+
+        {/* Organization Name */}
+        <div>
+          <label className="block font-medium mb-1">Organization Name</label>
+          <input
+            type="text"
+            name="organization"
+            value={formData.organization}
+            onChange={handleChange}
+            required
+            className="w-full border px-3 py-2 rounded outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Organization name"
+          />
+        </div>
+
+        {/* Mission Statement */}
+        <div>
+          <label className="block font-medium mb-1">Mission Statement</label>
+          <textarea
+            name="mission"
+            value={formData.mission}
+            onChange={handleChange}
+            required
+            rows="4"
+            className="w-full border px-3 py-2 rounded outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Brief mission statement..."
+          ></textarea>
         </div>
 
         <div>
@@ -121,6 +150,7 @@ const PaymentForm = () => {
             type="number"
             name="amount"
             required
+            readOnly
             value={formData.amount}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded outline-none focus:ring-2 focus:ring-indigo-500"
@@ -128,9 +158,42 @@ const PaymentForm = () => {
           />
         </div>
 
-        <div>
+        {/*          <div>
           <label className="block font-medium mb-1">Card Details</label>
-          <CardElement />
+          <CardElement 
+                options={{
+                    style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                        '::placeholder': { color: '#aab7c4' },
+                    },
+                    invalid: {
+                        color: '#e3342f',
+                        iconColor: '#e3342f',
+                    },
+                    },
+                }}
+          />
+        </div>  */}
+
+        {/* ✅ Stripe Card Element */}
+        <div className="p-4  border rounded bg-gray-50 focus:ring-1 focus:ring-lime-400">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#424770",
+                  "::placeholder": { color: "#aab7c4" },
+                },
+                invalid: {
+                  color: "#e3342f",
+                  iconColor: "#e3342f",
+                },
+              },
+            }}
+          />
         </div>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -141,7 +204,7 @@ const PaymentForm = () => {
           className="w-full bg-indigo-600 text-white font-semibold py-2 rounded hover:bg-indigo-700 transition"
           disabled={!stripe || loading}
         >
-          {loading ? 'Processing...' : 'Pay Now'}
+          {loading ? "Processing..." : "Pay Now"}
         </button>
       </form>
     </div>

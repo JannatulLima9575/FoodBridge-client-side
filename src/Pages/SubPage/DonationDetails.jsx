@@ -1,212 +1,211 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import DonationDetailsMap from "./DonationDetailsMap";
 import toast from "react-hot-toast";
-// import AuthContext from "../Provider/AuthContext";
-import ReviewSection from "./ReviewSection";
+import AuthContext from "../../Provider/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import ReportDonationModal from "../Dashboard/ReportDonationModal";
-import MapView from "./MapView";
-import AuthContext from "../../Provider/AuthContext";
+import ReviewSection from "../SubPage/ReviewSection";
+import ReviewModal from "../SubPage/ReviewModal";
 
 const DonationDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
-  const [requested, setRequested] = useState(false);
-  const [requestAccepted, setRequestAccepted] = useState(false);
-  const [isReportOpen, setIsReportOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
+  const[review, setreview] = useState(false);
 
   const {
-    data: donation,
+    data: donation = {},
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["donation", id],
+    queryKey: ["donationDetails", id],
     queryFn: async () => {
       const res = await axiosSecure.get(`/donations/${id}`);
       return res.data;
     },
   });
 
-  useEffect(() => {
-    const fetchRequest = async () => {
-      if (user?.role === "charity") {
-        const res = await axiosSecure.get("/charityRequests");
-        const matched = res.data.find(
-          (r) =>
-            r.donationId === id &&
-            r.charityEmail === user?.email &&
-            r.status === "Accepted"
-        );
-        if (matched) {
-          setRequestAccepted(true);
-        }
-      }
-    };
-    fetchRequest();
-  }, [id, user, axiosSecure]);
+  if (isLoading) {
+    return <p className="text-center my-10">Loading...</p>;
+  }
 
-  if (isLoading)
-    return <p className="text-center py-10">Loading donation details...</p>;
-  if (!donation)
-    return (
-      <p className="text-center text-red-500 py-10">
-        Donation not found or deleted.
-      </p>
-    );
+  console.log("Donation Details:", donation);
+  
+
+  const {
+    title,
+    image,
+    description,
+    pickupLocation,
+    pickupTime,
+    foodType,
+    quantity,
+    status,
+    restaurantInfo,
+    lat,
+    lng,
+  } = donation;
+
+  console.log('user:', user);
+  
 
   const handleSaveFavorite = async () => {
-    const favorite = {
-      userEmail: user?.email,
-      donationId: donation._id,
-      donationTitle: donation.title,
-      restaurantName: donation.restaurantName,
-      image: donation.image,
-    };
-
     try {
-      await axiosSecure.post("/favorites", favorite);
-      toast.success("💖 Saved to Favorites!");
-    } catch (error) {
-      if (error.response?.status === 409) {
-        toast("Already in favorites!");
+      const res = await axiosSecure.post("/favorites", {
+        donationId: id,
+        userEmail: user?.email,
+      });
+      if (res.data.insertedId) {
+        toast.success("Added to favorites!");
       } else {
-        toast.error("Failed to save favorite.");
+        toast.error("Already in favorites.");
       }
+    } catch (error) {
+      toast.error("Failed to save to favorites.", error);
     }
   };
 
-  const handleRequest = async () => {
-    const requestData = {
-      donationId: donation._id,
-      donationTitle: donation.title,
-      restaurantName: donation.restaurantName,
-      restaurantEmail: donation.restaurantEmail,
-      charityName: user?.displayName,
-      charityEmail: user?.email,
-      charityImage: user?.photoURL || "https://i.ibb.co/6RWxfX2v/image.png",
-      requestDescription: `We would like to collect the donation titled \"${donation.title}\".`,
-      pickupTime: "10:00 AM - 12:00 PM",
-    };
-
+  const handleRequestDonation = async () => {
     try {
-      await axiosSecure.post("/charityRequests", requestData);
-      toast.success("✅ Request submitted successfully!");
-      setRequested(true);
+      const res = await axiosSecure.post("/requests", {
+        donationId: id,
+        charityEmail: user?.email,
+        pickupTime: pickupTime || "10:00 AM - 12:00 PM", // You can update this later
+        status: "Pending",
+      });
+      if (res.data.insertedId) {
+        toast.success("Donation requested!");
+        refetch();
+      } else {
+        toast.error("You already requested this donation.");
+      }
     } catch (error) {
-      toast.error("❌ Failed to submit request.");
+      toast.error("Failed to request donation.", error);
     }
   };
 
   const handleConfirmPickup = async () => {
     try {
-      await axiosSecure.patch(`/donations/confirm/${donation._id}`);
-      toast.success("📦 Marked as Picked Up");
-      refetch();
+      const res = await axiosSecure.patch(`/requests/confirm/${id}`, {
+        charityEmail: user?.email,
+      });
+      if (res.data.modifiedCount > 0) {
+        toast.success("Pickup confirmed!");
+        refetch();
+      }
     } catch (error) {
-      toast.error("❌ Failed to confirm pickup.");
+      toast.error("Failed to confirm pickup.", error);
     }
   };
 
   return (
-    <section className="py-14 px-4 md:px-8 bg-white dark:bg-neutral-900 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-base-100 dark:bg-neutral rounded-xl p-6 shadow-md">
-        <img
-          src={donation.image}
-          alt={donation.title}
-          className="w-full h-64 object-cover rounded-lg mb-6"
-        />
-        <h2 className="text-2xl md:text-3xl font-bold mb-2 text-primary">
-          🍱 {donation.foodType}
-        </h2>
-        <p className="text-gray-700 dark:text-gray-300 mb-2">
-          <strong>Title:</strong> {donation.title}
-        </p>
-        <p className="text-gray-700 dark:text-gray-300 mb-2">
-          <strong>Restaurant:</strong> {donation.restaurantName}
-        </p>
-        <p className="text-gray-700 dark:text-gray-300 mb-2">
-          <strong>Location:</strong> {donation.location}
-        </p>
-        <p className="text-gray-700 dark:text-gray-300 mb-2">
-          <strong>Quantity:</strong> {donation.quantity} kg
-        </p>
-        <p className="text-gray-700 dark:text-gray-300 mb-6">
-          <strong>Status:</strong>{" "}
-          <span
-            className={`font-bold ${
-              donation.status === "Available"
-                ? "text-green-600"
-                : donation.status === "Picked Up"
-                ? "text-red-500"
-                : "text-yellow-600"
-            }`}
-          >
-            {donation.status}
-          </span>
-        </p>
+    <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="grid md:grid-cols-2 gap-8">
+        <div>
+          <img src={image} alt={title} className="rounded-xl shadow" />
+        </div>
 
-        <div className="flex flex-wrap gap-2">
-          {(user?.role === "user" || user?.role === "charity") && (
-            <button onClick={handleSaveFavorite} className="btn btn-outline">
+        <div>
+          <h2 className="text-3xl font-bold mb-2">{title}</h2>
+          <p className="text-gray-600 mb-4">{description}</p>
+          <p className="mb-2">
+            <strong>Food Type:</strong> {foodType}
+          </p>
+          <p className="mb-2">
+            <strong>Quantity:</strong> {quantity}
+          </p>
+          <p className="mb-2">
+            <strong>Pickup Time:</strong> {pickupTime}
+          </p>
+          <p className="mb-2">
+            <strong>Status:</strong> {status}
+          </p>
+          <p className="mb-4">
+            <strong>Location:</strong> {pickupLocation}
+          </p>
+
+          <div className="mb-4">
+            <h4 className="font-semibold mb-1">Restaurant Info:</h4>
+            <p>
+              <strong>Name:</strong> {restaurantInfo?.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {restaurantInfo?.email}
+            </p>
+          </div>
+
+          {user?.role === "user" && (
+            <button
+              onClick={handleSaveFavorite}
+              className="btn btn-outline btn-sm mr-3"
+            >
               💖 Save to Favorites
             </button>
           )}
 
+          {/* Request Donation (charity only) */}
           {user?.role === "charity" && (
             <button
-              onClick={handleRequest}
-              disabled={requested}
-              className={`btn ${
-                requested ? "btn-disabled bg-gray-400 text-white" : "btn-primary"
-              }`}
+              onClick={handleRequestDonation}
+              className="btn btn-primary btn-sm mr-3"
             >
-              {requested ? "✅ Request Sent" : "Request This Donation"}
+              📦 Request Donation
             </button>
           )}
 
-          {(user?.role === "user" || user?.role === "charity") && (
+          {/* Confirm Pickup (charity only if status === accepted) */}
+          {user?.role === "charity" && status === "approved" && (
             <button
-              onClick={() => setIsReportOpen(true)}
-              className="btn btn-outline btn-error"
+              onClick={handleConfirmPickup}
+              className="btn btn-success btn-sm mr-3"
+            >
+              ✅ Confirm Pickup
+            </button>
+          )}
+
+          {/* Report Button */}
+          {["user", "charity" ].includes(user?.role) && (
+            <button
+              className="btn btn-error btn-sm"
+              onClick={() =>
+                document.getElementById("report_modal").showModal()
+              }
             >
               🚨 Report Donation
             </button>
           )}
         </div>
+      </div>
 
-        {user?.role === "charity" &&
-          requestAccepted &&
-          donation.status !== "Picked Up" && (
+      {/* Map */}
+      <div className="mt-10">
+        <h3 className="text-xl font-bold mb-3">Location Map</h3>
+       {/*  <DonationDetailsMap lat={lat} lng={lng} /> */}
+      </div>
+
+      {/* Review Section */}
+      <div className="mt-10">
+        <ReviewSection  donationId={id} />
+        {["user", "charity"].includes(user?.role) && (
+          <div className="mt-4">
             <button
-              onClick={handleConfirmPickup}
-              className="btn mt-4 bg-green-600 text-white"
+              className="btn btn-outline"
+              onClick={() =>
+                setreview(review => !review)
+              }
             >
-              📦 Confirm Pickup
+              ✍️ Add a Review
             </button>
-          )}
-
-        <ReviewSection donationId={donation._id} />
-
-        {/* ✅ MapBox Integration */}
-        {donation.latitude && donation.longitude && (
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-2 text-primary">
-              📍 Map Location
-            </h3>
-            <MapView lat={donation.latitude} lng={donation.longitude} />
           </div>
         )}
       </div>
 
-      {/* ✅ Report Modal */}
-      <ReportDonationModal
-        isOpen={isReportOpen}
-        closeModal={() => setIsReportOpen(false)}
-        donationId={donation._id}
-      />
-    </section>
+      {/* Modals */} 
+      <ReportDonationModal donationId={id} />
+      <ReviewModal donationId={id} user={user} isOpen={review} onClose={()=>{setreview(false)}} /> 
+    </div>
   );
 };
 

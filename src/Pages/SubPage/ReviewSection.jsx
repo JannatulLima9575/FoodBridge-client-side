@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const ReviewSection = ({ donationId }) => {
   const [reviews, setReviews] = useState([]);
+  const axios = useAxiosSecure();
 
   useEffect(() => {
-    axios.get(`https://food-bridge-server-side.vercel.app/reviews/${donationId}`).then((res) => {
+    axios.get(`/reviews/${donationId}`).then((res) => {
       setReviews(res.data);
     });
   }, [donationId]);

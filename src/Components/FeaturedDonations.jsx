@@ -1,20 +1,21 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import AuthContext from "../Provider/AuthContext";
 import { toast } from "react-hot-toast";
 
 
 const FeaturedDonations = () => {
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure();
   const navigate = useNavigate();
 
   // ✅ Fetch ONLY featured + approved + available donations
   const { data: featuredDonations = [], isLoading } = useQuery({
     queryKey: ["featuredDonations"],
     queryFn: async () => {
-      const res = await axios.get("https://food-bridge-server-side.vercel.app/featured-donations");
+      const res = await axios.get("/featured-donations");
       return res.data;
     },
   });

@@ -1,15 +1,16 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import useAuth from "../../../Provider/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const CheckoutForm = ({ price, donationId }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate(); // ✅ Correctly initialize navigate
   const { user } = useAuth(); 
+  const axios = useAxiosSecure();
 
   const [clientSecret, setClientSecret] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -20,7 +21,7 @@ const CheckoutForm = ({ price, donationId }) => {
   useEffect(() => {
     if (price > 0) {
       axios
-        .post("https://food-bridge-server-side.vercel.app/create-payment-intent", { amount: price * 100 })
+        .post("/create-payment-intent", { amount: price * 100 })
         .then((res) => {
           setClientSecret(res.data.clientSecret);
         });
@@ -74,7 +75,7 @@ const CheckoutForm = ({ price, donationId }) => {
         donationItemId: donationId,
       };
 
-      axios.post("https://food-bridge-server-side.vercel.app/payments", paymentData)
+      axios.post("/payments", paymentData)
         .then((res) => {
           if (res.data.insertedId) {
             toast.success("Payment saved in database!");
@@ -95,7 +96,21 @@ const CheckoutForm = ({ price, donationId }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 shadow rounded">
-      <CardElement className="p-3 border rounded" />
+      <CardElement                 
+            options={{
+                    style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                        '::placeholder': { color: '#aab7c4' },
+                    },
+                    invalid: {
+                        color: '#e3342f',
+                        iconColor: '#e3342f',
+                    },
+                    },
+                }}
+                 />
       <button
         type="submit"
         className="btn btn-primary w-full"

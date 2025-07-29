@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, Outlet } from "react-router";
 import {
   FaBars,
@@ -17,20 +17,24 @@ import {
 } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { MdReportProblem } from "react-icons/md";
-import useAuth from "../../Provider/useAuth";
-import useRestaurant from "../../hooks/useRestaurant";
+// import useAuth from "../../Provider/useAuth";
+/* import useRestaurant from "../../hooks/useRestaurant";
 import useCharity from "../../hooks/useCharity";
-import useAdmin from "../../hooks/useAdmin";
-import axios from "axios";
+import useAdmin from "../../hooks/useAdmin"; */
+// import useAuth from "../../Provider/useAuth";
+import useAxiosSecure from './../../hooks/useAxiosSecure';
+import AuthContext from "../../Provider/AuthContext";
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  const { isRestaurant, isRestaurantLoading } = useRestaurant();
-  const { isCharity, isCharityLoading } = useCharity();
-  const { isAdmin, isAdminLoading } = useAdmin();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user,loading } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
-  if (isRestaurantLoading || isCharityLoading || isAdminLoading) {
+/*   const { isRestaurant, isRestaurantLoading } = useRestaurant();
+  const { isCharity, isCharityLoading } = useCharity();
+  const { isAdmin, isAdminLoading } = useAdmin(); */
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+
+  if (/* isRestaurantLoading || isCharityLoading || isAdminLoading */ loading) {
     return <div className="p-10">Loading dashboard...</div>;
   }
 
@@ -40,7 +44,7 @@ const Dashboard = () => {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  const isUser = !isAdmin && !isCharity && !isRestaurant;
+ /*  const isUser = !isAdmin && !isCharity && !isRestaurant; */
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
@@ -54,7 +58,7 @@ const Dashboard = () => {
         <h2 className="text-xl font-bold mb-4">Dashboard</h2>
         <ul className="space-y-3 flex-1">
           {/* 🍽 Restaurant Menu */}
-          {isRestaurant && (
+          {/* isRestaurant */ user.role==='restaurant' && (
             <>
               <li>
                 <Link
@@ -108,7 +112,7 @@ const Dashboard = () => {
           )}
 
           {/* ❤️ Charity Menu */}
-          {isCharity && (
+          {/* isCharity */ user.role==='charity' && (
             <>
               <li>
                 <Link
@@ -154,7 +158,7 @@ const Dashboard = () => {
           )}
 
           {/* 🔐 Admin Menu */}
-          {isAdmin && (
+          {/* isAdmin */ user.role==='admin' && (
             <>
               <li>
                 <Link
@@ -208,7 +212,7 @@ const Dashboard = () => {
           )}
 
           {/* 👤 User Menu */}
-          {isUser && (
+          {/* isUser */ user.role==='user' && (
             <>
               <li>
                 <Link
@@ -260,7 +264,7 @@ const Dashboard = () => {
           </Link>
 
           {/* Profile Link for non-users */}
-          {!isUser && (
+          {/* !isUser */ !user.role==='user' && (
             <Link to="/dashboard/profile" className="flex items-center gap-2">
               <CgProfile /> Edit Profile
             </Link>

@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import registerImage from "../../assets/animation/verification.svg";
 import { Link, useNavigate } from "react-router";
-import  AuthContext  from "../../Provider/AuthProvider";
+// import  AuthContext  from "../../Provider/AuthProvider";
 import { toast } from "react-hot-toast";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "../../hooks/useAxiosSecure";
+import AuthContext from './../../Provider/AuthContext';
 
 const Register = () => {
   const { createUser, signInWithGoogle, updateUserProfile } =
@@ -26,22 +27,13 @@ const Register = () => {
       return toast.error("Password must be at least 6 characters");
     if (!/[A-Z]/.test(password))
       return toast.error("Must include an uppercase letter");
-    if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password))
+    if (!/[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]/.test(password))
       return toast.error("Must include a special character");
 
     try {
-      const res = await createUser(email, password);
+      await createUser(email, password);
       await updateUserProfile(name);
 
-      const userInfo = {
-        name,
-        email,
-        image: res.user.photoURL || null,
-        role: "user",
-        createdAt: new Date().toISOString(),
-      };
-
-      await axiosInstance.post("/users", userInfo);
       toast.success("Registration successful");
       navigate("/");
     } catch (err) {
@@ -53,15 +45,8 @@ const Register = () => {
 
  const handleGoogleLogin = () => {
   signInWithGoogle()
-    .then(async (result) => {
-      const user = result.user;
-      const userInfo = {
-        name: user.displayName,
-        email: user.email,
-        image: user.photoURL,
-      };
+    .then(async () => {
 
-      await axiosInstance.post("/users", userInfo);
       toast.success("Signed in with Google");
       navigate("/");
     })

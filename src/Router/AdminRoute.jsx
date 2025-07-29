@@ -3,17 +3,18 @@ import { useContext } from "react";
 import AuthContext from "../Provider/AuthContext";
 import { Navigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
   const { data: isAdmin, isLoading } = useQuery({
     queryKey: ["isAdmin", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axios.get(`https://food-bridge-server-side.vercel.app/users/admin/${user?.email}`);
+      const res = await axios.get(`/users/admin/${user?.email}`);
       return res.data?.admin;
     },
   });

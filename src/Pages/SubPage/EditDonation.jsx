@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router";
-import axios from "axios";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const EditDonation = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const axios = useAxiosSecure();
 
   const {
     register,
@@ -20,11 +21,11 @@ const EditDonation = () => {
   useEffect(() => {
     const fetchDonation = async () => {
       try {
-        const res = await axios.get(`https://food-bridge-server-side.vercel.app/donations/${id}`);
+        const res = await axios.get(`/donations/${id}`);
         reset(res.data); // 🔁 Pre-fill form
         setLoading(false);
       } catch (error) {
-        toast.error("❌ Failed to load donation");
+        toast.error("❌ Failed to load donation", error);
         setLoading(false);
       }
     };
@@ -35,7 +36,7 @@ const EditDonation = () => {
   // ✅ Submit updated data
   const onSubmit = async (data) => {
     try {
-      const res = await axios.put(`https://food-bridge-server-side.vercel.app/donations/${id}`, data);
+      const res = await axios.put(`/donations/${id}`, data);
       if (res.status === 200) {
         toast.success("✅ Donation updated successfully!");
         navigate("/dashboard/my-donations");

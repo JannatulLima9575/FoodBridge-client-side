@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import  AuthContext  from "../../../Provider/AuthContext";
 
 const ReceivedDonations = () => {
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
   const { data, isLoading } = useQuery({
     queryKey: ["receivedDonations", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axios.get(`/api/received-donations?email=${user.email}`);
+      const res = await axios.get(`/received-donations?email=${user.email}`);
       return res.data;
     },
   });

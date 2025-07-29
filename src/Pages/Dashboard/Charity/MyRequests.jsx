@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import  AuthContext  from "../../../Provider/AuthContext";
+import AuthContext from "../../../Provider/AuthContext";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MyRequests = () => {
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
   const { data, isLoading } = useQuery({
     queryKey: ["requests", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axios.get(`/api/charityRequests?email=${user.email}`);
+      const res = await axios.get(`/charityRequests?email=${user.email}`);
       return res.data;
     },
   });
@@ -48,19 +49,23 @@ const MyRequests = () => {
           ))}
         </div>
       )}
+      
     </div>
+    
   );
+
 };
 
-// Example cancel handler
-const handleCancelRequest = async (id) => {
-  try {
-    const res = await axios.delete(`/api/charityRequests/${id}`);
-    console.log("Request canceled", res.data);
-    // Optionally refetch requests after deletion
-  } catch (error) {
-    console.error("Error cancelling request", error);
-  }
-};
+// cancel handler
+// const handleCancelRequest = async (id) => {
+//   try {
+//     const res = await axios.delete(`/charityRequests/${id}`);
+//     console.log("Request canceled", res.data);
+//     // Optionally refetch requests after deletion
+//   } catch (error) {
+//     console.error("Error cancelling request", error);
+//   }
+// };
+
 
 export default MyRequests;

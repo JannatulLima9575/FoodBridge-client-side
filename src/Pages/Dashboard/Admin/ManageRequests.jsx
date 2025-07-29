@@ -1,8 +1,7 @@
-import React from "react";
+import React from "react"; 
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
-
 
 const ManageRequests = () => {
   const axiosSecure = useAxiosSecure();
@@ -15,27 +14,21 @@ const ManageRequests = () => {
     },
   });
 
-  const handleApprove = async (id) => {
-    try {
-      const res = await axiosSecure.patch(`/donation-requests/approve/${id}`);
-      if (res.data.modifiedCount > 0) {
-        toast.success("Request Approved");
-        refetch();
-      }
-    } catch (err) {
-      toast.error("Approval Failed");
-    }
-  };
+  const handleDelete = async (id) => {
+    const confirmDelete = confirm("Are you sure you want to delete this request?");
+    if (!confirmDelete) return;
 
-  const handleReject = async (id) => {
     try {
-      const res = await axiosSecure.patch(`/donation-requests/reject/${id}`);
-      if (res.data.modifiedCount > 0) {
-        toast.success("Request Rejected");
+      const res = await axiosSecure.delete(`/donation-requests/${id}`);
+      if (res.data.deletedCount > 0) {
+        toast.success("Request deleted successfully");
         refetch();
+      } else {
+        toast.error("Failed to delete request");
       }
     } catch (err) {
-      toast.error("Rejection Failed");
+      console.error(err);
+      toast.error("Error occurred while deleting");
     }
   };
 
@@ -49,35 +42,29 @@ const ManageRequests = () => {
             <thead className="bg-base-200">
               <tr>
                 <th>#</th>
-                <th>User</th>
-                <th>Donation</th>
-                <th>Quantity</th>
+                <th>Donation Title</th>
+                <th>Charity Name</th>
+                <th>Charity Email</th>
+                <th>Request Description</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {requests.map((req, index) => (
                 <tr key={req._id}>
                   <td>{index + 1}</td>
-                  <td>{req.userName}</td>
-                  <td>{req.donationTitle}</td>
-                  <td>{req.quantity}</td>
+                  <td>{req.donationTitle || "N/A"}</td>
+                  <td>{req.charityName || "N/A"}</td>
+                  <td>{req.charityEmail || "N/A"}</td>
+                  <td>{req.requestDescription || "N/A"}</td>
                   <td className="capitalize">{req.status}</td>
-                  <td className="space-x-2">
+                  <td>
                     <button
-                      onClick={() => handleApprove(req._id)}
-                      disabled={req.status === "approved"}
-                      className="btn btn-sm btn-success"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => handleReject(req._id)}
-                      disabled={req.status === "rejected"}
+                      onClick={() => handleDelete(req._id)}
                       className="btn btn-sm btn-error"
                     >
-                      Reject
+                      Delete
                     </button>
                   </td>
                 </tr>

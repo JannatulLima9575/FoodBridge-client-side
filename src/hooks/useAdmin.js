@@ -8,7 +8,7 @@ const useAdmin = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`https://food-bridge-server-side.vercel.app/users/admin/${user.email}`)
+      fetch(`/users/admin/${user.email}`)
         .then((res) => res.json())
         .then((data) => {
           console.log("admin data", data); // 👈 Add this

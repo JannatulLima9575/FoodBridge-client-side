@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from './../../Provider/useAuth';
 
 const AddDonation = () => {
   const { user } = useAuth();
+  const axios = useAxiosSecure();
   const {
     register,
     handleSubmit,
@@ -32,13 +33,13 @@ const AddDonation = () => {
     };
 
     try {
-      const res = await axios.post("https://food-bridge-server-side.vercel.app/donations", donationData);
+      const res = await axios.post("/donations", donationData);
       if (res.data.insertedId || res.status === 201) {
         toast.success("Donation added successfully!");
         reset();
       }
     } catch (error) {
-      toast.error("Failed to add donation");
+      toast.error("Failed to add donation", error);
     } finally {
       setLoading(false);
     }

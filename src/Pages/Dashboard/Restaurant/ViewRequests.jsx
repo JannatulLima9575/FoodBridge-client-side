@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import AuthContext from "../../Provider/AuthContext";
-// import AuthContext from "../Provider/AuthContext";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import AuthContext from "../../../Provider/AuthContext";
 
 const ViewRequests = () => {
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
   const { data: requests = [], isLoading } = useQuery({
     queryKey: ["charityRequests", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axios.get(
-        `https://food-bridge-server-side.vercel.app/charityRequests?email=${user.email}`
+        `/charityRequests?email=${user.email}`
       );
       return res.data;
     },

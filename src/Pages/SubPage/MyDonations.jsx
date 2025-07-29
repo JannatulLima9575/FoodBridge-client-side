@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-// import AuthContext from "../Provider/AuthContext";
 import { Link } from "react-router";
 import toast from "react-hot-toast";
 import AuthContext from "../../Provider/AuthContext";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const MyDonations = () => {
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure(); 
 
   const {
     data: myDonations = [],
@@ -17,7 +17,7 @@ const MyDonations = () => {
     queryKey: ["my-donations", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axios.get(`https://food-bridge-server-side.vercel.app/donations?email=${user.email}`);
+      const res = await axios.get(`/donations?email=${user.email}`);
       return res.data;
     },
   });
@@ -29,7 +29,7 @@ const MyDonations = () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`https://food-bridge-server-side.vercel.app/donations/${id}`);
+      await axios.delete(`/donations/${id}`);
       toast.success("Donation deleted successfully!");
       refetch();
     } catch (err) {

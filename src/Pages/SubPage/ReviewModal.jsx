@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
-import AuthContext from "../Provider/AuthContext";
-import axios from "axios";
+// import AuthContext from "../Provider/AuthContext";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 
-const ReviewModal = ({ donationId, close }) => {
-  const { user } = useContext(AuthContext);
+const ReviewModal = ({ user, donationId, onClose,isOpen }) => {
   const [description, setDescription] = useState("");
   const [rating, setRating] = useState(5);
+  const axios = useAxiosSecure();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,13 +17,18 @@ const ReviewModal = ({ donationId, close }) => {
       description,
       rating,
     };
-    await axios.post("https://food-bridge-server-side.vercel.app/reviews", review);
+    await axios.post("/reviews", review);
     toast.success("Review Submitted!");
-    close();
+    onClose();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-base-100 rounded shadow">
+    <form onSubmit={handleSubmit}
+     className={`${isOpen ? 'block' : 'hidden'} fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-base-100 rounded shadow`}>
+
+      <h3 className="text-lg font-semibold mb-4">Add a Review</h3>
+      <p className="text-sm mb-2">Your Name: {user.displayName}</p>
+      <p className="text-sm mb-4">Your Email: {user.email}</p>
       <textarea
         required
         value={description}
@@ -40,6 +45,7 @@ const ReviewModal = ({ donationId, close }) => {
         className="input input-bordered w-full mb-4"
       />
       <button type="submit" className="btn btn-primary">Submit</button>
+      <button type="button" onClick={()=>onClose()} className="btn btn-primary">Close</button>
     </form>
   );
 };

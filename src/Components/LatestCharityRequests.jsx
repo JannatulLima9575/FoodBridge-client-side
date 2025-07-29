@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const LatestCharityRequests = () => {
   const [charityRequests, setCharityRequests] = useState([]);
+  const axios = useAxiosSecure();
 
   useEffect(() => {
     axios
-      .get("https://food-bridge-server-side.vercel.app/charityRequests")
+      .get("/charityRequests")
       .then((res) => {
         // show latest 3 only
         const latest = res.data.slice(-3).reverse();

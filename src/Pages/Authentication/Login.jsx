@@ -3,40 +3,31 @@ import loginImage from '../../assets/animation/verification.svg';
 import { Link, useNavigate } from 'react-router';
 import AuthContext from '../../Provider/AuthContext';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
 
 
 const Login = () => {
-  const { signIn, signInWithGoogle } = useContext(AuthContext);
+  const { signIn, signInWithGoogle,} = useContext(AuthContext);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = (e) =>{ 
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     signIn(email, password)
-  .then((res) => {
-    const loggedUser = res.user;
-    // 🔐 Get JWT from server
-    axios
-      .post("https://food-bridge-server-side.vercel.app/jwt", { email: loggedUser.email })
-      .then(res => {
-        localStorage.setItem("token", res.data.token);
+    .then(() => {
         toast.success("Login successful");
         navigate("/");
-      });
-  })
-  .catch(err => {
-    toast.error("Invalid email or password");
-    setError(err.message);
+      }).catch(err => {
+       toast.error("Invalid email or password");
+       setError(err.message);
   });
   };
 
 
 const handleGoogleLogin = () => {
-  signInWithGoogle()
+    signInWithGoogle()
     .then(result => {
       console.log(result.user);
       navigate("/");

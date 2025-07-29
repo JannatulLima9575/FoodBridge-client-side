@@ -10,7 +10,7 @@ import {
   GoogleAuthProvider
 } from "firebase/auth";
 import auth from '../firebase/firebase.config';
-import axios from "axios";
+import useAxios from "../hooks/useAxiosSecure";
 
 // export const AuthContext = createContext();
 const googleProvider = new GoogleAuthProvider();
@@ -18,7 +18,8 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const axios = useAxios();
+  const [name,setName] = useState('');
   // ✅ Create new user
   const createUser = (email, password) => {
     setLoading(true);
@@ -27,6 +28,7 @@ const AuthProvider = ({ children }) => {
 
   // ✅ Update user profile
   const updateUserProfile = (name) => {
+    setName(name);
     setLoading(true);
     return updateProfile(auth.currentUser, { displayName: name });
   };
@@ -57,8 +59,10 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         try {
           // ✅ Get JWT token from server
-          const { data } = await axios.post("https://food-bridge-server-side.vercel.app/jwt", {
+          if( !name && !currentUser.displayName){return}
+          const { data } = await axios.post("/jwt", {
             email: currentUser.email,
+            name: currentUser.displayName || name,
           });
 
           // ✅ Save token to localStorage
@@ -68,10 +72,10 @@ const AuthProvider = ({ children }) => {
           axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
           // ✅ Fetch role from database
-          const res = await axios.get(`https://food-bridge-server-side.vercel.app/users/${currentUser.email}`);
-          const role = res.data?.role || "user";
+          /* const res = await axios.get(`/users/${currentUser.email}`);
+          const role = res.data?.role || "user"; */
 
-          setUser({ ...currentUser, role });
+          setUser({ ...currentUser, role:data.role });
         } catch (error) {
           console.error("Failed to fetch user role or token:", error);
           setUser(currentUser); // fallback without role
@@ -86,7 +90,7 @@ const AuthProvider = ({ children }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [name]);
 
   const authInfo = {
     user,

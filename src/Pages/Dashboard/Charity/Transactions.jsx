@@ -1,39 +1,53 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import AuthContext from "../../../Provider/AuthContext";;
 
 const Transactions = () => {
-  const transactions = [
-    {
-      id: "txn_12345",
-      amount: "$25",
-      date: "2025-07-18",
-      status: "Pending",
+  const { user } = useContext(AuthContext);
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["transactions", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const backendURL = "https://foodbridge-d530a.web.app";
+      const res = await axios.get(`${backendURL}/transactions?email=${user.email}`);
+      return res.data;
     },
-    // ... more dummy data
-  ];
+  });
+
+  if (isLoading) return <p>Loading transactions...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
+
+  const transactions = Array.isArray(data) ? data : [];
 
   return (
-    <div className="p-4 overflow-x-auto">
+    <div className="mt-10 p-4 overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4">Transaction History</h2>
-      <table className="min-w-full border">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="py-2 px-4 border">Transaction ID</th>
-            <th className="py-2 px-4 border">Amount</th>
-            <th className="py-2 px-4 border">Date</th>
-            <th className="py-2 px-4 border">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.map((tx) => (
-            <tr key={tx.id} className="text-center">
-              <td className="py-2 px-4 border">{tx.id}</td>
-              <td className="py-2 px-4 border">{tx.amount}</td>
-              <td className="py-2 px-4 border">{tx.date}</td>
-              <td className="py-2 px-4 border">{tx.status}</td>
+      {transactions.length === 0 ? (
+        <p>No transactions found.</p>
+      ) : (
+        <table className="w-full border border-collapse">
+          <thead>
+            <tr className="bg-green-200">
+              <th className="p-2 border">Transaction ID</th>
+              <th className="p-2 border">Amount</th>
+              <th className="p-2 border">Request Date</th>
+              <th className="p-2 border">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {transactions.map((t) => (
+              <tr key={t._id || t.transactionId}>
+                <td className="p-2 border">{t.transactionId || "N/A"}</td>
+                <td className="p-2 border">${t.amount}</td>
+                <td className="p-2 border">{new Date(t.date).toLocaleDateString()}</td>
+                <td className="p-2 border">{t.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

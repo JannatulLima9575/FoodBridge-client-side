@@ -1,14 +1,15 @@
 // src/Pages/Dashboard/Summary.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Summary = () => {
   const [stats, setStats] = useState({});
   const email = localStorage.getItem("userEmail");
+  const axios = useAxiosSecure();
 
   useEffect(() => {
     axios
-      .get(`https://food-bridge-server-side.vercel.app/donations/summary?email=${email}`)
+      .get(`/donations/summary?email=${email}`)
       .then((res) => setStats(res.data));
   }, [email]);
 

@@ -1,21 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { FaCheck, FaStar, FaTrash } from "react-icons/fa";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const ManageDonations = () => {
   const { data: donations = [], refetch } = useQuery({
     queryKey: ["admin-donations"],
     queryFn: async () => {
-      const res = await axios.get("https://food-bridge-server-side.vercel.app/donations");
+      const res = await axios.get("/donations");
       return res.data;
     },
   });
+  const axios = useAxiosSecure();
 
   // ✅ Approve Donation
   const handleApprove = async (id) => {
     try {
-      const res = await axios.put(`https://food-bridge-server-side.vercel.app/donations/${id}`, {
+      const res = await axios.put(`/donations/${id}`, {
         isApproved: true,
         status: "Available",
       });
@@ -24,14 +25,14 @@ const ManageDonations = () => {
         refetch();
       }
     } catch (err) {
-      toast.error("Failed to approve");
+      toast.error("Failed to approve", err);
     }
   };
 
   // ⭐ Feature Donation
   const handleFeature = async (id) => {
     try {
-      const res = await axios.put(`https://food-bridge-server-side.vercel.app/donations/${id}`, {
+      const res = await axios.put(`/donations/${id}`, {
         isFeatured: true,
       });
       if (res.data.modifiedCount > 0) {
@@ -39,7 +40,7 @@ const ManageDonations = () => {
         refetch();
       }
     } catch (err) {
-      toast.error("Failed to feature");
+      toast.error("Failed to feature", err);
     }
   };
 
@@ -49,13 +50,13 @@ const ManageDonations = () => {
     if (!confirm) return;
 
     try {
-      const res = await axios.delete(`https://food-bridge-server-side.vercel.app/donations/${id}`);
+      const res = await axios.delete(`/donations/${id}`);
       if (res.data.deletedCount > 0) {
         toast.success("Deleted successfully");
         refetch();
       }
     } catch (err) {
-      toast.error("Failed to delete");
+      toast.error("Failed to delete", err);
     }
   };
 

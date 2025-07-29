@@ -1,19 +1,21 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import AuthContext  from "../../../Provider/AuthContext";
 
 const MyPickups = () => {
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["pickups", user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axios.get(`/api/pickups?email=${user.email}`);
-      return res.data;
-    },
-  });
+const { data, isLoading } = useQuery({
+  queryKey: ["pickups", user?.email],
+  enabled: !!user?.email,
+  queryFn: async () => {
+    const res = await axios.get(`/charityPickups?email=${user.email}`);
+    return res.data;
+  },
+});
+
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -59,15 +61,15 @@ const MyPickups = () => {
   );
 };
 
-// Example function for confirm pickup (implement API route accordingly)
-const handleConfirmPickup = async (id) => {
-  try {
-    const res = await axios.patch(`/api/pickups/${id}/confirm`);
-    console.log(res.data);
-    // Optionally refetch pickups after confirming
-  } catch (error) {
-    console.error("Error confirming pickup", error);
-  }
-};
+//function for confirm pickup (implement API route accordingly)
+// const handleConfirmPickup = async (id) => {
+//   try {
+//     const res = await axios.patch(`/charityPickups/${id}/pickup`);
+//     console.log(res.data);
+//     // Optionally refetch pickups after confirming
+//   } catch (error) {
+//     console.error("Error confirming pickup", error);
+//   }
+// };
 
 export default MyPickups;

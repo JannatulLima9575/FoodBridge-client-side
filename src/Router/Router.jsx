@@ -8,15 +8,14 @@ import AllDonations from "../Pages/AllDonations";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import DashboardHome from "../Pages/Dashboard/DashboardHome";
 import PrivateRoute from "./PrivateRoute";
-import Payment from "../Pages/Dashboard/Payments/Payment";
 import DonationDetails from "../Pages/SubPage/DonationDetails";
 import MyDonations from "../Pages/SubPage/MyDonations";
 import EditDonation from "../Pages/SubPage/EditDonation";
 import DashboardAnalytics from "../Pages/Dashboard/Restaurant/DashboardAnalytics";
-import ViewRequests from "../Pages/SubPage/ViewRequests";
+import ViewRequests from "../Pages/Dashboard/Restaurant/ViewRequests";
 import MyPayments from "../Pages/Dashboard/Payments/MyPayments";
 import PaymentSuccess from "../Pages/Dashboard/Payments/PaymentSuccess";
-import Favorites from "../Pages/SubPage/Favorites";
+// import Favorites from "../Pages/SubPage/Favorites";
 import AddDonation from "../Pages/Dashboard/AddDonation";
 
 import RestaurantRoute from "./RestaurantRoute";
@@ -34,11 +33,11 @@ import DonationStatistics from "../Pages/Dashboard/Restaurant/DonationStatistics
 import { Component } from "react";
 import Profile from "../Pages/Dashboard/Profile";
 import ReportedDonations from "../Pages/Dashboard/ReportedDonations";
-import RequestCharityRole from "../Pages/Dashboard/Charity/RequestCharityRole";
-import Transactions from "../Pages/Dashboard/Charity/Transactions";
-import MyReviews from "../Pages/Dashboard/Charity/MyReviews";
-import UserFavorites from "../Pages/Dashboard/Charity/UserFavorites";
-import TransactionHistory from "../Pages/Dashboard/Charity/TransactionHistory";
+// import RequestCharityRole from "../Pages/Dashboard/Charity/RequestCharityRole";
+// import Transactions from "../Pages/Dashboard/Charity/Transactions";
+import MyReviews from "../Pages/Dashboard/User/MyReviews";
+// import UserFavorites from "../Pages/Dashboard/User/UserFavorites";
+import TransactionHistory from "../Pages/Dashboard/User/TransactionHistory";
 import ReceivedDonations from "../Pages/Dashboard/Charity/ReceivedDonations";
 import MyPickups from "../Pages/Dashboard/Charity/MyPickups";
 import MyRequests from "../Pages/Dashboard/Charity/MyRequests";
@@ -47,6 +46,9 @@ import AdminProfile from "../Pages/Dashboard/Admin/AdminProfile";
 import FeatureDonations from "../Pages/Dashboard/Admin/FeatureDonations";
 import ManageRequests from "../Pages/Dashboard/Admin/ManageRequests";
 import RestaurantProfile from "./../Pages/Dashboard/Restaurant/RestaurantProfile";
+import Transactions from './../Pages/Dashboard/Charity/Transactions';
+import Payment from './../Pages/Dashboard/Payments/Payment';
+import Favorites from "../Pages/Dashboard/Favorites";
 
 export const router = createBrowserRouter([
   {
@@ -94,11 +96,15 @@ export const router = createBrowserRouter([
       /* 👤 User Role Routes */
       {
         path: "request-charity",
-        element: <RequestCharityRole />,
+        element: <Payment/>,
       },
+      // {
+      //   path: "user-favorites",
+      //   element: <UserFavorites />,
+      // },
       {
         path: "user-favorites",
-        element: <UserFavorites />,
+        element: <Favorites />,
       },
       {
         path: "my-reviews",
@@ -108,22 +114,14 @@ export const router = createBrowserRouter([
         path: "transactions",
         element: <Transactions />,
       },
+
+      // Restaurant Route 
       {
         path: "restaurant-profile",
         element: (
           <RestaurantRoute>
             <RestaurantProfile />
           </RestaurantRoute>
-        ),
-      },
-      {
-        path: "donation-statistics",
-        element: (
-          <PrivateRoute>
-            <RestaurantRoute>
-              <DonationStatistics />
-            </RestaurantRoute>
-          </PrivateRoute>
         ),
       },
       {
@@ -166,6 +164,15 @@ export const router = createBrowserRouter([
           </RestaurantRoute>
         ),
       },
+            {
+        path: "statistics",
+        element: (
+          <RestaurantRoute>
+            <DonationStatistics />
+          </RestaurantRoute>
+        ),
+      },
+
       {
         path: "payment/:id",
         element: (
@@ -220,14 +227,6 @@ export const router = createBrowserRouter([
           <CharityRoute>
             <TransactionHistory />
           </CharityRoute>
-        ),
-      },
-      {
-        path: "statistics",
-        element: (
-          <RestaurantRoute>
-            <DonationStatistics />
-          </RestaurantRoute>
         ),
       },
       {

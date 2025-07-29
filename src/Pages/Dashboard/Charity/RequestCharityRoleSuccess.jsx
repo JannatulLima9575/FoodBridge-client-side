@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useSearchParams } from "react-router";
 import toast from "react-hot-toast";
 import { useContext } from "react";
@@ -8,6 +8,7 @@ import { AuthContext } from "../../../Provider/AuthContext";
 const RequestCharityRoleSuccess = () => {
   const [params] = useSearchParams();
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
   useEffect(() => {
     const transactionId = params.get("transactionId");
@@ -15,7 +16,7 @@ const RequestCharityRoleSuccess = () => {
     const mission = localStorage.getItem("mission");
 
     if (transactionId && user) {
-      axios.post("/api/charity-role-request", {
+      axios.post("/charity-role-request", {
         email: user.email,
         organizationName,
         mission,

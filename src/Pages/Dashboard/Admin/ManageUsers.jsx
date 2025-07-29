@@ -2,25 +2,26 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaTrash, FaUserShield } from "react-icons/fa";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ManageUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ["all-users"],
     queryFn: async () => {
-      const res = await axios.get("https://food-bridge-server-side.vercel.app/users");
+      const res = await axios.get("/users");
       return res.data;
     },
   });
-
+  const axios = useAxiosSecure();
   const updateRole = async (email, role) => {
     try {
-      const res = await axios.put(`https://food-bridge-server-side.vercel.app/users/role/${email}`, { role });
+      const res = await axios.put(`/users/role/${email}`, { role });
       if (res.data.modifiedCount > 0) {
         toast.success(`Role updated to ${role}`);
         refetch();
       }
     } catch (err) {
-      toast.error("Failed to update role");
+      toast.error("Failed to update role", err);
     }
   };
 
@@ -28,13 +29,13 @@ const ManageUsers = () => {
     const confirm = window.confirm("Are you sure you want to delete this user?");
     if (!confirm) return;
     try {
-      const res = await axios.delete(`https://food-bridge-server-side.vercel.app/users/${email}`);
+      const res = await axios.delete(`/users/${email}`);
       if (res.data.deletedCount > 0) {
         toast.success("User deleted");
         refetch();
       }
     } catch (err) {
-      toast.error("Failed to delete user");
+      toast.error("Failed to delete user", err);
     }
   };
 

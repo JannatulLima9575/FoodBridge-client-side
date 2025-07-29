@@ -20,7 +20,7 @@ const ReportedDonations = () => {
       toast.success("Donation & Reports Removed");
       refetch();
     } catch (err) {
-      toast.error("Failed to delete");
+      toast.error("Failed to delete", err);
     }
   };
 

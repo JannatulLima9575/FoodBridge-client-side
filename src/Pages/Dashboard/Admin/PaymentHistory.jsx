@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const PaymentHistory = () => {
+  const axios = useAxiosSecure();
   const { data: payments = [] } = useQuery({
     queryKey: ["payments"],
     queryFn: async () => {
-      const res = await axios.get("https://food-bridge-server-side.vercel.app/payments");
+      const res = await axios.get("/payments");
       return res.data;
     },
   });

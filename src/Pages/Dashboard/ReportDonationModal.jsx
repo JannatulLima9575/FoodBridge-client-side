@@ -4,7 +4,7 @@ import useAuth from "../../Provider/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 
-const ReportDonationModal = ({ isOpen, closeModal, donationId }) => {
+const ReportDonationModal = ({ isOpen=false, closeModal=()=>{}, donationId }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, reset } = useForm();
@@ -24,7 +24,7 @@ const ReportDonationModal = ({ isOpen, closeModal, donationId }) => {
       reset();
       closeModal();
     } catch (error) {
-      toast.error("Failed to report");
+      toast.error("Failed to report", error);
     }
   };
 

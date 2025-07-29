@@ -8,7 +8,7 @@ const Payment = () => {
   return (
     <div>
       <Elements stripe={stripePromise}>
-    <PaymentForm></PaymentForm>
+        <PaymentForm></PaymentForm>
       </Elements>
     </div>
   );

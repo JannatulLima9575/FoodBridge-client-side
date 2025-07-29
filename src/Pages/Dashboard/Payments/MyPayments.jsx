@@ -1,16 +1,17 @@
 // src/Pages/Dashboard/Payments/MyPayments.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../Provider/useAuth";
 
 const MyPayments = () => {
   const { user } = useAuth();
   const [payments, setPayments] = useState([]);
+  const axios = useAxiosSecure();
 
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`https://food-bridge-server-side.vercel.app/payments?email=${user.email}`)
+        .get(`/payments?email=${user.email}`)
         .then((res) => setPayments(res.data));
     }
   }, [user]);
