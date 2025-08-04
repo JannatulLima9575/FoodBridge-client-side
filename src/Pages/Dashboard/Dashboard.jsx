@@ -22,17 +22,17 @@ import { MdReportProblem } from "react-icons/md";
 import useCharity from "../../hooks/useCharity";
 import useAdmin from "../../hooks/useAdmin"; */
 // import useAuth from "../../Provider/useAuth";
-import useAxiosSecure from './../../hooks/useAxiosSecure';
+import useAxiosSecure from "./../../hooks/useAxiosSecure";
 import AuthContext from "../../Provider/AuthContext";
 
 const Dashboard = () => {
-  const { user,loading } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const axios = useAxiosSecure();
 
-/*   const { isRestaurant, isRestaurantLoading } = useRestaurant();
+  /*   const { isRestaurant, isRestaurantLoading } = useRestaurant();
   const { isCharity, isCharityLoading } = useCharity();
   const { isAdmin, isAdminLoading } = useAdmin(); */
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   if (/* isRestaurantLoading || isCharityLoading || isAdminLoading */ loading) {
     return <div className="p-10">Loading dashboard...</div>;
@@ -44,7 +44,13 @@ const Dashboard = () => {
     headers: { Authorization: `Bearer ${token}` },
   });
 
- /*  const isUser = !isAdmin && !isCharity && !isRestaurant; */
+  const handleLinkClick = () => {
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  /*  const isUser = !isAdmin && !isCharity && !isRestaurant; */
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
@@ -58,217 +64,256 @@ const Dashboard = () => {
         <h2 className="text-xl font-bold mb-4">Dashboard</h2>
         <ul className="space-y-3 flex-1">
           {/* 🍽 Restaurant Menu */}
-          {/* isRestaurant */ user.role==='restaurant' && (
-            <>
-              <li>
-                <Link
-                  to="/dashboard/analytics"
-                  className="flex items-center gap-2"
-                >
-                  <FaChartPie /> Analytics
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/restaurant-profile"
-                  className="flex items-center gap-2"
-                >
-                  <FaChartPie /> Restaurant Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/add-donation"
-                  className="flex items-center gap-2"
-                >
-                  <FaEdit /> Add Donation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/my-donations"
-                  className="flex items-center gap-2"
-                >
-                  <FaList /> My Donations
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/view-requests"
-                  className="flex items-center gap-2"
-                >
-                  <FaClipboardList /> View Requests
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/statistics"
-                  className="flex items-center gap-2"
-                >
-                  📊 Donation Stats
-                </Link>
-              </li>
-            </>
-          )}
+          {
+            /* isRestaurant */ user.role === "restaurant" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/analytics"
+                    className="flex items-center gap-2"
+                  >
+                    <FaChartPie /> Analytics
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/restaurant-profile"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaChartPie /> Restaurant Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/add-donation"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaEdit /> Add Donation
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/my-donations"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaList /> My Donations
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/view-requests"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaClipboardList /> View Requests
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/statistics"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    📊 Donation Stats
+                  </Link>
+                </li>
+              </>
+            )
+          }
 
           {/* ❤️ Charity Menu */}
-          {/* isCharity */ user.role==='charity' && (
-            <>
-              <li>
-                <Link
-                  to="/dashboard/charity-profile"
-                  className="flex items-center gap-2"
-                >
-                  <CgProfile /> Charity Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/my-requests"
-                  className="flex items-center gap-2"
-                >
-                  <FaClipboardList /> My Requests
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/my-pickups"
-                  className="flex items-center gap-2"
-                >
-                  <FaBoxOpen /> My Pickups
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/received-donations"
-                  className="flex items-center gap-2"
-                >
-                  <FaHandHoldingHeart /> Received Donations
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/transaction-history"
-                  className="flex items-center gap-2"
-                >
-                  <FaHistory /> Transaction History
-                </Link>
-              </li>
-            </>
-          )}
+          {
+            /* isCharity */ user.role === "charity" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/charity-profile"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <CgProfile /> Charity Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/my-requests"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaClipboardList /> My Requests
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/my-pickups"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaBoxOpen /> My Pickups
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/received-donations"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaHandHoldingHeart /> Received Donations
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/transaction-history"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaHistory /> Transaction History
+                  </Link>
+                </li>
+              </>
+            )
+          }
 
           {/* 🔐 Admin Menu */}
-          {/* isAdmin */ user.role==='admin' && (
-            <>
-              <li>
-                <Link
-                  to="/dashboard/admin-profile"
-                  className="flex items-center gap-2"
-                >
-                  <CgProfile /> Admin Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/manage-donations"
-                  className="flex items-center gap-2"
-                >
-                  <FaUtensils /> Manage Donations
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/manage-users"
-                  className="flex items-center gap-2"
-                >
-                  <FaUsers /> Manage Users
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/role-requests"
-                  className="flex items-center gap-2"
-                >
-                  <FaClipboardList /> Manage Role Requests
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/manage-requests"
-                  className="flex items-center gap-2"
-                >
-                  <FaClipboardList /> Manage Requests
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/feature-donations"
-                  className="flex items-center gap-2"
-                >
-                  <FaStar /> Feature Donations
-                </Link>
-              </li>
-            </>
-          )}
+          {
+            /* isAdmin */ user.role === "admin" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/admin-profile"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <CgProfile /> Admin Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/manage-donations"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaUtensils /> Manage Donations
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/manage-users"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaUsers /> Manage Users
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/role-requests"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaClipboardList /> Manage Role Requests
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/manage-requests"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaClipboardList /> Manage Requests
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/feature-donations"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaStar /> Feature Donations
+                  </Link>
+                </li>
+              </>
+            )
+          }
 
           {/* 👤 User Menu */}
-          {/* isUser */ user.role==='user' && (
-            <>
-              <li>
-                <Link
-                  to="/dashboard/profile"
-                  className="flex items-center gap-2"
-                >
-                  <FaUserAlt /> My Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/request-charity"
-                  className="flex items-center gap-2"
-                >
-                  <FaHandHoldingHeart /> Request Charity Role
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/user-favorites"
-                  className="flex items-center gap-2"
-                >
-                  <FaStar /> Favorites
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/my-reviews"
-                  className="flex items-center gap-2"
-                >
-                  <FaEdit /> My Reviews
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard/transactions"
-                  className="flex items-center gap-2"
-                >
-                  <FaHistory /> Transaction History
-                </Link>
-              </li>
-            </>
-          )}
+          {
+            /* isUser */ user.role === "user" && (
+              <>
+                <li>
+                  <Link
+                    to="/dashboard/profile"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaUserAlt /> My Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/request-charity"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaHandHoldingHeart /> Request Charity Role
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/user-favorites"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaStar /> Favorites
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/my-reviews"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaEdit /> My Reviews
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/dashboard/transactions"
+                    className="flex items-center gap-2"
+                    onClick={handleLinkClick}
+                  >
+                    <FaHistory /> Transaction History
+                  </Link>
+                </li>
+              </>
+            )
+          }
         </ul>
         {/* Common */}
         <div className="md:pt-80 md:pb-0 items-end">
-          <Link to="/" className="flex items-center gap-2 mb-3">
+          <Link
+            to="/"
+            className="flex items-center gap-2 mb-3"
+            onClick={handleLinkClick}
+          >
             <FaHome /> Back to Home
           </Link>
 
           {/* Profile Link for non-users */}
-          {/* !isUser */ !user.role==='user' && (
-            <Link to="/dashboard/profile" className="flex items-center gap-2">
-              <CgProfile /> Edit Profile
-            </Link>
-          )}
+          {
+            /* !isUser */ !user.role === "user" && (
+              <Link
+                to="/dashboard/profile"
+                className="flex items-center gap-2"
+                onClick={handleLinkClick}
+              >
+                <CgProfile /> Edit Profile
+              </Link>
+            )
+          }
         </div>
       </aside>
 

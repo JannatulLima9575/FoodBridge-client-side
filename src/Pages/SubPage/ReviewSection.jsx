@@ -6,7 +6,7 @@ const ReviewSection = ({ donationId }) => {
   const axios = useAxiosSecure();
 
   useEffect(() => {
-    axios.get(`/reviews/${donationId}`).then((res) => {
+    axios.get(`/reviewsByid/${donationId}`).then((res) => {
       setReviews(res.data);
     });
   }, [donationId]);

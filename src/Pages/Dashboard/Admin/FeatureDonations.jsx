@@ -15,35 +15,38 @@ const FeatureDonations = () => {
   });
 
   const handleFeature = async (id) => {
-    if (!confirm("Feature this donation on homepage?")) return;
+    const confirmFeature = confirm("Feature this donation on homepage?");
+    if (!confirmFeature) return;
 
     try {
       const res = await axiosSecure.patch(`/donations/feature/${id}`);
       if (res.data.modifiedCount > 0) {
         toast.success("Donation marked as featured!");
         refetch();
+      }else{
+        toast.success("Donation already marked as featured!");
       }
-    } catch (err) {
-      toast.error("Failed to mark as featured", err);
+    } catch (error) {
+      toast.error("Failed to mark as featured", error);
     }
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Feature Verified Donations</h2>
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4">Feature Donations</h2>
 
       {verifiedDonations.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="table w-full border">
-            <thead>
-              <tr className="bg-base-200">
+          <table className="table w-full">
+            <thead className="bg-base-200">
+              <tr>
                 <th>#</th>
                 <th>Image</th>
-                <th>Food Name</th>
-                <th>Donor</th>
-                <th>Location</th>
+                <th>Donation Title</th>
+                <th>Food Type</th>
+                <th>Restaurant Name</th>
                 <th>Featured</th>
-                <th>Action</th>
+                <th>Feature Action</th>
               </tr>
             </thead>
             <tbody>
@@ -57,17 +60,23 @@ const FeatureDonations = () => {
                       className="w-16 h-16 object-cover rounded"
                     />
                   </td>
-                  <td>{donation.foodName}</td>
-                  <td>{donation.donorEmail}</td>
-                  <td>{donation.location}</td>
-                  <td>{donation.featured ? "✅" : "❌"}</td>
+                  <td className="font-semibold">{donation.title}</td>
+                  <td>{donation.foodType || "N/A"}</td>
+                  <td>{donation.restaurantName || "N/A"}</td>
+                  <td className="text-center text-lg">
+                    {donation.isFeatured? "✅" : "❌"}
+                  </td>
                   <td>
                     <button
                       onClick={() => handleFeature(donation._id)}
-                      disabled={donation.featured}
-                      className="btn btn-sm bg-green-500 text-white hover:bg-green-600 disabled:opacity-50"
+                      disabled={donation.isFeatured}
+                      className={`btn btn-sm ${
+                        donation.isFeatured
+                          ? "bg-gray-400 text-white cursor-not-allowed"
+                          : "bg-green-600 hover:bg-green-700 text-white"
+                      }`}
                     >
-                      {donation.featured ? "Featured" : "Make Featured"}
+                      {donation.isFeatured ? "Featured" : "Make Featured"}
                     </button>
                   </td>
                 </tr>
@@ -76,7 +85,7 @@ const FeatureDonations = () => {
           </table>
         </div>
       ) : (
-        <p className="text-center text-gray-500">No verified donations found.</p>
+        <p className="text-center text-gray-500 mt-8">No verified donations found.</p>
       )}
     </div>
   );

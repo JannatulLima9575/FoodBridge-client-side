@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import AuthContext from "../../../Provider/AuthContext";;
+import AuthContext from "../../../Provider/AuthContext";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Transactions = () => {
   const { user } = useContext(AuthContext);
+  const axios = useAxiosSecure();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["transactions", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const backendURL = "https://foodbridge-d530a.web.app";
-      const res = await axios.get(`${backendURL}/transactions?email=${user.email}`);
+      const res = await axios.get(`/transactions?email=${user.email}`);
       return res.data;
     },
   });
@@ -20,6 +20,7 @@ const Transactions = () => {
   if (isError) return <p>Error: {error.message}</p>;
 
   const transactions = Array.isArray(data) ? data : [];
+
 
   return (
     <div className="mt-10 p-4 overflow-x-auto">
@@ -41,7 +42,7 @@ const Transactions = () => {
               <tr key={t._id || t.transactionId}>
                 <td className="p-2 border">{t.transactionId || "N/A"}</td>
                 <td className="p-2 border">${t.amount}</td>
-                <td className="p-2 border">{new Date(t.date).toLocaleDateString()}</td>
+                <td className="p-2 border">{new Date(t.createdAt).toLocaleDateString()}</td>
                 <td className="p-2 border">{t.status}</td>
               </tr>
             ))}

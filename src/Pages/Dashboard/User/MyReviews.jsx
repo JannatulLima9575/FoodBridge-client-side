@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import useAuth from "../../../Provider/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
@@ -12,9 +11,7 @@ const MyReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await axios.get(
-          `/reviews?email=${user.email}`
-        );
+        const res = await axios.get(`/reviews?email=${user.email}`);
         setReviews(res.data);
       } catch (err) {
         console.error(err);
@@ -25,7 +22,7 @@ const MyReviews = () => {
     if (user?.email) {
       fetchReviews();
     }
-  }, [user]);
+  }, [user, axios]);
 
   const handleDelete = async (id) => {
     try {
@@ -39,24 +36,38 @@ const MyReviews = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">My Reviews</h2>
+    <div className="p-6 mt-6">
+      <h2 className="text-2xl font-bold mb-6">My Reviews</h2>
+
       {reviews.length === 0 ? (
         <p>No reviews found.</p>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {reviews.map((review) => (
             <div
               key={review._id}
-              className="border rounded p-4 flex flex-col gap-2"
+              className="border border-gray-200 shadow-sm rounded-lg p-5 flex flex-col justify-between"
             >
-              <h3 className="font-semibold">{review.donationTitle}</h3>
-              <p>Restaurant: {review.restaurantName}</p>
-              <p>{review.description}</p>
-              <p className="text-sm text-gray-600">Reviewed: {new Date(review.createdAt).toLocaleDateString()}</p>
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-1">
+                  Donation: {review.title || review.donationId}
+                </h3>
+                <p className="text-sm text-gray-700">
+                  <span className="font-medium">Restaurant:</span> {review.reviewerName}
+                </p>
+                <p className="text-gray-800 my-2">{review.description}</p>
+                <p className="text-xs text-gray-500">
+                  Reviewed on:{" "}
+                  {new Date(review.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
               <button
                 onClick={() => handleDelete(review._id)}
-                className="bg-red-600 text-white px-3 py-1 rounded self-start"
+                className="mt-4 px-4 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition self-start"
               >
                 Delete Review
               </button>

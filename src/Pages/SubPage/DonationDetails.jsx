@@ -8,12 +8,14 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import ReportDonationModal from "../Dashboard/ReportDonationModal";
 import ReviewSection from "../SubPage/ReviewSection";
 import ReviewModal from "../SubPage/ReviewModal";
+import CharityProfile from './../Dashboard/Charity/CharityProfile';
 
 const DonationDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
-  const[review, setreview] = useState(false);
+  const [review, setreview] = useState(false);
+  console.log("iddddddd", id);
 
   const {
     data: donation = {},
@@ -25,6 +27,7 @@ const DonationDetails = () => {
       const res = await axiosSecure.get(`/donations/${id}`);
       return res.data;
     },
+    enabled: !!id,
   });
 
   if (isLoading) {
@@ -32,24 +35,24 @@ const DonationDetails = () => {
   }
 
   console.log("Donation Details:", donation);
-  
 
   const {
     title,
     image,
     description,
-    pickupLocation,
     pickupTime,
     foodType,
     quantity,
     status,
     restaurantInfo,
+    location,
+    restaurantEmail,
+    restaurantName,
     lat,
     lng,
   } = donation;
 
-  console.log('user:', user);
-  
+  console.log("user:", user);
 
   const handleSaveFavorite = async () => {
     try {
@@ -69,34 +72,41 @@ const DonationDetails = () => {
 
   const handleRequestDonation = async () => {
     try {
-      const res = await axiosSecure.post("/requests", {
+      const res = await axiosSecure.post("/charityRequests", {
         donationId: id,
         charityEmail: user?.email,
-        pickupTime: pickupTime || "10:00 AM - 12:00 PM", // You can update this later
+        pickupTime: pickupTime || "10:00 AM - 12:00 PM",
+        charityName: user?.displayName, 
+        charityImage:user?.photoURL || "https://i.ibb.co/ZYW3VTp/brown-brim.png",
         status: "Pending",
       });
       if (res.data.insertedId) {
         toast.success("Donation requested!");
         refetch();
-      } else {
-        toast.error("You already requested this donation.");
-      }
+      } 
     } catch (error) {
-      toast.error("Failed to request donation.", error);
+      if(error.status === 400) {
+        toast.error("You already requested this donation.");
+      }else toast.error("Failed to request donation.", error);
     }
   };
 
   const handleConfirmPickup = async () => {
     try {
-      const res = await axiosSecure.patch(`/requests/confirm/${id}`, {
+      const res = await axiosSecure.put(`/charityPickups`, {
+        donationId:id,
         charityEmail: user?.email,
+        pickupTime: pickupTime || "10:00 AM - 12:00 PM",
       });
-      if (res.data.modifiedCount > 0) {
+      if (res) {
         toast.success("Pickup confirmed!");
         refetch();
       }
     } catch (error) {
-      toast.error("Failed to confirm pickup.", error);
+      if(error.status===404){
+        toast.error( error.response.data.message);
+        console.log(error);  
+      }else toast.error("Failed to confirm pickup.", error);
     }
   };
 
@@ -123,16 +133,16 @@ const DonationDetails = () => {
             <strong>Status:</strong> {status}
           </p>
           <p className="mb-4">
-            <strong>Location:</strong> {pickupLocation}
+            <strong>Location:</strong> {location}
           </p>
 
           <div className="mb-4">
             <h4 className="font-semibold mb-1">Restaurant Info:</h4>
             <p>
-              <strong>Name:</strong> {restaurantInfo?.name}
+              <strong>Name:</strong> {restaurantName}
             </p>
             <p>
-              <strong>Email:</strong> {restaurantInfo?.email}
+              <strong>Email:</strong> {restaurantEmail}
             </p>
           </div>
 
@@ -166,7 +176,7 @@ const DonationDetails = () => {
           )}
 
           {/* Report Button */}
-          {["user", "charity" ].includes(user?.role) && (
+          {["user", "charity"].includes(user?.role) && (
             <button
               className="btn btn-error btn-sm"
               onClick={() =>
@@ -182,19 +192,17 @@ const DonationDetails = () => {
       {/* Map */}
       <div className="mt-10">
         <h3 className="text-xl font-bold mb-3">Location Map</h3>
-       {/*  <DonationDetailsMap lat={lat} lng={lng} /> */}
+        {/*  <DonationDetailsMap lat={lat} lng={lng} /> */}
       </div>
 
       {/* Review Section */}
       <div className="mt-10">
-        <ReviewSection  donationId={id} />
+        <ReviewSection donationId={id} />
         {["user", "charity"].includes(user?.role) && (
           <div className="mt-4">
             <button
               className="btn btn-outline"
-              onClick={() =>
-                setreview(review => !review)
-              }
+              onClick={() => setreview((review) => !review)}
             >
               ✍️ Add a Review
             </button>
@@ -202,9 +210,18 @@ const DonationDetails = () => {
         )}
       </div>
 
-      {/* Modals */} 
+      {/* Modals */}
       <ReportDonationModal donationId={id} />
-      <ReviewModal donationId={id} user={user} isOpen={review} onClose={()=>{setreview(false)}} /> 
+      {review && (
+        <ReviewModal
+          donationId={id}
+          user={user}
+          isOpen={review}
+          onClose={() => {
+            setreview(false);
+          }}
+        />
+      )}
     </div>
   );
 };

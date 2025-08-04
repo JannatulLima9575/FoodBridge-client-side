@@ -6,7 +6,7 @@ import AuthContext from "../Provider/AuthContext";
 import { toast } from "react-hot-toast";
 
 
-const FeaturedDonations = () => {
+const FeatureDonations = () => {
   const { user } = useContext(AuthContext);
   const axios = useAxiosSecure();
   const navigate = useNavigate();
@@ -94,4 +94,4 @@ const FeaturedDonations = () => {
   );
 };
 
-export default FeaturedDonations;
+export default FeatureDonations;

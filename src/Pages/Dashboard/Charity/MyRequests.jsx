@@ -1,24 +1,52 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import AuthContext from "../../../Provider/AuthContext";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useState } from "react";
+
 
 const MyRequests = () => {
   const { user } = useContext(AuthContext);
   const axios = useAxiosSecure();
+  const [requests,setrequests] = useState([]);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading,refetch } = useQuery({
     queryKey: ["requests", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axios.get(`/charityRequests?email=${user.email}`);
+      try {
+      const res = await axios.get(`/myCharityRequests?email=${user.email}`);
       return res.data;
+      } catch (error) {
+        console.error("Error fetching requests:", error); 
+        return [];
+      }
     },
   });
 
+
+  useEffect(() => {
+  console.log("My Requests Data:", data);
+  const requests = Array.isArray(data) ? data : [];
+  setrequests(requests);
+},[data]);
+
+  // cancel handler
+const handleCancelRequest = async (id) => {
+  try {
+    console.log("Canceling request with ID:", id );
+    
+    const res = await axios.delete(`/myCharityRequests/${id}`);
+    console.log("Request canceled", res.data);
+    refetch();
+    // Optionally refetch requests after deletion
+  } catch (error) {
+    console.error("Error cancelling request", error);
+  }
+};
+
   if (isLoading) return <p>Loading...</p>;
 
-  const requests = Array.isArray(data) ? data : [];
 
   return (
     <div className="mt-10">
@@ -55,17 +83,6 @@ const MyRequests = () => {
   );
 
 };
-
-// cancel handler
-// const handleCancelRequest = async (id) => {
-//   try {
-//     const res = await axios.delete(`/charityRequests/${id}`);
-//     console.log("Request canceled", res.data);
-//     // Optionally refetch requests after deletion
-//   } catch (error) {
-//     console.error("Error cancelling request", error);
-//   }
-// };
 
 
 export default MyRequests;

@@ -9,6 +9,7 @@ const CharityProfile = () => {
       <img
         src={user?.photoURL}
         alt={user?.displayName}
+        referrerPolicy="no-referrer"
         className="w-24 h-24 rounded-full mx-auto mb-4"
       />
       <h2 className="text-2xl font-bold text-center">{user?.displayName}</h2>

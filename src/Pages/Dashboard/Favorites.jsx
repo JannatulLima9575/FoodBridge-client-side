@@ -24,7 +24,7 @@ const Favorites = () => {
 
   const handleRemove = async (id) => {
     try {
-      const res = await axiosSecure.delete(`/favorites/${id}`);
+      const res = await axiosSecure.delete(`/favorites/${id}/${user?.email}`);
       if (res.data.deletedCount > 0) {
         toast.success("Removed from favorites!");
         refetch();
@@ -33,6 +33,9 @@ const Favorites = () => {
       toast.error("Failed to remove favorite.", error);
     }
   };
+
+  console.log("Favorites Data:", favorites);
+  
 
   if (isLoading) return <p className="text-center py-10">Loading favorites...</p>;
 
@@ -55,7 +58,7 @@ const Favorites = () => {
           <p className="text-sm mb-3">Quantity: <span className="font-medium">{item.quantity}</span></p>
 
           <div className="flex justify-between items-center mt-3">
-            <Link to={`/donation-details/${item.donationId}`}>
+            <Link to={`/donations/${item._id}`}>
               <button className="btn btn-sm btn-primary">Details</button>
             </Link>
             <button

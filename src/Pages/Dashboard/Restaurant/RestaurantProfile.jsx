@@ -13,6 +13,7 @@ const RestaurantProfile = () => {
         <img
           src={user?.photoURL || "https://i.ibb.co/2Y3r5Yk/default-user.png"}
           alt="Profile"
+          referrerPolicy="no-referrer"
           className="w-24 h-24 rounded-full mb-4 object-cover"
         />
         {/* ইউজারের নাম */}

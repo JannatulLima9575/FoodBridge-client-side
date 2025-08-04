@@ -44,8 +44,10 @@ const ReviewModal = ({ user, donationId, onClose,isOpen }) => {
         onChange={(e) => setRating(e.target.value)}
         className="input input-bordered w-full mb-4"
       />
-      <button type="submit" className="btn btn-primary">Submit</button>
+      <div className="flex gap-3 justify-center">
+        <button type="submit" className="btn btn-primary">Submit</button>
       <button type="button" onClick={()=>onClose()} className="btn btn-primary">Close</button>
+      </div>
     </form>
   );
 };

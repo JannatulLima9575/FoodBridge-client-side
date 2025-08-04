@@ -38,6 +38,7 @@ const Profile = () => {
         <img
           src={user?.photoURL}
           alt="Profile"
+          referrerPolicy="no-referrer"
           className="w-24 h-24 rounded-full mx-auto mb-4"
         />
         <h2 className="text-xl font-semibold">{user?.displayName}</h2>

@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import AuthContext from "../../../Provider/AuthContext";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-const TransactionHistory = () => {
+const Transactions = () => {
   const { user } = useContext(AuthContext);
   const axios = useAxiosSecure();
 
@@ -11,17 +11,16 @@ const TransactionHistory = () => {
     queryKey: ["transactions", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const backendURL = "https://food-bridge-server-side.vercel.app";
-      const res = await axios.get(`${backendURL}/transactions?email=${user.email}`);
+      const res = await axios.get(`/transactions?email=${user.email}`);
       return res.data;
     },
   });
 
   if (isLoading) return <p>Loading transactions...</p>;
-
-  if (isError) return <p>Error loading transactions: {error.message}</p>;
+  if (isError) return <p>Error: {error.message}</p>;
 
   const transactions = Array.isArray(data) ? data : [];
+
 
   return (
     <div className="mt-10 p-4 overflow-x-auto">
@@ -43,7 +42,7 @@ const TransactionHistory = () => {
               <tr key={t._id || t.transactionId}>
                 <td className="p-2 border">{t.transactionId || "N/A"}</td>
                 <td className="p-2 border">${t.amount}</td>
-                <td className="p-2 border">{new Date(t.date).toLocaleDateString()}</td>
+                <td className="p-2 border">{new Date(t.createdAt).toLocaleDateString()}</td>
                 <td className="p-2 border">{t.status}</td>
               </tr>
             ))}
@@ -54,4 +53,4 @@ const TransactionHistory = () => {
   );
 };
 
-export default TransactionHistory;
+export default Transactions;

@@ -27,10 +27,10 @@ const AuthProvider = ({ children }) => {
   };
 
   // ✅ Update user profile
-  const updateUserProfile = (name) => {
+  const updateUserProfile = (name,url='https://i.ibb.co/ZYW3VTp/brown-brim.png') => {
     setName(name);
     setLoading(true);
-    return updateProfile(auth.currentUser, { displayName: name });
+    return updateProfile(auth.currentUser, { displayName: name ,photoURL:url});
   };
 
   // ✅ Sign in with email & password

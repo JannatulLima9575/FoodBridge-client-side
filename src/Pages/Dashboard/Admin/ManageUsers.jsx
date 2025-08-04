@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { FaTrash, FaUserShield } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";

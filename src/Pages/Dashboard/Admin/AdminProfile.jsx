@@ -14,6 +14,7 @@ const AdminProfile = () => {
         <img
           src={user?.photoURL || "https://i.ibb.co/2Y3r5Yk/default-user.png"}
           alt="Profile"
+          referrerPolicy="no-referrer"
           className="w-24 h-24 rounded-full mb-4"
         />
         <p className="text-lg font-medium text-gray-700 dark:text-gray-200">

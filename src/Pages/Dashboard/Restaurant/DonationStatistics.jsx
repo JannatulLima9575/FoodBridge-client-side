@@ -28,7 +28,7 @@ const DonationStatistics = () => {
 useEffect(() => {
   if (user?.uid && !loading) {
     axiosSecure
-      .get(`/donations/stats?userId=${user.uid}`)
+      .get(`/donations_statistics`)
       .then((res) => {
         if (Array.isArray(res.data)) {
           setData(res.data); // set the chart data
@@ -39,6 +39,8 @@ useEffect(() => {
       .catch((err) => console.error("❌ Stats API error", err));
   }
 }, [user, axiosSecure, loading]);
+console.log(data);
+
 
 
   return (

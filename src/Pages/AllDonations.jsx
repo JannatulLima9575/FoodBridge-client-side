@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+/* import toast from "react-hot-toast"; */
 import { useNavigate } from "react-router";
 import useAxiosSecure from "../../src/hooks/useAxiosSecure";
 
@@ -11,7 +11,7 @@ const AllDonations = () => {
   const navigate = useNavigate();
 
 
-  const { data: donations = [], refetch } = useQuery({
+  const { data: donations = [] } = useQuery({
     queryKey: ["allDonations"],
     queryFn: async () => {
       const res = await axiosSecure.get("/donations");
@@ -19,7 +19,7 @@ const AllDonations = () => {
     },
   });
 
-  const handleApprove = async (id) => {
+/*   const handleApprove = async (id) => {
     try {
       await axiosSecure.patch(`/donations/${id}/approve`);
       toast.success("Approved!");
@@ -37,11 +37,12 @@ const AllDonations = () => {
     } catch {
       toast.error("Failed to mark as featured.");
     }
-  };
+  }; */
 
   const filteredDonations = donations
     .filter((donation) =>
       donation.location?.toLowerCase().includes(searchTerm.toLowerCase())
+       &&(donation.status==='approved')
     )
     .sort((a, b) => {
       if (sortBy === "quantity") return b.quantity - a.quantity;
@@ -117,7 +118,7 @@ const AllDonations = () => {
             </p>
 
             <div className="flex flex-wrap gap-2 mt-2">
-              {!donation.isApproved && (
+{/*               {!donation.isApproved && (
                 <button
                   onClick={() => handleApprove(donation._id)}
                   className="bg-green-600 text-white px-3 py-1 rounded"
@@ -132,7 +133,7 @@ const AllDonations = () => {
                 >
                   Feature
                 </button>
-              )}
+              )} */}
               <button
                 onClick={() => navigate(`/donations/${donation._id}`)}
                 className="bg-blue-600 text-white px-3 py-1 rounded"
