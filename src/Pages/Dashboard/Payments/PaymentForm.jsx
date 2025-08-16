@@ -89,7 +89,7 @@ const PaymentForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-md mx-auto bg-white dark:bg-gray-800 p-6 rounded shadow">
       <h2 className="text-2xl font-bold mb-4 text-center">Payment Form</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">

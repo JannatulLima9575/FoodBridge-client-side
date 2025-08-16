@@ -49,14 +49,14 @@ const MyReviews = () => {
               className="border border-gray-200 shadow-sm rounded-lg p-5 flex flex-col justify-between"
             >
               <div>
-                <h3 className="text-lg font-semibold text-primary mb-1">
+                <h3 className="text-lg font-semibold text-primary mb-1 dark:text-gray-300">
                   Donation: {review.title || review.donationId}
                 </h3>
-                <p className="text-sm text-gray-700">
-                  <span className="font-medium">Restaurant:</span> {review.reviewerName}
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="font-medium ">Restaurant:</span> {review.reviewerName}
                 </p>
-                <p className="text-gray-800 my-2">{review.description}</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-gray-800 my-2 dark:text-gray-300">{review.description}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-300">
                   Reviewed on:{" "}
                   {new Date(review.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",

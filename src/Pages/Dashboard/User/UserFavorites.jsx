@@ -44,11 +44,11 @@ const UserFavorites = () => {
       {favorites.length === 0 ? (
         <p>No favorites found.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 dark:bg-gray-800 lg:grid-cols-3 gap-4">
           {favorites.map((donation) => (
             <div
               key={donation._id}
-              className="border rounded shadow p-4 flex flex-col"
+              className="border rounded shadow p-4 flex flex-col bg-white dark:bg-gray-800"
             >
               <h3 className="font-semibold">{donation.donationTitle}</h3>
               <p>Restaurant: {donation.restaurantName}</p>

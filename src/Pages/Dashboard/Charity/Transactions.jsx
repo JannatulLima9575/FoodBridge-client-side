@@ -30,7 +30,7 @@ const Transactions = () => {
       ) : (
         <table className="w-full border border-collapse">
           <thead>
-            <tr className="bg-green-200">
+            <tr className="bg-green-200 dark:bg-gray-800">
               <th className="p-2 border">Transaction ID</th>
               <th className="p-2 border">Amount</th>
               <th className="p-2 border">Request Date</th>

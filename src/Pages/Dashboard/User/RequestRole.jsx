@@ -127,7 +127,7 @@ const CARD_ELEMENT_OPTIONS = {
   const [mission, setMission] = useState("");
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
+    <div className="max-w-md mx-auto mt-10 bg-white dark:bg-gray-800 p-6 rounded shadow">
       <h2 className="text-2xl font-bold mb-4">Request Charity Role</h2>
       <div className="mb-4">
         <label className="block font-medium mb-1">Name</label>

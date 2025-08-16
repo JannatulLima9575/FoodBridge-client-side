@@ -46,14 +46,14 @@ const Favorites = () => {
   return (
     <div className="p-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {favorites.map((item) => (
-        <div key={item._id} className="bg-base-100 shadow-md rounded p-4 border">
+        <div key={item._id} className="bg-base-100 dark:bg-gray-800 shadow-md rounded p-4 border">
           <img
             src={item.image}
             alt={item.donationTitle}
             className="h-40 w-full object-cover rounded mb-3"
           />
-          <h3 className="text-xl font-semibold mb-1">{item.donationTitle}</h3>
-          <p className="text-sm text-gray-500 mb-1">{item.restaurantName} | {item.location}</p>
+          <h3 className="text-xl font-semibold mb-1 dark:text-gray-300">{item.donationTitle}</h3>
+          <p className="text-sm text-gray-500 mb-1 dark:text-gray-300">{item.restaurantName} | {item.location}</p>
           <p className="text-sm mb-1">Status: <span className="font-medium">{item.status}</span></p>
           <p className="text-sm mb-3">Quantity: <span className="font-medium">{item.quantity}</span></p>
 
