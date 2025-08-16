@@ -80,7 +80,7 @@ const CheckoutForm = ({ price, donationId }) => {
           if (res.data.insertedId) {
             toast.success("Payment saved in database!");
 
-            // ✅ Redirect with payment info
+            //  Redirect with payment info
             navigate("/dashboard/payment-success", {
               state: {
                 transactionId: paymentIntent.id,
