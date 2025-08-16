@@ -37,7 +37,7 @@ const FeatureDonations = () => {
   };
 
   return (
-    <section className="py-14 px-4 md:px-8 bg-white dark:bg-gray-900 transition-colors duration-500">
+    <section className="py-14 px-4 md:px-8 bg-[#FFFBE6] dark:bg-gray-900 transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-[#257429] dark:text-orange-400 font-[Poppins] transition-colors duration-500">
           🍽️ Featured Donations
@@ -85,7 +85,7 @@ const FeatureDonations = () => {
                 </p>
                 <button
                   onClick={() => handleViewDetails(donation._id)}
-                  className="inline-block mt-3 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all duration-300"
+                  className="inline-block mt-3 px-4 py-2 bg-[#F9A825] dark:bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all duration-300"
                 >
                   View Details
                 </button>

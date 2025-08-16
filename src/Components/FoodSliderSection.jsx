@@ -19,7 +19,7 @@ const FoodSliderSection = () => {
   return (
     <section className="py-16 px-4 md:px-8 bg-[#FFFBE6] dark:bg-gray-900 transition-colors duration-500">
       <div className="max-w-7xl mx-auto text-center mb-10">
-        <p className="uppercase text-sm font-semibold text-green-400 dark:text-green-300 tracking-wider transition-colors duration-500">
+        <p className="uppercase text-sm font-semibold text-[#81C784] dark:text-green-300 tracking-wider transition-colors duration-500">
           Fighting Food Waste, One Donation at a Time
         </p>
         <h2 className="text-2xl md:text-3xl font-bold mt-2 text-gray-900 dark:text-gray-200 leading-relaxed transition-colors duration-500">

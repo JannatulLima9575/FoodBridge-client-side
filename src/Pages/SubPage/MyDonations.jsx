@@ -40,7 +40,7 @@ const MyDonations = () => {
 
   return (
     <section className="px-4 py-10">
-      <h2 className="text-2xl font-bold text-center text-[#257429] mb-6">
+      <h2 className="text-2xl font-bold text-center text-[#257429] dark:text-orange-500 mb-6">
         🥘 My Posted Donations
       </h2>
 

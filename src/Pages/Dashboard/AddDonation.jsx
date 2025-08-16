@@ -46,7 +46,7 @@ const AddDonation = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg dark:bg-gray-900">
+    <div className="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-900 shadow-lg rounded-lg text-gray-900 dark:text-gray-100">
       <h2 className="text-2xl font-bold mb-6 text-center">Add New Donation</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -56,7 +56,7 @@ const AddDonation = () => {
           <input
             type="text"
             {...register("title", { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             placeholder="Surplus Rice / Bread"
           />
           {errors.title && <p className="text-red-500 text-sm">Title is required</p>}
@@ -68,7 +68,7 @@ const AddDonation = () => {
           <input
             type="text"
             {...register("foodType", { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             placeholder="E.g., Bakery, Produce"
           />
           {errors.foodType && <p className="text-red-500 text-sm">Food type is required</p>}
@@ -80,7 +80,7 @@ const AddDonation = () => {
           <input
             type="text"
             {...register("quantity", { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             placeholder="E.g., 10 kg"
           />
           {errors.quantity && <p className="text-red-500 text-sm">Quantity is required</p>}
@@ -92,7 +92,7 @@ const AddDonation = () => {
           <input
             type="text"
             {...register("pickupTime", { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             placeholder="E.g., 5pm - 7pm"
           />
           {errors.pickupTime && <p className="text-red-500 text-sm">Pickup time is required</p>}
@@ -104,7 +104,7 @@ const AddDonation = () => {
           <input
             type="text"
             {...register("location", { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             placeholder="E.g., 123 Main Street"
           />
           {errors.location && <p className="text-red-500 text-sm">Location is required</p>}
@@ -116,7 +116,7 @@ const AddDonation = () => {
           <input
             type="text"
             {...register("image", { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             placeholder="Image URL"
           />
           {errors.image && <p className="text-red-500 text-sm">Image URL is required</p>}
@@ -127,7 +127,7 @@ const AddDonation = () => {
           <label className="font-medium">Restaurant Name</label>
           <input
             type="text"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             value={user?.displayName}
             readOnly
           />
@@ -137,7 +137,7 @@ const AddDonation = () => {
           <label className="font-medium">Restaurant Email</label>
           <input
             type="email"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             value={user?.email}
             readOnly
           />

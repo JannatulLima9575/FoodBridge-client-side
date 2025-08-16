@@ -17,7 +17,7 @@ const stories = [
 
 const CommunityStories = () => {
   return (
-    <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900 transition-colors duration-500">
+    <section className="py-16 px-4 md:px-8 bg-base-200 dark:bg-gray-900 transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#257429] dark:text-orange-400 mb-2 transition-colors duration-500">

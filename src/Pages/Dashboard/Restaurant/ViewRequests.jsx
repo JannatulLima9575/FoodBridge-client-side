@@ -18,14 +18,9 @@ const ViewRequests = () => {
     },
   });
 
-  console.log("Charity Requests Data:", requests);
-  
-
   const handleStatusChange = async (requestId, status) => {
     try {
-      const res = await axios.patch(`charityRequests/${requestId}`, {
-        status,
-      });
+      const res = await axios.patch(`charityRequests/${requestId}`, { status });
       if (res.data.modifiedCount > 0 || res.data.success) {
         toast.success(`Request ${status}`);
         queryClient.invalidateQueries(["Res_charityRequests", user?.email]);
@@ -36,20 +31,23 @@ const ViewRequests = () => {
     }
   };
 
-  if (isLoading) return <p className="text-center py-6">Loading requests...</p>;
+  if (isLoading)
+    return (
+      <p className="text-center py-6 text-gray-700 dark:text-gray-300">
+        Loading requests...
+      </p>
+    );
 
   return (
-    <div className="p-6 mt-10">
-      <h2 className="text-2xl font-bold mb-4">
-        Charity Requests for Your Donations
-      </h2>
+    <div className="p-6 mt-10 text-gray-800 dark:text-gray-200">
+      <h2 className="text-2xl font-bold mb-4">Charity Requests for Your Donations</h2>
 
       {requests.length === 0 ? (
         <p>No requests found.</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="table table-zebra w-full">
-            <thead className="bg-base-200">
+          <table className="table w-full border-collapse border border-gray-300 dark:border-gray-600">
+            <thead className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               <tr>
                 <th>#</th>
                 <th>Donation Title</th>
@@ -63,7 +61,7 @@ const ViewRequests = () => {
             </thead>
             <tbody>
               {requests.map((req, index) => (
-                <tr key={req._id}>
+                <tr key={req._id} className="even:bg-gray-100 dark:even:bg-gray-800">
                   <td>{index + 1}</td>
                   <td>{req.title}</td>
                   <td>{req.foodType}</td>
@@ -72,34 +70,25 @@ const ViewRequests = () => {
                   <td>{req.pickupTime}</td>
                   <td>{req.status}</td>
                   <td className="space-x-2">
-                    {req.status === "Pending" && (
+                    {req.status === "Pending" ? (
                       <>
                         <button
-                          onClick={() =>
-                            handleStatusChange(
-                              req._id,
-                              "accepted",
-                            )
-                          }
+                          onClick={() => handleStatusChange(req._id, "accepted")}
                           className="btn btn-sm btn-success"
                         >
                           Accept
                         </button>
                         <button
-                          onClick={() =>
-                            handleStatusChange(
-                              req._id,
-                              "rejected",
-                            )
-                          }
+                          onClick={() => handleStatusChange(req._id, "rejected")}
                           className="btn btn-sm btn-error"
                         >
                           Reject
                         </button>
                       </>
-                    )}
-                    {req.status !== "Pending" && (
-                      <span className="text-gray-500">Action taken</span>
+                    ) : (
+                      <span className="text-gray-500 dark:text-gray-400">
+                        Action taken
+                      </span>
                     )}
                   </td>
                 </tr>

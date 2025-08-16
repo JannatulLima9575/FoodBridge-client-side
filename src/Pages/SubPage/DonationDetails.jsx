@@ -8,14 +8,12 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import ReportDonationModal from "../Dashboard/ReportDonationModal";
 import ReviewSection from "../SubPage/ReviewSection";
 import ReviewModal from "../SubPage/ReviewModal";
-import CharityProfile from './../Dashboard/Charity/CharityProfile';
 
 const DonationDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
-  const [review, setreview] = useState(false);
-  console.log("iddddddd", id);
+  const [review, setReview] = useState(false);
 
   const {
     data: donation = {},
@@ -31,10 +29,8 @@ const DonationDetails = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center my-10">Loading...</p>;
+    return <p className="text-center my-10 text-gray-700 dark:text-gray-300">Loading...</p>;
   }
-
-  console.log("Donation Details:", donation);
 
   const {
     title,
@@ -52,19 +48,14 @@ const DonationDetails = () => {
     lng,
   } = donation;
 
-  console.log("user:", user);
-
   const handleSaveFavorite = async () => {
     try {
       const res = await axiosSecure.post("/favorites", {
         donationId: id,
         userEmail: user?.email,
       });
-      if (res.data.insertedId) {
-        toast.success("Added to favorites!");
-      } else {
-        toast.error("Already in favorites.");
-      }
+      if (res.data.insertedId) toast.success("Added to favorites!");
+      else toast.error("Already in favorites.");
     } catch (error) {
       toast.error("Failed to save to favorites.", error);
     }
@@ -76,25 +67,24 @@ const DonationDetails = () => {
         donationId: id,
         charityEmail: user?.email,
         pickupTime: pickupTime || "10:00 AM - 12:00 PM",
-        charityName: user?.displayName, 
-        charityImage:user?.photoURL || "https://i.ibb.co/ZYW3VTp/brown-brim.png",
+        charityName: user?.displayName,
+        charityImage: user?.photoURL || "https://i.ibb.co/ZYW3VTp/brown-brim.png",
         status: "Pending",
       });
       if (res.data.insertedId) {
         toast.success("Donation requested!");
         refetch();
-      } 
+      }
     } catch (error) {
-      if(error.status === 400) {
-        toast.error("You already requested this donation.");
-      }else toast.error("Failed to request donation.", error);
+      if (error.status === 400) toast.error("You already requested this donation.");
+      else toast.error("Failed to request donation.", error);
     }
   };
 
   const handleConfirmPickup = async () => {
     try {
       const res = await axiosSecure.put(`/charityPickups`, {
-        donationId:id,
+        donationId: id,
         charityEmail: user?.email,
         pickupTime: pickupTime || "10:00 AM - 12:00 PM",
       });
@@ -103,10 +93,8 @@ const DonationDetails = () => {
         refetch();
       }
     } catch (error) {
-      if(error.status===404){
-        toast.error( error.response.data.message);
-        console.log(error);  
-      }else toast.error("Failed to confirm pickup.", error);
+      if (error.status === 404) toast.error(error.response.data.message);
+      else toast.error("Failed to confirm pickup.", error);
     }
   };
 
@@ -114,74 +102,49 @@ const DonationDetails = () => {
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="grid md:grid-cols-2 gap-8">
         <div>
-          <img src={image} alt={title} className="rounded-xl shadow" />
+          <img src={image} alt={title} className="rounded-xl shadow-lg w-full" />
         </div>
 
         <div>
-          <h2 className="text-3xl font-bold mb-2">{title}</h2>
-          <p className="text-gray-600 mb-4">{description}</p>
-          <p className="mb-2">
-            <strong>Food Type:</strong> {foodType}
-          </p>
-          <p className="mb-2">
-            <strong>Quantity:</strong> {quantity}
-          </p>
-          <p className="mb-2">
-            <strong>Pickup Time:</strong> {pickupTime}
-          </p>
-          <p className="mb-2">
-            <strong>Status:</strong> {status}
-          </p>
-          <p className="mb-4">
-            <strong>Location:</strong> {location}
-          </p>
+          <h2 className="text-3xl font-bold mb-2 text-[#257429] dark:text-[#F9A825]">{title}</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
+          <p className="mb-2 text-gray-700 dark:text-gray-300"><strong>Food Type:</strong> {foodType}</p>
+          <p className="mb-2 text-gray-700 dark:text-gray-300"><strong>Quantity:</strong> {quantity}</p>
+          <p className="mb-2 text-gray-700 dark:text-gray-300"><strong>Pickup Time:</strong> {pickupTime}</p>
+          <p className="mb-2 text-gray-700 dark:text-gray-300"><strong>Status:</strong> {status}</p>
+          <p className="mb-4 text-gray-700 dark:text-gray-300"><strong>Location:</strong> {location}</p>
 
-          <div className="mb-4">
+          <div className="mb-4 text-gray-700 dark:text-gray-300">
             <h4 className="font-semibold mb-1">Restaurant Info:</h4>
-            <p>
-              <strong>Name:</strong> {restaurantName}
-            </p>
-            <p>
-              <strong>Email:</strong> {restaurantEmail}
-            </p>
+            <p><strong>Name:</strong> {restaurantName}</p>
+            <p><strong>Email:</strong> {restaurantEmail}</p>
           </div>
 
+          {/* Buttons */}
           {user?.role === "user" && (
-            <button
-              onClick={handleSaveFavorite}
-              className="btn btn-outline btn-sm mr-3"
-            >
+            <button onClick={handleSaveFavorite} className="btn btn-outline btn-sm mr-3 mb-2">
               💖 Save to Favorites
             </button>
           )}
 
-          {/* Request Donation (charity only) */}
           {user?.role === "charity" && (
-            <button
-              onClick={handleRequestDonation}
-              className="btn btn-primary btn-sm mr-3"
-            >
-              📦 Request Donation
-            </button>
+            <>
+              <button onClick={handleRequestDonation} className="btn btn-primary btn-sm mr-3 mb-2">
+                📦 Request Donation
+              </button>
+
+              {status === "approved" && (
+                <button onClick={handleConfirmPickup} className="btn btn-success btn-sm mr-3 mb-2">
+                  ✅ Confirm Pickup
+                </button>
+              )}
+            </>
           )}
 
-          {/* Confirm Pickup (charity only if status === accepted) */}
-          {user?.role === "charity" && status === "approved" && (
-            <button
-              onClick={handleConfirmPickup}
-              className="btn btn-success btn-sm mr-3"
-            >
-              ✅ Confirm Pickup
-            </button>
-          )}
-
-          {/* Report Button */}
           {["user", "charity"].includes(user?.role) && (
             <button
-              className="btn btn-error btn-sm"
-              onClick={() =>
-                document.getElementById("report_modal").showModal()
-              }
+              className="btn btn-error btn-sm mb-2"
+              onClick={() => document.getElementById("report_modal").showModal()}
             >
               🚨 Report Donation
             </button>
@@ -191,8 +154,8 @@ const DonationDetails = () => {
 
       {/* Map */}
       <div className="mt-10">
-        <h3 className="text-xl font-bold mb-3">Location Map</h3>
-        {/*  <DonationDetailsMap lat={lat} lng={lng} /> */}
+        <h3 className="text-xl font-bold mb-3 text-[#257429] dark:text-[#F9A825]">Location Map</h3>
+        {/* <DonationDetailsMap lat={lat} lng={lng} /> */}
       </div>
 
       {/* Review Section */}
@@ -202,7 +165,7 @@ const DonationDetails = () => {
           <div className="mt-4">
             <button
               className="btn btn-outline"
-              onClick={() => setreview((review) => !review)}
+              onClick={() => setReview(!review)}
             >
               ✍️ Add a Review
             </button>
@@ -217,9 +180,7 @@ const DonationDetails = () => {
           donationId={id}
           user={user}
           isOpen={review}
-          onClose={() => {
-            setreview(false);
-          }}
+          onClose={() => setReview(false)}
         />
       )}
     </div>

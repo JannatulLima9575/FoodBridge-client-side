@@ -36,7 +36,7 @@ const Banner = () => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="bg-white dark:bg-gray-900 px-4 md:px-16 py-10 md:py-20 transition-colors duration-500"
+            className="bg-[#FFFBE6] dark:bg-gray-900 px-4 md:px-16 py-10 md:py-20 transition-colors duration-500"
           >
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8">
               
@@ -48,7 +48,7 @@ const Banner = () => {
                 <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 transition-colors duration-500 fonts-inter">
                   {slide.desc}
                 </p>
-                <button className="btn mt-4 bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-300 fonts-inter">
+                <button className="btn mt-4 bg-[#F9A825] dark:bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-300 fonts-inter">
                   Donate Now
                 </button>
               </div>

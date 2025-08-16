@@ -36,13 +36,13 @@ const Coverage = () => {
   );
 
   return (
-    <section className="w-full min-h-screen md:h-[60vh] bg-white dark:bg-neutral-900 px-4 md:px-8 py-16 overflow-hidden">
+    <section className="w-full min-h-screen md:h-[60vh] bg-white dark:bg-neutral-900 px-4 md:px-8 py-16 overflow-hidden transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
         {/* Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-[#257429] dark:text-[#c8facc] mb-4 font-[Poppins] text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#257429] dark:text-[#c8facc] mb-4 font-[Poppins] text-center transition-colors duration-500">
           📍 We are available in 64 Districts
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-8 fonts-inter text-center text-sm md:text-base">
+        <p className="text-gray-600 dark:text-gray-300 mb-8 fonts-inter text-center text-sm md:text-base transition-colors duration-500">
           Our food donation coverage spans every corner of Bangladesh — search and explore our active areas.
         </p>
 
@@ -53,12 +53,12 @@ const Coverage = () => {
             placeholder="Search district name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="input input-bordered w-full max-w-md text-black dark:text-white dark:bg-neutral"
+            className="input input-bordered w-full max-w-md text-black dark:text-white dark:bg-neutral transition-colors duration-500"
           />
         </div>
 
         {/* Map Section */}
-        <div className="w-full h-[70vh] md:h-[80vh] rounded-xl overflow-y-hidden shadow-xl border border-green-200 dark:border-neutral-700">
+        <div className="w-full h-[70vh] md:h-[80vh] rounded-xl overflow-y-hidden shadow-xl border border-green-200 dark:border-neutral-700 transition-colors duration-500">
           <MapContainer
             center={[23.685, 90.3563]}
             zoom={7}

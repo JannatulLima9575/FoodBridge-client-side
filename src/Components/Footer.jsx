@@ -10,7 +10,7 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#FFFBE6] dark:bg-gray-900 text-gray-900 dark:text-gray-200 px-6 md:px-12 py-10 mt-20 transition-colors duration-500">
+    <footer className="bg-base-200 dark:bg-gray-900 text-gray-900 dark:text-gray-200 px-6 md:px-12 py-10 mt-20 transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10">
@@ -33,7 +33,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold text-green-400 dark:text-green-300 mb-2 transition-colors duration-500">Quick Links</h3>
+            <h3 className="text-lg font-semibold text-[#81C784] dark:text-green-300 mb-2 transition-colors duration-500">Quick Links</h3>
             <ul className="space-y-1 text-sm">
               <li><a href="/" className="hover:underline">Home</a></li>
               <li><a href="/donations" className="hover:underline">All Donations</a></li>
@@ -44,7 +44,7 @@ const Footer = () => {
 
           {/* About Us */}
           <div>
-            <h3 className="text-lg font-semibold text-green-400 dark:text-green-300 mb-2 transition-colors duration-500">About Us</h3>
+            <h3 className="text-lg font-semibold text-[#81C784] dark:text-green-300 mb-2 transition-colors duration-500">About Us</h3>
             <ul className="space-y-1 text-sm">
               <li><a href="/about" className="hover:underline">Our Story</a></li>
               <li><a href="/team" className="hover:underline">Team</a></li>
@@ -55,7 +55,7 @@ const Footer = () => {
 
           {/* Support */}
           <div>
-            <h3 className="text-lg font-semibold text-green-400 dark:text-green-300 mb-2 transition-colors duration-500">Support</h3>
+            <h3 className="text-lg font-semibold text-[#81C784] dark:text-green-300 mb-2 transition-colors duration-500">Support</h3>
             <ul className="space-y-1 text-sm">
               <li><a href="/contact" className="hover:underline">Contact Us</a></li>
               <li><a href="/faq" className="hover:underline">FAQs</a></li>
@@ -66,7 +66,7 @@ const Footer = () => {
 
           {/* Social Media */}
           <div>
-            <h3 className="text-lg font-semibold text-green-400 dark:text-green-300 mb-2 transition-colors duration-500">Follow Us</h3>
+            <h3 className="text-lg font-semibold text-[#81C784] dark:text-green-300 mb-2 transition-colors duration-500">Follow Us</h3>
             <div className="flex gap-4 text-xl">
               <a href="#" className="hover:text-[#F9A825] transition-colors duration-500"><FaFacebookF /></a>
               <a href="#" className="hover:text-[#F9A825] transition-colors duration-500"><FaTwitter /></a>
