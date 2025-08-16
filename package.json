@@ -20,6 +20,8 @@
     "firebase": "^11.10.0",
     "firebase-admin": "^13.4.0",
     "leaflet": "^1.9.4",
+    "localforage": "^1.10.0",
+    "lucide-react": "^0.539.0",
     "mapbox-gl": "^3.13.0",
     "maplibre-gl": "^5.6.1",
     "react": "^19.1.0",

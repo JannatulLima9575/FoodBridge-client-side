@@ -25,9 +25,9 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="bg-[#fdfcf9] dark:bg-[#1f1f1f] py-20 px-4 md:px-12 transition-all duration-300">
+    <section className="bg-white dark:bg-gray-900 py-20 px-4 md:px-12 transition-colors duration-500">
       <div className="max-w-7xl mx-auto font-body">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#257429] dark:text-white font-heading mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#257429] dark:text-orange-400 font-heading mb-16 transition-colors duration-500">
           HOW IT WORKS
         </h2>
 
@@ -41,10 +41,10 @@ const HowItWorks = () => {
                 {step.id}
               </h1>
               <div>
-                <h3 className="text-xl md:text-2xl font-semibold text-[#F9A825] dark:text-[#FDD835] font-heading mb-2">
+                <h3 className="text-xl md:text-2xl font-semibold text-orange-500 dark:text-orange-400 font-heading mb-2 transition-colors duration-500">
                   {step.title}
                 </h3>
-                <p className="text-[#333333] dark:text-gray-300 text-sm md:text-base">
+                <p className="text-gray-800 dark:text-gray-300 text-sm md:text-base transition-colors duration-500">
                   {step.desc}
                 </p>
               </div>

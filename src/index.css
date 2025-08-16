@@ -4,6 +4,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* new added */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* next*/
+
 /* for heading,section titles, logo */
 .poppins-thin {
   font-family: "Poppins", sans-serif;

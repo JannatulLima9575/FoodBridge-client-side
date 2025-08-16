@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import AuthContext from "../Provider/AuthContext";
 import { toast } from "react-hot-toast";
-
 
 const FeatureDonations = () => {
   const { user } = useContext(AuthContext);
@@ -20,7 +19,12 @@ const FeatureDonations = () => {
     },
   });
 
-  if (isLoading) return <p className="text-center py-10">Loading...</p>;
+  if (isLoading)
+    return (
+      <p className="text-center py-10 text-gray-800 dark:text-gray-100">
+        Loading...
+      </p>
+    );
 
   // ✅ Click handler to check user login before navigate
   const handleViewDetails = (id) => {
@@ -33,12 +37,12 @@ const FeatureDonations = () => {
   };
 
   return (
-    <section className="py-14 px-4 md:px-8 bg-[#fffceb] dark:bg-[#1e1e1e]">
+    <section className="py-14 px-4 md:px-8 bg-white dark:bg-gray-900 transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-[#257429] dark:text-[#c8facc] font-[Poppins]">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-[#257429] dark:text-orange-400 font-[Poppins] transition-colors duration-500">
           🍽️ Featured Donations
         </h2>
-        <p className="text-center text-gray-600 dark:text-gray-300 mb-8 md:mb-12 fonts-inter">
+        <p className="text-center text-gray-600 dark:text-gray-300 mb-8 md:mb-12 fonts-inter transition-colors duration-500">
           Browse through our highlighted food donations, ready to be shared with those in need.
         </p>
 
@@ -46,7 +50,7 @@ const FeatureDonations = () => {
           {featuredDonations.map((donation) => (
             <div
               key={donation._id}
-              className="bg-white dark:bg-[#2b2b2b] shadow-md rounded-xl overflow-hidden transition hover:shadow-xl"
+              className="bg-white dark:bg-gray-800 shadow-md rounded-xl overflow-hidden transition hover:shadow-xl duration-300"
             >
               <img
                 src={donation.image}
@@ -54,19 +58,19 @@ const FeatureDonations = () => {
                 className="h-48 w-full object-cover"
               />
               <div className="p-4 space-y-2 fonts-inter">
-                <h3 className="text-xl font-semibold text-[#1e1e1e] dark:text-white">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-500">
                   {donation.foodType}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-500">
                   <span className="font-medium">Restaurant:</span>{" "}
                   {donation.restaurantName}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-500">
                   <span className="font-medium">Location:</span>{" "}
                   {donation.location}
                 </p>
                 <p className="text-sm">
-                  <span className="font-medium text-gray-700 dark:text-gray-300">
+                  <span className="font-medium text-gray-700 dark:text-gray-300 transition-colors duration-500">
                     Status:
                   </span>{" "}
                   <span
@@ -81,7 +85,7 @@ const FeatureDonations = () => {
                 </p>
                 <button
                   onClick={() => handleViewDetails(donation._id)}
-                  className="inline-block mt-3 px-4 py-2 bg-[#F9A825] text-white rounded-lg hover:bg-[#f57f17] transition-all duration-300"
+                  className="inline-block mt-3 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all duration-300"
                 >
                   View Details
                 </button>
