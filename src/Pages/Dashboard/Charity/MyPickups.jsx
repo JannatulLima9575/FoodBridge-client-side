@@ -53,7 +53,7 @@ useEffect(()=>{
           {pickups.map((pickup) => (
             <div
               key={pickup._id}
-              className="border rounded p-4 shadow bg-white"
+              className="border rounded p-4 shadow bg-white dark:bg-gray-800 "
             >
               <h3 className="text-lg font-bold">{pickup.title}</h3>
               <p>Restaurant: {pickup.restaurantName}</p>

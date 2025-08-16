@@ -49,7 +49,7 @@ const handleCancelRequest = async (id) => {
 
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 ">
       <h2 className="text-2xl font-bold mb-4">My Requests</h2>
       {requests.length === 0 ? (
         <p>No requests found.</p>
@@ -58,7 +58,7 @@ const handleCancelRequest = async (id) => {
           {requests.map((request) => (
             <div
               key={request._id}
-              className="border rounded p-4 shadow bg-white"
+              className="border rounded p-4 shadow bg-white dark:bg-gray-800 "
             >
               <h3 className="text-lg font-bold">{request.donationTitle}</h3>
               <p>Restaurant: {request.restaurantName}</p>

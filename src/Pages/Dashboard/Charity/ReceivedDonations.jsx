@@ -40,19 +40,19 @@ const ReceivedDonations = () => {
           {donations.map((donation) => (
             <div
               key={donation._id}
-              className="border rounded p-4 shadow bg-white"
+              className="border rounded p-4 shadow bg-white dark:bg-gray-800"
             >
               <h3 className="text-lg font-bold">{donation.title}</h3>
               <p>Restaurant: {donation.restaurantName}</p>
               <p>Food Type: {donation.foodType}</p>
               <p>Quantity: {donation.quantity}</p>
-              <p>
+              <p className="pb-3">
                 Pickup Date:{" "}
                 {donation.pickupTime
                   ? donation.pickupTime
                   : "N/A"}
               </p>
-              <NavLink to={`/donations/${donation.donationId}`} className="mt-2 bg-green-600 text-white px-3 py-1 rounded">
+              <NavLink to={`/donations/${donation.donationId}`} className="mt-4 bg-green-600 text-white px-3 py-1 rounded">
                 Review
               </NavLink>
             </div>
