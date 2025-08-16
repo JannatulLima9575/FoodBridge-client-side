@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const axiosSecure = axios.create({
-  // baseURL: "https://food-bridge-server-side.vercel.app",
-  baseURL: "http://localhost:5000", 
+  baseURL: "https://food-bridge-server-side.vercel.app",
+  // baseURL: "http://localhost:5000", 
   withCredentials: true, // VERY IMPORTANT for sending cookies (JWT)
 });
 
